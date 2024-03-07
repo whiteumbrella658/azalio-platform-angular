@@ -5,13 +5,13 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyDhOZkai1kgQoTWgc8fhGu3YxTlzl25E6E',
-    authDomain: 'azal-6f058.firebaseapp.com',
-    projectId: 'azal-6f058',
-    storageBucket: 'azal-6f058.appspot.com',
-    messagingSenderId: '162682787316',
-    appId: '1:162682787316:web:67b0c7e59b28b8967095a1',
-    measurementId: 'G-NGMQLK2794',
+    apiKey: '',
+    authDomain: '',
+    projectId: '',
+    storageBucket: '',
+    messagingSenderId: '',
+    appId: '',
+    measurementId: '',
   },
 };
 
