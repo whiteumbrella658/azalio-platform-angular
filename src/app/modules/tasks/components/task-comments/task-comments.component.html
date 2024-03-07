@@ -1,0 +1,154 @@
+<app-loader [loading]="loading || commentLoading"></app-loader>
+<div class="header-container">
+    <div class="header">
+        <span class="tasks"
+            [ngClass]="{'unassigned-task': !taskDetails?.assigned_to_user_name, 'azal-play': isAzalioPlay || isBoringPlay}">
+            <span class="task-name">
+                <span>
+                    <i class="fa fa-angle-double-up enable-priority" *ngIf="taskDetails?.priority === 'HIGH'"></i>
+                </span>
+                <span class="tname">
+                    {{taskDetails?.name}}
+                    <span class="show-desc" *ngIf="taskDescription" (click)="showDescription = !showDescription"> {{showDescription ? 'Hide' : 'Show'}} description
+                        <i aria-hidden="true" [class]="showDescription ? 'fa fa-angle-up' : 'fa fa-angle-down'"></i>
+                    </span>
+                </span>
+            </span>
+          
+        </span>
+
+        <!-- <span class="second-row" *ngIf="taskDetails?.points !== null && isBoringPlay && taskDetails?.assigned_to_user_name == null">
+            <span class="points">
+                <img src="assets/coin.png"> {{taskDetails.points}} points
+            </span>
+        </span> -->
+        <div class="task-desc" *ngIf="showDescription">
+            {{taskDescription}}
+        </div>
+    </div>
+    <!-- <ng-container *ngIf="!taskDetails?.shifts && taskDetails?.assigned_to_user_name !== null">
+        <span class="second-element">
+            <span class="assigned-user">
+                Assigned to {{taskDetails?.assigned_to_user_name}}
+            </span>
+        </span>
+   </ng-container> -->
+
+    <span class="second-row" *ngIf="taskDetails?.tags">
+        <span class="categories" *ngFor="let item of taskDetails.tags; let i = index;">
+            <i class="fa-solid fa-circle" [style.color]="item.color"></i> 
+                <span class="category-name">{{item.tag}}</span>
+        </span>
+    </span>
+    <div class="details-row" *ngIf="taskDetails">
+        <span class="first-col">
+            <ng-container *ngFor="let shift of taskDetails.shifts">
+                <span class="assignment-details">
+                    <span style="display:flex" [nbTooltip]="shift.name">
+                        <i [class]="shift.shift_icon" style="cursor: pointer;"></i>
+                        <span class="assigned-username">
+                            {{shift.assigned_to_user_name ? shift.assigned_to_user_name : ''}}
+                        </span>
+                    </span>
+                </span>
+            </ng-container> <ng-container *ngIf="!taskDetails?.shifts && taskDetails?.assigned_to_user_name !== null">
+                <span class="second-element">
+                    <span class="assigned-user">
+                        Assigned to {{taskDetails?.assigned_to_user_name}}
+                    </span>
+                    <!-- <span class="points" *ngIf="taskDetails?.points !== null && isBoringPlay">
+                        <img src="assets/coin.png"> {{taskDetails.points}} points
+                    </span> -->
+                </span>
+           </ng-container>
+        </span>
+        <span class="resp-right-elements">
+            <span class="sch-task" *ngIf="taskDetails.custom?.repeatType > 0">
+                <i class="fa fa-clock"></i> Scheduled Task
+               </span>
+            <span class="points" *ngIf="(isAzalioPlay || isBoringPlay) && taskDetails?.points !== null">
+                <img src="assets/coin.png"> {{taskDetails.points}} points
+            </span>
+
+            <span class="tag" *ngIf="taskDetails?.all_store">
+                All stores
+            </span>
+        </span>
+    </div>
+</div>
+
+<div id="tasks-wrapper" [ngClass]="{'azalio-container': isAzalioPlay}" [style.background-color]="yellow"
+    class="tasks-wrapper" *ngIf="!loading && taskHistory" [infiniteScrollDistance]="scrollDistance"
+    [scrollWindow]="false" [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle"
+    (scrolled)="onScrollDown()" (scrolledUp)="onScrollUp()" infinite-scroll>
+    <div class="mt-25" *ngIf="isAzalioPlay"></div>
+    <div *ngIf="loadingNext">
+        <span class="skeleton-loader">Loading . . .</span>
+    </div>
+    <ng-container *ngFor="let history of taskHistory">
+        <div class="task-details" [ngClass]="{'task-done': history.is_done, 'task-done undone': history.is_undone}">
+            <span class="row1">
+                <span class="user-details">
+                    <app-user-avatar size="large" [name]="history.action_by" [color]="history.user_color + opacity"
+                        [initialColor]="history.user_color" class="scheduler_user" nbTooltipPlacement="top"
+                        [nbTooltip]="history.action_by"></app-user-avatar>
+                </span>
+                <span class="right-info">
+                    <span class="markdone-container">
+                        <span *ngIf="history.is_done" class="task-done">
+                            Marked done
+                        </span>
+                        <span *ngIf="history.is_undone" class="task-done task-undone">
+                            Marked undone
+                        </span>
+                        <span *ngIf="!history.is_undone && history.is_revoked" class="task-done task-undone">
+                            Points revoked
+                        </span>
+                    </span>
+                    <span class="datetime">
+                        {{history.action_on | date: 'MM/dd/YYYY hh:mm aa'}}
+                    </span>
+                </span>
+            </span>
+            <span class="row2">
+                <span class="comment" [ngClass]="{'comment-pic': history.image_url}">
+                    <span>{{history.comment}}</span>
+                </span>
+                <span class="picture showhim" *ngIf="history?.image_url">
+                    <app-user-avatar [picture]="history?.image_url | imageAuth | async" [task]="true" size="medium"
+                        [showInitials]="false" onlyPicture>
+                    </app-user-avatar>
+                    <app-text-popup [imageClass]="isAzalioPlay ? 'tasks-azalio-play' : ''"
+                        [image]="history?.image_url?history.image_url:'black'" class="relative">
+                        <span *ngIf="!history.image_url?.includes('id=null')" class="image-preview">
+                            <i class="fa fa-search-plus showme image" alt="preview image" aria-hidden="true"
+                                (click)="addImageAnalytics()">
+                            </i>
+                        </span>
+                    </app-text-popup>
+                </span>
+            </span>
+        </div>
+    </ng-container>
+    <app-no-records [display]="emptyResults" [animation]="'taskcomment'" [textMessage]="'No task history.'">
+    </app-no-records>
+</div>
+
+<!-- <div class="footer" [ngClass]="{'small-devices-txtfield': gs?.touchEnabledDevices}"> -->
+<div class="footer" [ngClass]="{'small-devices-txtfield': focus && gs?.touchEnabledDevices}">
+    <span class="footer-row">
+        <span class="add-input">
+            <app-text-input (focus)="onfocus()" (focusOut)="onfocusout()" [maxlength]="500"
+                (keydown.enter)="addComment()" [placeholder]="'Enter comment and press enter.'"
+                [controlName]="'comment'" [form]="form">
+            </app-text-input>
+        </span>
+        <span>
+
+            <button (click)="addComment()" nbButton status="primary" type="submit" class="mr_10 send-comment">
+                <img src="assets/send-icon.png" class="send-icon">
+            </button>
+        </span>
+    </span>
+
+</div>

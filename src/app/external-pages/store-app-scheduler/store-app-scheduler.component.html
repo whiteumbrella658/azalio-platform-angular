@@ -1,0 +1,72 @@
+<!-- <app-scheduler [storeApp]="true"></app-scheduler> -->
+<span class="scheduling_page">
+    <app-loader [loading]="loading || pageLoading"></app-loader>
+    <div class="flex sche_body store-scheduling" *ngIf="!pageLoading">
+
+        <nb-layout-column class="colored-column-warning calendar_flex"
+            [ngClass]="{ calendar_flex_shrinked: showFilterResponsive }" style="height: 100vh; padding: 0">
+
+            <span class="floating">
+                <a class="float" (click)="updateWeekView()">
+                    <i class="fa" [ngClass]="{ 'fa-search-plus': !zoom, 'fa-search-minus': zoom }"
+                        aria-hidden="true"></i>
+                </a>
+            </span>
+            <div class="md-switching-timeline-view-cont store-scheduler" style="height: 100%;">
+                <mbsc-eventcalendar newEventText="New Schedule" dateFormatLong="DDD, MMM DD, YYYY"
+                    (onPageLoading)="onPageLoading($event)" [data]="myEvents" [view]="calView"
+                    [options]="calendarOptions" [resources]="myResources" [invalid]="myInvalids"
+                    [headerTemplate]="myHeaderTemplate" [resourceTemplate]="myResourceTemplate"
+                    [(selectedDate)]="calendarSelectedDate" dataTimezone="utc" displayTimezone="local"
+                    [timezonePlugin]="momentPlugin">
+
+                    <ng-template #myHeaderTemplate style="border: 10px;">
+                        <mbsc-calendar-today class="md-work-week-today today-txt"
+                            style="margin-left: 10px;margin-right: 10px;font-size: 17px; text-decoration: underline; color:#6E698B">
+                        </mbsc-calendar-today>
+
+                        <mbsc-calendar-prev class="md-work-week-prev"></mbsc-calendar-prev>
+                        <div class="md-work-week-picker">
+                            <mbsc-calendar-nav style="min-width: 25%" class="md-work-week-nav"></mbsc-calendar-nav>
+
+                        </div>
+
+                        <mbsc-calendar-next class="md-work-week-next"></mbsc-calendar-next>
+
+                        <span class="ml_10 store-search">
+                            <app-search-input [storeApp]="storeApp" [placeholder]="'Find by name'"
+                                [showHelperButton]="showHelperButton" (searchEvent)="onSearch($event)"
+                                (searchAll)="onSearchAll($event)"></app-search-input>
+                        </span>
+                        <mbsc-popup class="demo-date-filtering-popup" [responsive]="respPopup" #popup>
+                            <div class="mbsc-grid mbsc-no-padding">
+                                <div class="mbsc-col-sm-8 mbsc-pull-sm-4">
+                                    <mbsc-datepicker [controls]="['calendar']" select="preset-range"
+                                        rangeHighlight="true" [firstSelectDay]="1" [selectSize]="7" display="anchored"
+                                        [touchUi]="true" [options]="calendarOptions">
+                                    </mbsc-datepicker>
+                                </div>
+
+                            </div>
+                        </mbsc-popup>
+                    </ng-template>
+
+                </mbsc-eventcalendar>
+
+                <ng-template #eventTemplate let-event>
+                    <span> {{event.start}} - {{event.end}} </span>
+                </ng-template>
+                <ng-template #myResourceTemplate let-resource>
+
+                    <div class="md-work-week-cont">
+                        <app-user-avatar size="large" [name]="resource?.name" [color]="resource.user_color + opacity"
+                            [initialColor]="resource.user_color" [title]="resource.role_title" class="scheduler_user"
+                            nbTooltipPlacement="top" [nbTooltip]="resource?.name"></app-user-avatar>
+
+                    </div>
+                </ng-template>
+            </div>
+
+        </nb-layout-column>
+    </div>
+</span>

@@ -1,0 +1,39 @@
+.nb-form-field-limited-width.nb-form-field-size-medium {
+  max-width: 100% !important;
+}
+
+.signup-details
+{
+  width: 100%;
+}
+
+.signup-email
+{
+  font-size: 17px; 
+  opacity: initial;
+  margin-bottom: 30px;
+  margin-top: 15px;
+  color: #222b45;
+}
+
+.signup-email span
+{
+  color:#6e689b;  
+  font-weight: 600;  
+}
+
+.text-setup
+{
+ width:500px;
+}
+
+@media(max-width:930px)
+{
+  .text-setup
+  {
+   width:auto;
+  }
+}
+.mandatory {
+  font-size: initial;
+}

@@ -1,0 +1,124 @@
+.timesheets_wrapper .wrapper_header {
+  padding: 20px 0px;
+  padding-bottom: 13px;
+  background: #f9faff;
+}
+.timesheets_wrapper {
+  overflow-y: hidden !important;
+  overflow: hidden !important;
+}
+.container {
+  width: 100%;
+  justify-content: space-between;
+}
+.customer-container {
+  margin-top: 10px;
+  padding-bottom: 10px;
+  min-height: fit-content;
+  max-height: 75vh;
+  overflow: scroll;
+}
+
+.table-wrapper thead {
+  top: 0px !important;
+}
+.page-wrapper {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.left-section {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+.right-actions {
+  display: flex;
+  align-items: center;
+}
+.back-btn {
+  color: #7b68ee !important;
+  background-color: white !important;
+  margin-left: 0px !important;
+  border: 1px solid #7b68ee !important;
+  margin-right: 10px;
+  margin-left: 10px !important;
+}
+.heading {
+  font-size: 15px;
+  margin-left: 6px;
+  color: #6e689b;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+.info-details {
+  // background: #eaf6ff;
+  // padding-left: 8px;
+  padding-right: 7px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  min-width: 200px;
+}
+.view-icon {
+  cursor: pointer;
+  color: #ddd5d5;
+  padding-right: 10px;
+}
+.view-icon:hover {
+  color: #7b68ee;
+}
+.status_badge span {
+  background: #eeeeee;
+  border-radius: 4px;
+  padding: 3px;
+  display: inline-block;
+  text-align: center;
+  min-width: 54px;
+
+  &.active {
+    background: #dcfef5 !important;
+    color: #00523ce0 !important;
+  }
+  &.pending {
+    background: #f2f2fd !important;
+    color: #6e689b !important;
+  }
+}
+@media (max-width: 600px) {
+  .page-wrapper {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+  .container {
+    width: 88% !important;
+    flex-direction: column;
+    padding-top: 10px;
+  }
+  .left-section {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .right-actions {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+  .back-btn {
+    margin-left: 0px !important;
+  }
+  .timesheets_wrapper .wrapper_header {
+    // padding: 36px 0px !important;
+    // padding-bottom: 55px !important;
+    padding: 58px 0px !important;
+    top: 62px !important;
+  }
+  .customer-container {
+    padding-bottom: 60px;
+    padding-top: 0px !important;
+  }
+}

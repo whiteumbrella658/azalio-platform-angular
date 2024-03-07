@@ -1,0 +1,234 @@
+<app-loader [loading]="loading"></app-loader>
+<app-sidebar class="comment-sidebar" [showSideBar]="showSideBar" (closeDetails)="closeDetails()">
+	  <app-gift-requests [regionId]="sharedRegion" [show]="showSideBar" (refreshData)="getData()"></app-gift-requests>
+  </app-sidebar>
+
+<div class="mat-elevation-z8 relative" *ngIf="dataSource && dataSource.data"
+	[ngClass]="{'azalio-play': isAzalioPlay, 'azal-site': !isAzalioPlay  && !isBoringPlay,'boring-toplay': !isAzalioPlay && isBoringPlay }">
+	<div class="flex pagination-wrapper" *ngIf="isAzalioPlay || isBoringPlay">
+		<!-- <span class="toggle_buttons mr_10">
+			<nb-button-group>
+				<button (click)="setTab('current_store')" nbButton value="current_store" [status]="selectedTab === 'current_store' ? 'primary' : ''"
+					size="medium">
+					Current store
+				</button>
+				<button (click)="setTab('all_store')" nbButton value="all_store" [status]="selectedTab === 'all_store' ? 'primary' : ''"
+				size="medium">
+				All stores
+			</button>
+			</nb-button-group>
+		</span> -->
+		<ng-container *ngIf="!isRewardsGateway">
+			<span *ngIf="resetDate && (isAzalioPlay || isBoringPlay)" class="flex left-elements txt-label">
+				Competition began on: 
+				<span class="date">
+					{{ resetDate | date: 'MMM d, y'}}
+				</span>
+			</span>
+		</ng-container>
+
+	
+
+		<span class="flex right-section" *ngIf="paginator">
+			<!-- <app-search-input *ngIf="paginator" style="margin-right: 10px;" [placeholder]="'Search by name or role'"
+				[showHelperButton]="showHelperButton" (searchEvent)="onSearch($event)" (click)="addSearchAnalytics()">
+			</app-search-input> -->
+			<!-- <span class="bkg-circle mr_10" (click)="downloadReport()"><i
+				class="fa fa-download" aria-hidden="true" nbTooltipAdjustment="noop"
+				nbTooltip="Download report"></i>
+			</span> -->
+			<!-- <div class="rewards_pagination">
+				<mat-paginator *ngIf="paginator" [length]="paginator.total_records" [pageIndex]="paginator.page_no - 1"
+					[pageSize]="paginator.page_size" [pageSizeOptions]="pageSizes" (page)="pageEvent = $event; getData()"
+					showFirstLastButtons>
+				</mat-paginator>
+			</div> -->
+			<span *ngIf="isAzalioPlay" (click)="openMessageModal()" class="bkg-circle mr_10"><i class="fa fa-envelope announcement" aria-hidden="true" nbTooltipAdjustment="noop"
+					nbTooltip="Announcement"></i>
+			</span>
+			<span *ngIf="!isRewardsGateway && permissions?.Rewards?.reset_points">
+				<app-confirm-popup [type]="'Reset'" [title]="'Points'" [textToDisplay]="resetText"
+					(proceedDelete)="resetPoints()">
+					<button
+						[nbTooltip]="selectedTab === 'current_store' ? 'Reset points for current store' : 'Reset points for all stores'"
+						class="back-btn desktop-btn" size="medium" type="button" nbButton status="primary">
+						<img src="assets/coin.png" style="margin-right:7px;"> Reset points</button>
+						<button
+						[nbTooltip]="selectedTab === 'current_store' ? 'Reset points for current store' : 'Reset points for all stores'"
+						class="back-btn resp-btn" size="medium" type="button" nbButton status="primary">
+						<img src="assets/coin.png" style="margin-right:7px;"></button>
+				</app-confirm-popup>
+
+			</span>
+			<span class="notification-btn" *ngIf="isRewardsGateway"
+			(click)="showSideBar=true; gs?.logEvents('viewed_rewardsRequests')">
+			<span class="btn-container">
+				<i class="fa-solid fa-bell bell" [ngClass]="isRewardsNoti ? 'Noti' : ' '"></i>
+				<i class="fa-solid fa-circle bubble-notification" *ngIf="isRewardsNoti"></i>
+			  <!-- <i class="fa-solid fa-bell bell"></i>
+			  <i *ngIf="isRewardsNoti" class="fa-solid fa-circle bubble"></i> -->
+			</span> Requests
+		  </span>
+		</span>
+
+	</div>
+	<div class="row-wrapper">
+		<!-- <span *ngIf="isAzalioPlay && resetDate" class="flex left-elements txt-label">
+			Competition began on: 
+			<span class="date">
+				{{ resetDate | date: 'MMM d, y'}}
+			</span>
+		</span> -->
+		<span class="toggle_buttons mr_10" *ngIf="isAzalioPlay || isBoringPlay">
+			<nb-button-group>
+				<button (click)="setTab('current_store')" nbButton value="current_store" [status]="selectedTab === 'current_store' ? 'primary' : ''"
+					size="medium">
+					Current store
+				</button>
+				<button (click)="setTab('all_store')" nbButton value="all_store" [status]="selectedTab === 'all_store' ? 'primary' : ''"
+				size="medium">
+				All stores
+			</button>
+			</nb-button-group>
+		</span>
+		<span class="flex right-elements"  *ngIf="paginator">
+			<span class="search-download">
+				<app-search-input style="margin-right: 10px;" [placeholder]="'Search by name or role'"
+				[showHelperButton]="showHelperButton" (searchEvent)="onSearch($event)" (click)="addSearchAnalytics()">
+			</app-search-input>
+			<span *ngIf="isAzalioPlay || isBoringPlay" class="bkg-circle mr_10" (click)="downloadReport()"><i class="fa fa-download"
+					aria-hidden="true" nbTooltipAdjustment="noop" nbTooltip="Download report"></i>
+			</span>
+			</span>
+			<div class="rewards_pagination">
+				<mat-paginator [length]="paginator.total_records" [pageIndex]="paginator.page_no - 1"
+					[pageSize]="paginator.page_size" [pageSizeOptions]="pageSizes"
+					(page)="pageEvent = $event; getData()" showFirstLastButtons>
+				</mat-paginator>
+			</div>
+		</span>
+	</div>
+	<div class="user-points-table">
+		<table mat-table [dataSource]="dataSource.data" class="rewards_table_resp">
+			<ng-container matColumnDef="name">
+				<th mat-header-cell *matHeaderCellDef style="width: 17%;">Name</th>
+				<td mat-cell *matCellDef="let element" style="width: 17%;" class="recognition_role">
+					<span class="resp-container">
+						<label class="show_in_resp">Name</label>
+						<app-user-avatar size="medium" [name]="element?.user_name | titlecase"
+							[title]="element.user_role" [color]="element.user_color + opacity"
+							[initialColor]="element.user_color" class="recog_page_name" nbTooltipPlacement="top"
+							[nbTooltip]="element.user_name">
+						</app-user-avatar>
+					</span>
+
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="store">
+				<th mat-header-cell *matHeaderCellDef style="width: 12%;">Store</th>
+				<td mat-cell *matCellDef="let element" style="width: 12%;" class="store-details">
+					<span class="resp-container">
+						<label class="show_in_resp">Store</label>
+						<span class="pointer store-name" *ngIf="element.stores?.length > 1"
+							[nbTooltip]="displayStores(element)">
+							{{element.stores?.length}} stores
+						</span>
+						<span class="store-name" *ngIf="element.stores?.length === 1">{{element.stores}}</span>
+					</span>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="rank">
+				<th mat-header-cell *matHeaderCellDef style="width: 12%;">Rank</th>
+				<td mat-cell *matCellDef="let element" style="width: 12%;">
+					<span class="resp-container">
+						<label class="show_in_resp">Rank</label>
+						<span class="points-column" *ngIf="element.rank">
+							<span class="rank highest-rank">
+								<img [src]="element.rank <= 3 ? 'assets/rank'+element.rank+'.png' : null"
+									style="margin-right:4px" [style.visibility]="element.rank > 3? 'hidden': 'visible'">
+								#{{element.rank}}
+							</span>
+						</span>
+					</span>
+
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="points">
+				<th mat-header-cell *matHeaderCellDef style="width: 12%;">Points</th>
+				<td mat-cell *matCellDef="let element" style="width: 12%;">
+					<span class="resp-container">
+						<label class="show_in_resp">Points</label>
+						<span class="points"><img src="assets/coin.png" style="margin-right:4px">
+							{{element.points}}</span>
+					</span>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="badges">
+				<th mat-header-cell *matHeaderCellDef style="width: 35%;">Badges 
+					<i class="fa fa-triangle-exclamation show-badges-warning" nbTooltip="To assign a new badge switch to current store tab." nbTooltipPlacement="top" nbTooltipStatus="info" status="info"></i></th>
+				<td mat-cell *matCellDef="let element" class="badges" style="width: 35%;">
+					<span class="resp-container">
+						<label class="show_in_resp">Badges</label>
+						<ng-container *ngFor="let badge of element.badges?.slice(0, maxNumberOfBadges);">
+							<span class="badge-images "
+								[nbTooltip]="'Awarded by ' + (badge?.awarded_by + ' (' + badge?.awarded_by_role + ')' | titlecase) + ' on ' + (badge.awarded_on | date: 'MMM d')">
+								<!-- <img [src]="(badge.image_url | imageAuth | async)"> -->
+								<app-user-avatar [picture]="badge?.image_url | imageAuth | async" size="medium"
+									[showInitials]="false" onlyPicture>
+								</app-user-avatar>
+							</span>
+						</ng-container>
+					</span>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="gifts">
+				<th mat-header-cell *matHeaderCellDef style="width: 35%;">Gift cards
+				<td mat-cell *matCellDef="let element" class="badges" style="width: 35%;">
+					<span class="resp-container">
+						<label class="show_in_resp">Gift cards</label>
+						<ng-container *ngFor="let badge of element.gifts?.slice(0, maxNumberOfBadges);">
+							<span class="badge-images "
+								[nbTooltip]="'$'+badge?.cost + ' Gift card worth ' + badge?.points_used+ ' points approved by ' + (badge?.approved_by + ' (' + badge?.approved_by_role + ')' | titlecase) + ' on ' + (badge.approved_on | date: 'MMM d')">
+								<!-- <img [src]="(badge.image_url | imageAuth | async)"> -->
+								<app-user-avatar [picture]="badge?.image_url | imageAuth | async" size="medium"
+									[showInitials]="false" onlyPicture>
+								</app-user-avatar>
+							</span>
+						</ng-container>
+					</span>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="action">
+				<th mat-header-cell *matHeaderCellDef style="width: 12%;text-align: center;">Action</th>
+				<td mat-cell *matCellDef="let element" class="status_badge" style="width: 12%; text-align: center">
+					<span class="resp-container">
+						<label class="show_in_resp">Award Badge</label>
+						<span class="actions">
+							<span nbTooltip="Award badge to {{element?.user_name | titlecase}}" class="trophy"
+								(click)="openRewardModal(element)">
+								<img src="assets/unfilled-trophy.png">
+							</span>
+						</span>
+					</span>
+				</td>
+			</ng-container>
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ disable_row: row.is_empty }"
+				class="showhim"></tr>
+		</table>
+	</div>
+
+
+	<app-no-records
+		[display]="sharedRegion == 0 && !singleRegion && ((!isAzalioPlay && !isBoringPlay) || ((isAzalioPlay || isBoringPlay) && selectedTab === 'current_store'))"
+		[isScheduler]="false" [animation]="'selectStoreForRecognition'" [animation2]="'arrowTop'"></app-no-records>
+	<app-no-records class="tasksanimation" [display]="emptyResults" [animation]="'organization'"
+		[animation2]="animation2" [textMessage]="'No active users.'"></app-no-records>
+	<app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+</div>

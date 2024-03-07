@@ -1,0 +1,16 @@
+<form [formGroup]="form">
+  <nb-select *ngIf="roles?.length > 0; else emptydrop" [placeholder]="placeholder" [formControlName]="controlName"
+    (selectedChange)="change($event)">
+    <nb-option [value]="null">{{placeholder}}</nb-option>
+    <nb-option *ngFor="let role of roles" [value]="role" [id]="role.role_id">
+      {{ role.role_title }}
+    </nb-option>
+  </nb-select>
+</form>
+
+<ng-template #emptydrop>
+  <form [formGroup]="form">
+    <nb-select disabled placeholder="No item to select" [formControlName]="controlName">
+
+    </nb-select>
+  </form>

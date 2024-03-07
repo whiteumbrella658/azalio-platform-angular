@@ -1,0 +1,25 @@
+.fa-times {
+  position: absolute;
+  right: 8px;
+  top: 17px;
+  font-size: 14px;
+  border-radius: 0;
+  // color: white;
+  color: #161616;
+  padding: 6px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+// .close{
+//     position: absolute;
+//     right: 5px;
+//     top: 6px;
+// }
+
+i.fa.fa-times:hover {
+  // background: #efefef;
+  // background: #d1caff;
+    border-radius: 50px;
+    height: 23px;
+    padding-top: 6px;
+}

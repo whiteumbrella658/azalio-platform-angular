@@ -1,0 +1,35 @@
+.chat_container {
+  //height: 100%;
+}
+//
+//::ng-deep nb-layout-column {
+//  justify-content: center;
+//  display: flex;
+//}
+//nb-chat {
+//  width: 500px;
+//  margin: 0.5rem 0 2rem 2rem;
+//}
+.view_chat_body {
+  nb-chat {
+    box-shadow: none !important;
+  }
+}
+.msg-content {
+  position: relative;
+}
+.msg-seen {
+  position: absolute;
+  top: 44px;
+}
+
+// .msg-content::after {
+//   font-weight: 300;
+//   color: #adadad;
+//   font-size: 11px;
+//   content: "Seen 11:19 PM";
+//   position: absolute;
+//   margin-top: 64px;
+//   margin-right: 8px;
+// }
+

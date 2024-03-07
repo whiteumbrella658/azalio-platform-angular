@@ -1,0 +1,304 @@
+<app-loader [loading]="loading"></app-loader>
+<nb-card [nbSpinner]="loadingSpinner" class="for_spinner" style="height: 100vh;top:-25px;">
+  <div class="work-shifts-wrapper">
+    <form #ngForm="ngForm" id="form" [formGroup]="WorkShiftsForm" (ngSubmit)="submit(ngForm)">
+      <div class="work-shifts-header">
+        <span class="title">
+          <span style="color: #6e689b;">
+            Rules
+          </span>
+
+          <!-- Work Shifts -->
+          <span class="sub-title">
+            Use this section to add rules for your organization.
+          </span>
+        </span>
+        <span class="work-shifts-btns">
+          <button size="medium" type="submit" nbButton status="primary" [disabled]="disable">Save</button>
+        </span>
+      </div>
+
+
+      <div class="two-sections">
+
+        <div class="container left-section" *ngIf="showInput" style="background: none;">
+          <span class="parent-container">
+            <span class="first-container ts"><i class="fas fa-clock timesheet"></i> Timesheet</span>
+            <span class="fields-container">
+              <div class="mb-12 field-alignment">
+                <label class="label-text"> Max daily hours
+                  <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                    alt="picture configuration information" nbTooltipPlacement="right"
+                    nbTooltip="If daily clocked in hours of an employee exceed this limit, the timesheet entries for that day will be flagged." />
+                </label>
+                <app-text-input [placeholder]="'Enter max daily hours'" [controlName]="'max_daily_hours'"
+                  [form]="WorkShiftsForm">
+                </app-text-input>
+                <app-error-message [key]="'max_daily_hours'" [form]="WorkShiftsForm" [isSubmitted]="ngForm.submitted"
+                  class="error-input">
+                </app-error-message>
+              </div>
+              <div class="mb-12 field-alignment">
+                <label class="label-text"> Max weekly hours
+
+                  <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                    alt="picture configuration information" nbTooltipPlacement="right"
+                    nbTooltip="If weekly clocked in hours of an employee exceed this limit, the timesheet entries for that week will be flagged." />
+                </label>
+                <app-text-input [placeholder]="'Enter max weekly hours'" [controlName]="'max_weekly_hours'"
+                  [form]="WorkShiftsForm">
+                </app-text-input>
+                <app-error-message [key]="'max_weekly_hours'" [form]="WorkShiftsForm" [isSubmitted]="ngForm.submitted"
+                  class="error-input">
+                </app-error-message>
+              </div>
+              <!-- TODO: fix these two input fields (dummy fields) -->
+              <div class="mt-15 mb-12" style="display: none;">
+                <label class="label-text"> Buffer time before clock in (mins)
+
+                  <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                    alt="picture configuration information" nbTooltipPlacement="right"
+                    nbTooltip="If weekly clocked in hours of an employee exceed this limit, the timesheet entries for that week will be flagged." />
+                </label>
+                <app-text-input [placeholder]="'Enter max weekly hours'" [controlName]="'max_weekly_hours'"
+                  [form]="WorkShiftsForm">
+                </app-text-input>
+                <app-error-message [key]="'max_weekly_hours'" [form]="WorkShiftsForm" [isSubmitted]="ngForm.submitted"
+                  class="error-input">
+                </app-error-message>
+              </div>
+              <div class="mt-15 mb-25" style="display: none;">
+                <label class="label-text"> Buffer time after clock out (mins)
+
+                  <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                    alt="picture configuration information" nbTooltipPlacement="right"
+                    nbTooltip="If weekly clocked in hours of an employee exceed this limit, the timesheet entries for that week will be flagged." />
+                </label>
+                <app-text-input [placeholder]="'Enter max weekly hours'" [controlName]="'max_weekly_hours'"
+                  [form]="WorkShiftsForm">
+                </app-text-input>
+                <app-error-message [key]="'max_weekly_hours'" [form]="WorkShiftsForm" [isSubmitted]="ngForm.submitted"
+                  class="error-input">
+                </app-error-message>
+              </div>
+            </span>
+          </span>
+          <span class="parent-container organization-element">
+            <span class="first-container org"><i class="fas fa-users organization" *ngIf="showInput"></i>
+              Organization</span>
+            <span class="fields-container">
+              <div class="mb-25 field-alignment">
+                <label class="label-text"> User labels
+                  <img src="assets/info-icon.svg" class="label-info-icon" alt="Info icon" nbTooltipPlacement="right"
+                    nbTooltip="Add labels here that can be assigned to users in stores. This will allow your web users to easily filter users in different modules." />
+                </label>
+                <span *ngIf="labelTypes?.length > 0" class="disclaimer-msg">**Deleting a tag will permanently remove the
+                  tag across all stores.</span>
+                <ng-template #templateRefAssign>
+                  <nb-card class="popover-card" *ngIf="showColorPopup">
+                    <nb-card-body>
+                      <label class="label-txt"> <i class="fa-solid fa-user-tag"></i>Pick a user label color</label>
+                      <div class="picker-wrapper">
+                        <!-- <span class="colors">
+                        <i class="fa fa-circle color-label color-selected" aria-hidden="true"></i>
+                       </span>  -->
+                        <span class="colors" *ngFor="let color of userTagColors; let i = index;">
+                          <i class="fa fa-circle color-label " [ngClass]="{'color-selected': color === selectedColor}"
+                            aria-hidden="true" [style.color]="color" (click)="selectColor(i)"></i>
+                        </span>
+
+                      </div>
+                    </nb-card-body>
+                  </nb-card>
+                </ng-template>
+                <div id="userWrapper" class="leaves-wrapper organization-rules">
+                  <span *ngIf="labelTypes?.length == 0">No labels.</span>
+                  <ng-container *ngFor="let labelType of labelTypes.controls; let i = index">
+                    <span class="leave-type">
+                      <div class="small-devices-container" [ngClass]="{'display': gs?.touchEnabledDevices}"
+                        (click)="selectRow(labelType)" [nbPopover]="templateRefAssign" nbPopoverTrigger="click"
+                        nbPopoverPlacement="right" nbPopoverAdjustment="noop" id="divPopup">
+                        <i class="fa-solid fa-circle" [style.color]="labelType.value.color"></i>
+                      </div>
+                      <app-text-input class="leave-input" [placeholder]="'Enter user label'" [controlName]="'tag'"
+                        [fieldSize]="'small'" [form]="labelType">
+                      </app-text-input>
+                      <i class="fa fa-times-circle delete-leave" (click)="removeLabel(i)" nbTooltipPlacement="top"
+                        nbTooltip="Delete label and all usage of this label"></i>
+                      <app-error-message [key]="'tag'" [form]="labelType" [isSubmitted]="ngForm.submitted"
+                        class="error-input">
+                      </app-error-message>
+                    </span>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="add-leave field-alignment" (click)="addLabel()" *ngIf="labelTypes?.length < 10">
+                <i class="fa fa-plus" aria-hidden="true" style="margin-right: 4px;"></i> Add {{labelTypes?.length > 0 ?
+                ' another ' : ' '}} label
+              </div>
+            </span>
+          </span>
+        </div>
+        <div class="container left-section"  *ngIf="showInput">
+
+          <span class="first-container tasks"><i class="fas fa-tasks" style="color:#2ead7f"></i> Tasks</span>
+          <span class="fields-container">
+            <div class="mt-15 mb-25 task-container">
+              <label class="label-text"> Tasks tags
+                <img src="assets/info-icon.svg" class="label-info-icon" alt="Info icon" nbTooltipPlacement="right"
+                  nbTooltip="Add tags here that can be assigned to tasks in stores. This will allow your web and mobile users to easily filter tasks." />
+              </label>
+              <span *ngIf="labelTypes?.length > 0" class="disclaimer-msg">**Deleting a tag will permanently remove the
+                tag across all stores.</span>
+              <ng-template #templateRefAssign>
+                <nb-card class="popover-card" *ngIf="showColorPopup">
+                  <nb-card-body>
+                    <label class="label-txt"> <i class="fa-solid fa-user-tag"></i>Pick a task label color</label>
+                    <div class="picker-wrapper">
+                      <span class="colors" *ngFor="let color of taskTagColors; let i = index;">
+                        <i class="fa fa-circle color-label " [ngClass]="{'color-selected': color === selectedColor}"
+                          aria-hidden="true" [style.color]="color" (click)="selectColor(i, true)"></i>
+                      </span>
+                    </div>
+                  </nb-card-body>
+                </nb-card>
+              </ng-template>
+              <div id="tagsWrapper" class="leaves-wrapper organization-rules">
+                <span *ngIf="taskTags?.length == 0">No tags.</span>
+                <ng-container *ngFor="let labelType of taskTags.controls; let i = index">
+                  <span class="leave-type">
+                    <div class="small-devices-container" [ngClass]="{'display': gs?.touchEnabledDevices}"
+                      (click)="selectRow(labelType)" [nbPopover]="templateRefAssign" nbPopoverTrigger="click"
+                      nbPopoverPlacement="right" nbPopoverAdjustment="noop" id="divPopup">
+                      <i class="fa-solid fa-circle" [style.color]="labelType.value.color"></i>
+                    </div>
+                    <app-text-input class="leave-input" [placeholder]="'Enter tasks label'" [controlName]="'tag'"
+                      [fieldSize]="'small'" [form]="labelType">
+                    </app-text-input>
+                    <i class="fa fa-times-circle delete-leave" (click)="removeTag(i)" nbTooltipPlacement="top"
+                      nbTooltip="Delete label and all usage of this label"></i>
+                    <app-error-message [key]="'tag'" [form]="labelType" [isSubmitted]="ngForm.submitted"
+                      class="error-input">
+                    </app-error-message>
+                  </span>
+                </ng-container>
+              </div>
+            </div>
+            <div class="add-leave" *ngIf="taskTags?.length < 30" (click)="addTag()">
+              <i class="fa fa-plus" aria-hidden="true" style="margin-right: 4px;"></i> Add {{taskTags?.length > 0 ? '
+              another ' : ' '}} task label
+            </div>
+          </span>
+        </div>
+        <div class="container" *ngIf="showInput">
+          <span class="first-container sch"><i class="fas fa-calendar-alt scheduler"></i> Scheduler</span>
+          <span class="fields-container">
+            <div class="mt-15 mb-25">
+              <label class="label-text"> First day of the week <span class="mandatory">*</span>
+                <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                  alt="picture configuration information" nbTooltipPlacement="right"
+                  nbTooltip="Specify the first day of the week, based on which weekly hours will be calculated." />
+              </label>
+              <!-- <span class="sub-title">Specify the first day of the week, based on which weekly hours will be calculated.
+                </span> -->
+              <app-dropdown [Data]="weekDaysData" [placeholder]="'Select first day of the week'"
+                [controlName]="'week_start_day'" [form]="WorkShiftsForm" [show]="true">
+              </app-dropdown>
+              <app-error-message [key]="'week_start_day'" [form]="WorkShiftsForm" [isSubmitted]="ngForm.submitted"
+                class="error-input">
+              </app-error-message>
+            </div>
+            <!-- <div class="mt-15 mb-25" style="display: none;">
+                <label class="label-text"> Exception Criteria <span class="mandatory">*</span>
+                  <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                    alt="picture configuration information" nbTooltipPlacement="right"
+                    nbTooltip="Specify the exception criteria for graveyard." />
+                </label>
+                <app-dropdown [Data]="exceptionOptions" [placeholder]="'Select option'"
+                  [controlName]="'graveyard_exception'" [form]="WorkShiftsForm" [show]="true">
+                </app-dropdown>
+                <app-error-message [key]="'graveyard_exception'" [form]="WorkShiftsForm" [isSubmitted]="ngForm.submitted"
+                  class="error-input">
+                </app-error-message>
+              </div> -->
+
+            <div class="mt-15 mb-25">
+              <label class="label-text"> Leave Type
+                <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                  alt="picture configuration information" nbTooltipPlacement="right"
+                  nbTooltip="Add / remove leave types based on your organization." />
+              </label>
+              <div id="leavesWrapper" class="leaves-wrapper leaves-scroll">
+                <ng-container *ngFor="let leaveType of leaveTypes.controls; let j = index">
+                  <span class="leave-type">
+                    <app-text-input class="leave-input" [placeholder]="'Enter leave type'" [controlName]="'type'"
+                      [fieldSize]="'small'" [form]="leaveType">
+                    </app-text-input>
+                    <i *ngIf="leaveTypes.length > 1" class="fa fa-times-circle delete-leave" (click)="removeLeave(j)"
+                      nbTooltipPlacement="top" nbTooltip="Delete leave type."></i>
+                    <app-error-message [key]="'type'" [form]="leaveType" [isSubmitted]="ngForm.submitted"
+                      class="error-input">
+                    </app-error-message>
+                  </span>
+                </ng-container>
+              </div>
+            </div>
+            <div class="add-leave" (click)="addLeave()">
+              <i class="fa fa-plus" aria-hidden="true" style="margin-right: 4px;"></i> Add another leave type
+            </div>
+          </span>
+
+        </div>
+      </div>
+
+
+      <div class="work-shifts-details" *ngIf="showInput" style="display: none;">
+        <!-- <form #ngForm="ngForm" id="form" [formGroup]="WorkShiftsForm" (ngSubmit)="submit(ngForm)"> -->
+        <div class="flex space_between vertical_center work-shift-item mb-20 mt-20 relative">
+          <div class="work-shift-input" style="padding-right: 25px;">
+            <label class="label-text"> First day of the week <span class="mandatory"
+                style="font-size: 13px;">*</span></label>
+            <span class="sub-title">Specify the first day of the week, based on which weekly hours will be calculated.
+            </span>
+            <app-dropdown [Data]="weekDaysData" [placeholder]="'Select first day of the week'"
+              [controlName]="'week_start_day'" [form]="WorkShiftsForm" [show]="true">
+            </app-dropdown>
+            <app-error-message [key]="'week_start_day'" [form]="WorkShiftsForm" [isSubmitted]="ngForm.submitted"
+              class="error-input">
+            </app-error-message>
+          </div>
+        </div>
+        <div class="flex space_between vertical_center work-shift-item mb-20 mt-20 relative">
+          <div class="work-shift-input" style="padding-right: 25px">
+            <label class="label-text"> Max daily hours
+              <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                alt="picture configuration information" nbTooltipPlacement="right"
+                nbTooltip="If daily clocked in hours of an employee exceed this limit, the timesheet entries for that day will be flagged." />
+            </label>
+            <app-text-input [placeholder]="'Enter max daily hours'" [controlName]="'max_daily_hours'"
+              [form]="WorkShiftsForm">
+            </app-text-input>
+            <app-error-message [key]="'max_daily_hours'" [form]="WorkShiftsForm" [isSubmitted]="ngForm.submitted"
+              class="error-input">
+            </app-error-message>
+          </div>
+          <div class="work-shift-input">
+            <label class="label-text"> Max weekly hours
+
+              <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                alt="picture configuration information" nbTooltipPlacement="right"
+                nbTooltip="If weekly clocked in hours of an employee exceed this limit, the timesheet entries for that week will be flagged." />
+            </label>
+            <app-text-input [placeholder]="'Enter max weekly hours'" [controlName]="'max_weekly_hours'"
+              [form]="WorkShiftsForm">
+            </app-text-input>
+            <app-error-message [key]="'max_weekly_hours'" [form]="WorkShiftsForm" [isSubmitted]="ngForm.submitted"
+              class="error-input">
+            </app-error-message>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</nb-card>

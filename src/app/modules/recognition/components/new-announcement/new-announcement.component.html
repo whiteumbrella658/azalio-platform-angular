@@ -1,0 +1,66 @@
+<div class="modal_wrapper new-reward">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <span>
+                <label class="title" style="text-align: center;">Send message to AzalioPlay</label>
+            </span>
+        </nb-card-header>
+
+        <nb-card-body [nbSpinner]="loading">
+            <ng-container *ngIf="form">
+                <form #ngForm="ngForm" id="form" [formGroup]="form" class="reward-form" (ngSubmit)="submit(ngForm)">
+                    <div class="body" [ngClass]="{'no-announcement': !lastAnnouncement}">
+                        <app-no-records [display]="true" [animation]="'announcement'" class="new-announcement"
+                            [textMessage]="''"></app-no-records>
+                        <div class="details">
+                            <div class="send-to">
+                                Send message to:
+                                <nb-radio-group class="send-option" [(ngModel)]="isAllStores" [ngModelOptions]="{standalone: true}" [disabled]="selectedRegion == null">
+                                    <nb-radio value="1" class="option-txt">All stores</nb-radio>
+                                    <nb-radio value="0" class="option-txt">Current store</nb-radio>
+                                </nb-radio-group>
+                            </div>
+                            <div>
+                                <textarea maxlength="255" aria-label="description input" nbInput fullWidth
+                                    name="message" formControlName="message"
+                                    placeholder="Use this space to send a message to announce an award or to entice your team. This message will appear on the AzalioPlay app for all users."></textarea>
+                                <app-error-message [key]="'message'" [form]="form" [isSubmitted]="ngForm.submitted">
+                                </app-error-message>
+                            </div>
+
+                            <div class="note" *ngIf="lastAnnouncement">
+                                <div style="font-size: 13px;">
+                                    <span class="label-announcement">Last announcement sent:</span>
+                                    {{lastAnnouncement.announcement}}
+                                </div>
+                                <div class="sent-details">
+                                    <span>
+                                        <span class="label-announcement">By:</span> {{lastAnnouncement.created_by}} on
+                                        {{lastAnnouncement.created_on | date}} to <i class="fas fa-store"></i> 
+                                        {{regionId ? (lastAnnouncement.store ? lastAnnouncement.store : 'Current store') : 'All stores'}}
+                                    </span>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="footer-row">
+                        <div class="footer-reward">
+                            <app-button (onClick)="close(null)" class="cancel-announcement">Cancel</app-button>
+                            <app-submit-button [form]="form" [label]="'Send'" class="send">
+                            </app-submit-button>
+                        </div>
+                    </div>
+                    <!-- <div class="footer-row">
+                        <div class="footer-reward">
+                            <app-button (onClick)="close()" class="cancel-announcement">Cancel</app-button>
+                            <app-submit-button [form]="form" [label]="'Send'" class="send">
+                            </app-submit-button>
+                        </div>
+                    </div> -->
+                </form>
+            </ng-container>
+        </nb-card-body>
+    </nb-card>
+
+</div>

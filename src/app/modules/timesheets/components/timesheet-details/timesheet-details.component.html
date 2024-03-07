@@ -1,0 +1,192 @@
+<app-loader [loading]="loading" class="for_spinner"></app-loader>
+<!-- <nb-card [nbSpinner]="loading" class="for_spinner"> -->
+<div class="timesheet_details_header" *ngIf="data && selectedData">
+  <div class="ts-header">
+    <span class="user-details">
+      <app-user-avatar id="timesheetDetailsAvatar" size="large" [name]="selectedData.user_name"
+        [title]="selectedData.role_title" [color]="'white'" [initialColor]="(selectedData.user_color)"
+        nbTooltipPlacement="top" [nbTooltip]="selectedData.user_name">
+      </app-user-avatar>
+    </span>
+
+  </div>
+
+</div>
+<div class="ts-deatils_body" *ngIf="!loading && data">
+
+  <div class="sticky-header">
+    <span class="add" *ngIf="visibleAddButton && selectedData && isOwnAddEdit()">
+      <button size="medium" type="submit" nbButton status="primary" (click)="add()">Add</button>
+    </span>
+    <div class="ts-details-row">
+      <span class="ts_header_details_right">
+
+        <div class="leftside" *ngIf="data && selectedData">
+          <span class="container">
+
+            <span class="productivity-heading left-container"><img src="../../../../../assets/store.svg"></span>
+            <span class="details">{{selectedData.region_title}}</span>
+          </span>
+
+
+          <span class="container">
+            <span class="productivity-heading left-container"><i class="fas fa-calendar-alt"
+                style="font-size: 16.5px;margin-left: 2px;color: #b3aced;"></i></span>
+            <span class="details"> {{selectedData?.date | date: mediumDate}} <span> {{
+                timezone }}</span></span>
+          </span>
+
+        </div>
+
+        <div>
+          <span class="container">
+
+            <span class="productivity-heading">Logged Hours</span>
+            <span class="details">{{ data.work_hour_format | time}}</span>
+          </span>
+
+
+          <span class="container">
+            <span class="productivity-heading">Break Hours</span>
+            <span class="details">{{ data.break_hour_format | time}}</span>
+          </span>
+
+          <span class="container">
+            <span class="productivity-heading">Actual Hours</span>
+            <span class="details">{{ data.total_hour_format | time}}</span>
+          </span>
+        </div>
+      </span>
+    </div>
+  </div>
+
+  <table class="details_accord" 
+  style="margin-top: 10px; border-collapse: collapse;">
+    <thead  [ngClass]="{'NoEdit': !isOwnAddEdit()}">
+      <tr style="background: none;
+       vertical-align: middle;height: 30px; border-bottom: 8px solid #f9f7ff;">
+        <th style="color:#6e689b;">
+          Clock In
+        </th>
+        <th style="color:#6e689b;">
+          Clock Out
+        </th>
+        <th>
+
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let entry of data?.jobTaskDetails[0]?.timesheet">
+
+        <td *ngIf="entry" class="showhim " style="vertical-align: top;">
+          <ng-container *ngIf="isLocationEnabled && entry.start_location">
+            <!-- <app-text-popup [text]="entry.start_location_address ? entry.start_location_address : 'Loading...'">  -->
+            <div [ngClass]="{'out_schedule': entry.start_time_flag}">
+              <app-user-avatar size="large" [name]="entry.start_time_format_time"
+                [title]="entry.start_location_address ? entry.start_location_address : 'Loading...'"
+                [picture]="entry.start_photo | imageAuth | async" shape="semi-round" [showInitials]="false"
+                [nbTooltip]="entry.start_location_address  ? ((entry.is_outof_radius_start)?'Out of geo-fence.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Location: '+ entry.start_location_address: entry.start_location_address ): 'Loading...'"
+                nbTooltipPlacement="left">
+                <span *ngIf="entry.is_outof_radius_start">
+                  <i class="fas fa-map-marker-alt outof-fence"></i>
+                </span>
+              </app-user-avatar>
+            </div>
+            <!-- </app-text-popup> -->
+          </ng-container>
+          <ng-container *ngIf="!isLocationEnabled || !entry.start_location">
+            <div
+              [ngClass]="{'out_schedule': entry.start_time_flag, 'no_location': isLocationEnabled && !entry.start_location, 'location_false': !isLocationEnabled || !entry.start_location }">
+              <app-user-avatar size="large" [name]="entry.start_time_format_time"
+                [title]="isLocationEnabled ? 'No location' : ''" [picture]="entry.start_photo | imageAuth | async"
+                shape="semi-round" [showInitials]="false" [outsideRadiusStart]="entry.is_outside_radius || true">
+              </app-user-avatar>
+            </div>
+
+          </ng-container>
+          <span *ngIf="entry.start_time_flag" [class]="isLocationEnabled ? 'flag_loc_enabled' : 'flag_loc_unenabled'"><i
+              class="fa fa-flag" [nbTooltip]="'Out of schedule'"></i></span>
+
+          <!-- <span *ngIf="entry.is_outside_radius ||true">
+              <img src="../../../../../assets/geofence-flag.svg" nbTooltipAdjustment="noop"
+                [nbTooltip]="'ClockIn Outside Fence '">
+            </span> -->
+
+          <!-- <app-text-popup [text]="entry.start_note" [textLabel]="'Note: '" [image]="entry.start_note_photo"
+              *ngIf="entry.start_note || entry.start_note_photo"><span class="note_text">{{entry.start_note ?
+                entry.start_note : 'Image attached'}}</span></app-text-popup> -->
+          <app-text-popup [image]="entry.start_photo" *ngIf="entry.start_photo" [textLabel]="'details'">
+            <span *ngIf="!entry.start_photo?.includes('id=null')"><i class="fa fa-search-plus showme"
+                aria-hidden="true"></i>
+            </span>
+          </app-text-popup>
+        </td>
+        <td class="showhim" style="vertical-align: top;">
+          <ng-container *ngIf="isLocationEnabled && entry && entry.end_location">
+            <!-- <app-text-popup [text]="entry.end_location_address ? entry.end_location_address  : 'Loading...'">  -->
+            <div [ngClass]="{'out_schedule': entry.end_time_flag, 'clockout-placeholder': entry.end_time === null}">
+              <app-user-avatar size="large"
+                [name]="entry.end_time_format_time ?  entry.end_time_format_time : '-- : --' "
+                [title]="entry.end_location_address ? entry.end_location_address  : 'Loading...'"
+                [picture]="entry.end_photo | imageAuth | async" shape="semi-round" [showInitials]="false"
+                [nbTooltip]="entry.end_location_address  ? ((entry.is_outof_radius_end)?'Out of geo-fence.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Location: '+ entry.end_location_address: entry.end_location_address ): 'Loading...'"
+                nbTooltipPlacement="left">
+                <span *ngIf="entry.is_outof_radius_end">
+                  <i class="fas fa-map-marker-alt outof-fence"></i>
+                </span>
+              </app-user-avatar>
+            </div>
+            <!-- </app-text-popup> -->
+          </ng-container>
+          <ng-container *ngIf="!isLocationEnabled || (entry && !entry.end_location)">
+            <div
+              [ngClass]="{'out_schedule': entry.end_time_flag, 'clockout-placeholder': entry.end_time === null, 'no_location': isLocationEnabled && !entry?.end_location, 'location_false': !isLocationEnabled || !entry.end_location}">
+              <app-user-avatar size="large"
+                [name]="entry.end_time_format_time ?  entry.end_time_format_time : '-- : --' "
+                [title]="isLocationEnabled ? 'No location' : ''" [picture]="entry?.end_photo | imageAuth | async"
+                shape="semi-round" [showInitials]="false" [outsideRadiusEnd]="entry.is_outside_radius || true">
+              </app-user-avatar>
+            </div>
+          </ng-container>
+          <!-- <span *ngIf="entry.end_time === null" class="clockout-placeholder" >-- : --</span>  -->
+          <span *ngIf="entry.end_time_flag" [class]="isLocationEnabled ? 'flag_loc_enabled' : 'flag_loc_unenabled'"
+            style=""><i class="fa fa-flag" [nbTooltip]="'Out of schedule'"></i></span>
+          <span *ngIf="entry.isThirdShift || entry.is_third_shift">
+            <img [class]="isLocationEnabled ? 'graveyard' : 'graveyard-loc-disabled'"
+              src="../../../../../assets/graveyard.svg" nbTooltipAdjustment="noop"
+              [nbTooltip]="'Graveyard shift ' + entry.end_time_format_date + ' ' + entry.end_time_format_time">
+            <!-- <i class="fa fa-info-circle"></i> -->
+
+          </span>
+
+          <!-- <app-text-popup [text]="entry.end_note" [textLabel]="'Note: '" [image]="entry.end_note_photo"
+              *ngIf="entry.end_note || entry.end_note_photo"><span class="note_text">{{entry.end_note ?
+                entry.end_note : 'Image attached'}}</span></app-text-popup> -->
+          <app-text-popup [image]="entry.end_photo" *ngIf="entry.end_photo" [textLabel]="'details'">
+            <span *ngIf="!entry.end_photo?.includes('id=null')"><i class="fa fa-search-plus showme"
+                aria-hidden="true"></i>
+            </span>
+          </app-text-popup>
+        </td>
+        <td class="text-right" style="width: 100px; text-align: center;" >
+          <span style="display: inline-flex;">
+            <i *ngIf="isOwnAddEdit()" (click)="edit({entry: entry, store_timezone: data.time_zone})" class="fas fa-pen pointer edit-task" nbTooltip="Edit timesheet"
+              style=""></i>
+            <app-confirm-popup [title]="'Timesheet Entry'"
+              [textToDisplay]="'You\'re about to <b>permanently delete</b> this entry. Are you sure?'"
+              (proceedDelete)="delete(entry.timesheet_id)">
+              <i class="fas fa-trash pointer  delete-task" nbTooltip="Delete timesheet"
+                (proceedDelete)="delete(entry.timesheet_id)"></i>
+            </app-confirm-popup>
+          </span>
+
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>

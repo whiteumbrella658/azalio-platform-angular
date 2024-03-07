@@ -1,0 +1,369 @@
+.roles-wrapper {
+  // margin: auto;
+  // width: 95%;
+  // padding: 10px;
+  // margin: 0 auto;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 12px;
+  padding-right: 20px;
+  padding-left: 20px;
+  overflow: auto;
+  // max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 25px);
+  margin: 0 auto;
+
+  .roles-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 20px;
+    margin-bottom: 10px;
+    position: sticky;
+    top: 0px;
+    background: #f9faff;
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 10px 0px 10px 0px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sub-title {
+      color: #6e698b;
+      font-size: 13px;
+      font-weight: 500;
+      padding-top: 16px;
+      text-align: justify;
+      margin: 0px -60px 0px 0px;
+      line-height: 1.4;
+    }
+
+    .roles-btns {
+
+      // margin: 10px 0px 10px 0px;
+      // margin: 18px 0px 10px 20px;
+      .unsaved-changes {
+        margin-right: 10px;
+        font-weight: 600;
+        color: #6e698b;
+      }
+    }
+  }
+
+  .roles-details {
+    background: white;
+    margin: auto;
+    // padding: 25px;
+    border-radius: 5px;
+    border: 1px solid #efefef;
+    box-shadow: rgb(110 105 139 / 10%) 1px 0px 2px 2px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.add-role {
+  display: flex;
+  justify-content: flex-start;
+  color: #715aed;
+  margin-left: 5px;
+  margin-top: 10px;
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.permissions-granted {
+  font-size: 17px;
+  // color: #71c341;
+  color: #22be90;
+  // border-radius: 10px;
+  // background-color: #22be90;
+  cursor: pointer;
+}
+
+.permissions-revoked {
+  font-size: 17px;
+  color: #cccccc;
+  cursor: pointer;
+}
+
+.edit-role {
+  border-right: 0.2px solid #efefef;
+  cursor: pointer;
+  padding-right: 1rem;
+}
+
+@media (max-width: 500px) {
+  .roles-wrapper {
+    padding-right: 20px;
+    padding-left: 20px;
+
+    .roles-header {
+      // flex-direction: column;
+    }
+  }
+}
+
+.table-height {
+  min-height: fit-content;
+  max-height: 49vh;
+  overflow: auto;
+  padding-bottom: 10px;
+}
+
+.first-row {
+  background-color: #f9f7ff;
+
+  .permissions-granted {
+    cursor: auto;
+  }
+}
+
+.edit-row {
+  background-color: #ebe5ff;
+  // border-bottom: 1px solid #6e698b !important;
+  //   border-top: 1px solid #6e698b !important;
+}
+
+.checkbox {
+  // background: #2f8cab;
+  //display: inline-block;
+  border-radius: 2px;
+  position: relative;
+  // cursor: auto;
+  cursor: pointer;
+  // margin-left: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.ckeckbox-element {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  // z-index: 99999;
+  opacity: 0;
+  cursor: pointer;
+}
+
+input[type='checkbox']+i {
+  color: #cccccc;
+}
+
+input[type='checkbox']:checked+i {
+  // color: #22be90;
+  color: #22be90;
+  // border-radius: 10px;
+  // background-color: #22be90;
+}
+
+.invalid {
+  color: red;
+  margin-left: 39px;
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.info-heading-icon {
+  margin-left: 0px;
+  font-size: 14px;
+  color: #b9a9fd !important;
+}
+
+.heading-info-icon {
+  vertical-align: bottom;
+  width: 17px;
+}
+
+.revoked-access {
+  position: absolute;
+  // top: -5px;
+  // right: -1px;
+  top: 0px;
+  right: 3px;
+}
+
+@media (max-width: 930px) {
+  .invalid {
+    margin-left: 0px;
+  }
+
+  .add-role {
+    margin-top: 0px;
+  }
+}
+
+@media (max-width: 680px) {
+  .table-height {
+    height: 43vh;
+    padding-bottom: 20px;
+  }
+
+  // .add-role {
+  //   margin-top: -18px;
+  // }
+}
+
+.user-count {
+  color: #7a7a7a;
+  font-size: 12px;
+  font-weight: 600;
+  background: #eae7ff;
+  border: 5px;
+  border-radius: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 2px;
+  padding-bottom: 1px;
+}
+
+@supports selector(:nth-child(1 of x)) {
+  .roles-wrapper {
+
+    // overflow: hidden;
+    .table-height {
+      overflow: auto;
+      max-height: 50vh;
+      min-height: fit-content;
+      display: block;
+    }
+  }
+}
+
+@media(max-height:560px) {
+  @supports selector(:nth-child(1 of x)) {
+    .roles-wrapper {
+
+      // overflow: hidden;
+      .table-height {
+        overflow: auto;
+        max-height: 40vh;
+        min-height: fit-content;
+        display: block;
+      }
+    }
+  }
+
+  .roles-wrapper .roles-header {
+    background: #f9faff;
+    z-index: 1;
+  }
+
+  .roles-wrapper .roles-details {
+    box-shadow: none;
+  }
+
+  .roles-wrapper {
+    max-height: calc(100vh - 75px);
+    padding-bottom: 50px;
+  }
+}
+
+.roles-header-container {
+  display: flex;
+  justify-content: center;
+}
+
+.title-col {
+  display: flex;
+  width: 22%;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.web-access {
+  width: 88%;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  display: flex;
+  font-size: 15px;
+  padding: 5px;
+  color: white;
+  background-color: #7b68ee;
+  font-weight: 600;
+  border-top-left-radius: 5px;
+}
+
+.mobile-roles-play {
+  border-top-right-radius: 0px !important;
+}
+
+.mobile-roles {
+  width: 12.7%;
+  background: #6e689b;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-right-radius: 5px;
+}
+
+.azalio-play-roles {
+  width: 12.7%;
+  // background: #160647;
+  background: #52306f;
+  // background: #1b4098;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-right-radius: 5px;
+}
+
+.role_title_cell {
+  //dynamicClass
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Mobile_cell,
+.AzalioPlayAdmin_cell {
+  //dynamicClass
+  position: relative;
+}
+
+.delete_icon i {
+  font-size: 13px;
+  color: #ff3d71;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.triangle_info {
+  font-size: 13px;
+  color: #ff9800;
+  cursor: pointer;
+}
+
+.delete_icon {
+  position: absolute;
+  top: -5px;
+  right: 3px;
+  z-index: 1000;
+}
+
+@media (max-width: 930px) {
+  .web-access {
+    display: none;
+  }
+
+  .mobile-roles {
+    display: none;
+  }
+}

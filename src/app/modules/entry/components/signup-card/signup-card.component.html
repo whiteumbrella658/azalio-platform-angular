@@ -1,0 +1,31 @@
+<div class="modal_wrapper signup-options">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <span class="label-heading"><img src="assets/logo-azalio.svg">Let's make Sign Up easier.</span>
+            <span class="sub-heading">How will you be using Azalio?</span>
+            <i (click)="onClose()" class="fa-solid fa-xmark close"></i>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="parent-container">
+                <span class="left-item">
+                    <span class="text-content">
+                        I am an employee or a manager.
+                    </span>
+                    <span class="text-desc">
+                        You need an invitation to join Azalio. Have you
+                        received an email from donotreply@azal.io?
+                        If not, please contact <a href="mailto:customersupport@azal.io" class="link">customersupport@azal.io</a>
+                    </span>
+                </span>
+                <span class="right-item">
+                    <span class="text-content">
+                        I am registering a company.
+                    </span>
+                    <span>
+                        <button (click)="onClick()" size="medium" type="submit" nbButton class="btn-setup">Set up a new company<i class="fa-solid fa-circle-arrow-right"></i></button>
+                    </span>
+                </span>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</div>

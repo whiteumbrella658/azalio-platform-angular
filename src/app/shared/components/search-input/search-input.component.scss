@@ -1,0 +1,70 @@
+.fas.fa-search {
+  position: absolute;
+  right: 12px;
+  top: 2.3px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+[nbInput].size-medium:not(.input-full-width) {
+  max-width: var(--input-medium-max-width);
+  // min-width: 190px;
+  min-width: 100%;
+  padding-right: 27px;
+  padding-top: 6px;
+  padding-bottom: 4px;
+}
+
+.search_all {
+  position: absolute;
+  left: 7px;
+  top: 25px;
+  text-decoration: underline;
+  // color: #7b68ee;
+  color: #4c30e8c9;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+i.fa.fa-times {
+  position: absolute;
+  right: 6px !important;
+  top: 0px !important;
+  cursor: pointer;
+}
+
+.search_input {
+  background: #fff;
+}
+// .ng-trigger-balloonEffect::before {
+//   font-family: 'Font Awesome 5 Free';
+//   content: '\f002';
+//   font-style: normal;
+//   font-weight: normal;
+//   text-decoration: inherit;
+//   color: #7668ee;
+//   font-size: 26px;
+//   padding-right: 0.5em;
+//   position: absolute;
+//   top: 15px;
+//   left: 14px;
+//   font-weight: 900;
+// }
+
+.searchButton {
+  background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* position: fixed; */
+    /* right: 265px; */
+    /* top: 68px; */
+    border-radius: 52%;
+    width: 32px;
+    height: 32px;
+    color: #7b68ee  !important;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+    border: 1px solid white;
+}

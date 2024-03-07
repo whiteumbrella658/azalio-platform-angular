@@ -1,0 +1,27 @@
+<span class="relative" *ngIf="!isAnimated">
+  <i *ngIf="!searchedOn" (click)="search(false)" class="fas fa-search" alt="search icon"></i>
+  <input aria-label="search field" nbInput type="text" shape="round" [placeholder]="placeholder"
+    [(ngModel)]="searchText" (input)="onChange($event.target.value)" (keydown.enter)="search(false)"
+    class="search_input" />
+  <i *ngIf="searchedOn" alt="search clear icon" (click)="clear()" class="fa fa-times pointer"></i>
+
+  <!-- <span *ngIf="showHelperButton && searchedOn && searchText" (click)="search(true)" class="search_all">
+    Search in all {{ nameConfig?.region_plural }}
+  </span> -->
+</span>
+
+<button *ngIf="currentState == 'initial' && isAnimated" (click)="changeState()" class="searchButton"><i
+    class="fa fa-search"></i></button>
+<div [@changeDivSize]=currentState *ngIf="isAnimated">
+  <span class="relative" *ngIf="currentState == 'final'">
+    <i *ngIf="!searchedOn" (click)="search(false)" class="fas fa-search" alt="search icon"></i>
+    <input [appAutoFocus]="true" aria-label="search field" nbInput type="text" shape="round" [placeholder]="placeholder"
+      [(ngModel)]="searchText" (input)="onChange($event.target.value)" (keydown.enter)="search(false)"
+      class="search_input" (focusout)="onFocusOut()" />
+    <i *ngIf="searchedOn" alt="search clear icon" (click)="clear()" class="fa fa-times pointer"></i>
+
+    <!-- <span *ngIf="showHelperButton && searchedOn && searchText" (click)="search(true)" class="search_all">
+      Search in all {{ nameConfig?.region_plural }}
+    </span> -->
+  </span>
+</div>

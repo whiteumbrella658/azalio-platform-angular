@@ -1,0 +1,7 @@
+<app-loader [loading]="loading"></app-loader>
+
+<ng-container *ngIf="!loading">
+    <ng-container *ngFor="let graph of graphs">
+        <app-graph [options]="graph.options" [title]="graph.graph_title" [id]="graph.id" [showSaveBtn]="graph.is_saved" [data]="graph.graph_body" [chartType]="graph.graph_type"></app-graph>
+    </ng-container>
+</ng-container>

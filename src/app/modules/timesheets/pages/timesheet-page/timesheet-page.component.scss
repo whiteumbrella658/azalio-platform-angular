@@ -1,0 +1,277 @@
+nb-button-group.custom-css {
+  padding: 0px !important;
+}
+
+nb-button-group.custom-css2 {
+  padding: 0px !important;
+}
+
+// .toggle_buttons {
+//   color: #6e698b !important;
+//   border: 1px solid #f3f3f3;
+//   background-color: #fff !important;
+//   border-radius: 100px !important;
+//   background: transparent !important;
+//   [nbButton] {
+//     color: #6e698b !important;
+//     background: transparent;
+//     background-color: transparent !IMPORTANT;
+//   }
+//   .toggle_buttons [nbButton].appearance-filled.status-primary, .toggle_buttons .appearance-filled.status-primary[nbButton]
+//   {
+//     box-shadow: 0 1px 3px rgb(0 0 0 / 2%), 0 1px 3px rgb(0 0 0 / 14%) !important;
+//   }
+//   [nbButton].appearance-filled.status-primary,
+//   .appearance-filled.status-primary[nbButton] {
+//     background-color:white  !important;
+//     color: #7b68ee !important;
+//     box-shadow: 0 1px 3px rgb(0 0 0 / 2%), 0 1px 3px rgb(0 0 0 / 14%) !important;
+//   }
+// }
+.timesheet_grid {
+  position: relative;
+}
+
+.datepicker_span {
+  padding: 6px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  border-radius: 2px;
+  min-width: 96px;
+  border-radius: 14px;
+  color: #6e689b !important;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.export_span {
+  background: #ffffff;
+  padding: 7px 9px;
+  border-radius: 10px;
+  color: #7b68ee !important;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 2px;
+  min-width: 30px;
+  border-radius: 52%;
+  width: 32x;
+  height: 32px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+}
+
+.report_buttons {
+  text-align: center;
+  /* margin-top: 8px; */
+  margin-bottom: 14px;
+}
+
+.wrapper_header div {
+  margin-top: -4.5px;
+}
+
+.weekday_toggle {
+  padding: 3px 0px !important;
+  min-width: auto !important;
+}
+
+@media (max-width: 428px) {
+  .resp_export {
+    background: #e9e4fd;
+    padding: 3px 1.5px;
+    border-radius: 10px;
+    color: var(--color-primary-100) !important;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
+    min-width: 35px;
+    border-radius: 10px;
+  }
+
+  .desktopReport {
+    display: none;
+  }
+
+  .timesheets_wrapper .wrapper_header {
+    // margin-top: 10px;
+    // padding: 9px 10px;
+  }
+}
+
+@media (min-width: 429px) {
+  .resp_export {
+    display: none;
+  }
+}
+
+// @media (max-width: 325px) {
+//   .timesheets_wrapper .wrapper_header {
+//     margin-left: -15px !important;
+//     margin-top: 10px;
+//     padding: 9px 10px;
+//   }
+// }
+// @media (max-width: 332px) {
+//   .timesheets_wrapper .wrapper_header {
+//     margin-left: -3%;
+//   }
+// }
+
+@media (min-width: 1101px) {
+  .resp_region {
+    display: none;
+  }
+
+  .desk_region {
+    display: block;
+  }
+}
+
+@media (max-width: 1100px) {
+  .desk_region {
+    display: none;
+  }
+
+  .resp_region {
+    display: block;
+  }
+
+  .timesheet_grid {
+    // margin-top: 44px;
+    margin-top: 0px;
+  }
+}
+
+@media (max-width: 930px) {
+  .resp_region {
+    top: 61px !important;
+  }
+}
+
+@media (max-width: 930px) {
+  // .timesheets_wrapper .wrapper_header {
+  //   padding-bottom: 40px !important;
+  // }
+}
+
+@media (max-width: 1036px) and (min-width: 930px) {
+  .wrapper_header div {
+    width: 100% !important;
+  }
+
+  .timesheet_grid {
+    // margin-top: 40px;
+  }
+}
+
+@media(max-width:930px) and (min-width:680px) {
+  .wrapper_header div {
+    width: 100% !important;
+  }
+
+  .timesheet_grid {
+    margin-top: 0px;
+  }
+}
+
+@media (max-width: 680px) and (min-width: 320px) {
+  .wrapper_header div {
+    width: 100% !important;
+  }
+
+  .timesheet_grid {
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 1230px) and (min-width: 1100px) {
+  .wrapper_header div {
+    min-width: 350px !important;
+    width: 100%;
+  }
+}
+
+.toggle-btns {
+  display: flex;
+  justify-content: center;
+}
+
+.date-picker {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.left-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination-div {
+  width: 234px;
+}
+
+.arrow-down {
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+@media (max-width: 679px) and (min-width: 320px) {
+  .left-actions {
+    position: fixed;
+    right: 5px;
+    top: 123px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    background: #f9faff;
+  }
+}
+
+::ng-deep nb-datepicker-container {
+  nb-calendar {
+    position: absolute;
+    top: -20px;
+    right: -124px;
+  }
+
+  nb-calendar-range {
+    position: absolute;
+    top: -20px;
+    right: -80px;
+  }
+}
+
+.export-header {
+  color: white;
+  background: #7b68ee;
+  padding: 12px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: block;
+}
+
+.label-ts {
+  color: black;
+  margin-right: 5px;
+  font-weight: 600;
+  width: 80px;
+  margin-left: 8px;
+}
+
+.row-alignment {
+  display: flex;
+  align-items: center;
+}
+
+.width-dd {
+  width: 69% !important;
+  margin-right: 10px;
+}
+
+@media(max-width:800px)
+{
+  .body-popover {
+    height: 60vh;
+    overflow: auto;
+  }
+}

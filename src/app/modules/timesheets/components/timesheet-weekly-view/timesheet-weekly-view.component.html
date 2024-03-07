@@ -1,0 +1,235 @@
+<app-loader [loading]="loading"></app-loader>
+
+<span class="filters-wrapper" *ngIf="gs?.isRespMode">
+  <span class="sorting-in-resp">
+    <app-filter-popup [label]="'Roles'" [isFiltered]="isFiltered?.role" (onClose)="closeFilter('role')" (onApply)="applyFilterMulti('role')" (onClear)="removeFilter('role')" (onOpen)="defaultOpen=!defaultOpen">
+      <app-dropdown-multi [label]="'roles'" [defaultOpen]="defaultOpen" [selected]="filters?.role" [key]="'role_title'" [optionId]="'role_id'" [Data]="roles" [placeholder]="'Select one or more roles'" [controlName]="'role'"
+      [form]="form" [show]="false">
+    </app-dropdown-multi>
+  </app-filter-popup>
+  </span>
+  <span class="sorting-in-resp">
+    <app-sort class="sort" [label]="'Name'" [isSelected]="filters['name_sort'] !== 0 ? true : false" (onSort)="onSort($event, 'name_sort')"></app-sort>
+    <app-sort class="sort" [iconType]="'number'" [label]="'Actual Hrs'" [isSelected]="filters['actual_hours_sort'] !== 0 ? true : false" (onSort)="onSort($event, 'actual_hours_sort')"></app-sort>
+  </span>
+</span>
+
+<app-sidebar [showSideBar]="showSideBarDetails" [tag]="'detail'" (closeDetails)="closeDetails()">
+  <app-timesheet-details [selectedData]="selectedRowData" (addClick)="onAddClick()" (editClick)="onEditClick($event)"
+    (refreshData)="getData()"></app-timesheet-details>
+</app-sidebar>
+
+<span class="timesheet_page_pagination">
+  <mat-paginator *ngIf="paginator" [length]="paginator.total_records" [pageIndex]="paginator.page_no - 1"
+    [pageSize]="paginator.page_size" [pageSizeOptions]="pageSizes" (page)="pageEvent = $event; getData()"
+    showFirstLastButtons>
+  </mat-paginator>
+</span>
+
+<div class="mat-elevation-z8 relative timesheet_table  weekly_view" *ngIf="dataSource && weekDates" style="top: 3px;">
+  <!-- <span class="floating test"> -->
+
+    <!-- <a class="float" nbTooltip="New Timesheet Entry" nbTooltipPlacement="left" (click)="initAddEntry()">
+      <i class="fa fa-plus icon"></i>
+    </a> -->
+  <!-- </span> -->
+  <table mat-table [dataSource]="dataSource" id="weekly-table">
+
+    <!-- User Column -->
+    <ng-container matColumnDef="user">
+      <th mat-header-cell *matHeaderCellDef> Name 
+        <app-sort *ngIf="!gs?.isRespMode" class="sort" [isSelected]="filters['name_sort'] !== 0 ? true : false"
+        [iconType]="'alpha'" (onSort)="onSort($event, 'name_sort')"></app-sort>
+        <app-filter-popup *ngIf="!gs?.isRespMode" [label]="'roles'" [isFiltered]="isFiltered?.role" (onClose)="closeFilter('role')" (onApply)="applyFilterMulti('role')" (onClear)="removeFilter('role')" (onOpen)="defaultOpen=!defaultOpen">
+          <app-dropdown-multi [label]="'roles'" [defaultOpen]="defaultOpen" [selected]="filters?.role" [key]="'role_title'" [optionId]="'role_id'" [Data]="roles" [placeholder]="'Select one or more roles'" [controlName]="'role'"
+          [form]="form" [show]="false">
+        </app-dropdown-multi>
+      </app-filter-popup>
+      </th>
+      <td mat-cell *matCellDef="let element" style="width: 150px;">
+        <label class="show_in_resp">Name</label>
+        <app-user-avatar size="medium" [name]="element.user_name" title="{{element.role_title}}"
+          [color]="element.user_color + opacity" [initialColor]="element.user_color" class="link_name"
+          nbTooltipAdjustment="noop" [nbTooltip]="element.user_name">
+        </app-user-avatar>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="region_title">
+      <th mat-header-cell *matHeaderCellDef style="min-width: 80px" [hidden]="sharedRegion>0">Store</th>
+      <td mat-cell *matCellDef="let element" [hidden]="sharedRegion>0" class="store-col">
+        <label class="show_in_resp">Store</label>
+        <span style="color:#4E4E4E;" class="store-name" nbTooltipAdjustment="noop"
+          [nbTooltip]="element.region_title?element.region_title:''">{{element.region_title?element.region_title:''}}</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="sun">
+      <th style="min-width: 80px;" mat-header-cell *matHeaderCellDef>
+        <span class="date-text">
+
+          {{weekDates[weeksArr.indexOf('sun')] | date: 'd'}}</span>
+        <br>
+        <span class="date-text">Sun</span>
+
+      </th>
+      <td style="min-width: 60px;" mat-cell *matCellDef="let element" (click)="selectItem(element, 'sun')"
+        [class]="element.days.Sunday?.is_out_of_schedule ? 'out_of_schedule' : ''">
+        <label class="show_in_resp">Sun</label>
+        <span class="link">
+          {{ element.days.Sunday?.work_hour_format | time}}
+        </span>
+        <span *ngIf="isLocationEnabled && element.days.Sunday?.is_outof_radius">
+          <i class="fas fa-map-marker-alt outof-fence" [nbTooltip]="'Out of geo-fence'"></i></span>
+        <span><i class="fa fa-flag" [nbTooltip]="'Out of schedule'"></i></span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="mon">
+      <th style="min-width: 80px;" mat-header-cell *matHeaderCellDef>
+
+        <span class="date-text"> {{weekDates[weeksArr.indexOf('mon')] | date: 'd'}}</span><br>
+        <span class="date-text">Mon</span>
+
+      </th>
+      <td style="min-width: 60px;" mat-cell *matCellDef="let element" (click)="selectItem(element, 'mon')"
+        [class]="element.days.Monday?.is_out_of_schedule ? 'out_of_schedule' : ''">
+        <label class="show_in_resp">Mon</label>
+        {{ element.days.Monday?.work_hour_format | time}}
+
+        <span *ngIf="isLocationEnabled && element.days.Monday?.is_outof_radius">
+          <i class="fas fa-map-marker-alt outof-fence" [nbTooltip]="'Out of geo-fence'"></i></span>
+        <span><i class="fa fa-flag" [nbTooltip]="'Out of schedule'"></i></span>
+
+      </td>
+
+    </ng-container>
+
+    <ng-container matColumnDef="tues">
+      <th style="min-width: 80px;" mat-header-cell *matHeaderCellDef>
+
+        <span class="date-text"> {{weekDates[weeksArr.indexOf('tues')] | date: 'd'}}</span>
+        <br>
+        <span class="date-text">Tue</span>
+      </th>
+      <td style="min-width: 60px;" mat-cell *matCellDef="let element" (click)="selectItem(element, 'tues')"
+        [class]="element.days.Tuesday?.is_out_of_schedule ? 'out_of_schedule' : ''">
+        <label class="show_in_resp">Tue</label>
+        {{ element.days.Tuesday?.work_hour_format | time}}
+        <span *ngIf="isLocationEnabled && element.days.Tuesday?.is_outof_radius">
+          <i class="fas fa-map-marker-alt outof-fence" [nbTooltip]="'Out of geo-fence'"></i></span>
+        <span><i class="fa fa-flag" [nbTooltip]="'Out of schedule'"></i></span>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="wed">
+      <th style="min-width: 80px;" mat-header-cell *matHeaderCellDef>
+
+        <span class="date-text"> {{weekDates[weeksArr.indexOf('wed')] | date: 'd'}}</span>
+        <br>
+        <span class="date-text">Wed</span>
+      </th>
+      <td style="min-width: 60px;" mat-cell *matCellDef="let element" (click)="selectItem(element, 'wed')"
+        [class]="element.days.Wednesday?.is_out_of_schedule ? 'out_of_schedule' : ''">
+        <label class="show_in_resp">Wed</label>
+        {{ element.days.Wednesday?.work_hour_format | time}}
+        <span *ngIf="isLocationEnabled && element.days.Wednesday?.is_outof_radius">
+          <i class="fas fa-map-marker-alt outof-fence" [nbTooltip]="'Out of geo-fence'"></i></span>
+        <span><i class="fa fa-flag" [nbTooltip]="'Out of schedule'"></i></span>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="thurs">
+      <th style="min-width: 80px;" mat-header-cell *matHeaderCellDef>
+
+        <span class="date-text"> {{weekDates[weeksArr.indexOf('thurs')] | date: 'd'}}</span>
+        <br>
+        <span class="date-text">Thr</span>
+      </th>
+      <td style="min-width: 60px;" mat-cell *matCellDef="let element" (click)="selectItem(element, 'thurs')"
+        [class]="element.days.Thursday?.is_out_of_schedule ? 'out_of_schedule' : ''">
+        <label class="show_in_resp">Thr</label>
+        {{ element.days.Thursday?.work_hour_format | time}}
+        <span *ngIf="isLocationEnabled && element.days.Thursday?.is_outof_radius">
+          <i class="fas fa-map-marker-alt outof-fence" [nbTooltip]="'Out of geo-fence'"></i></span>
+        <span><i class="fa fa-flag" [nbTooltip]="'Out of schedule'"></i></span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fri">
+      <th style="min-width: 80px;" mat-header-cell *matHeaderCellDef>
+
+        <span class="date-text"> {{weekDates[weeksArr.indexOf('fri')] | date: 'd'}}</span>
+        <br>
+        <span class="date-text">Fri</span>
+      </th>
+      <td style="min-width: 60px;" mat-cell *matCellDef="let element" (click)="selectItem(element, 'fri')"
+        [class]="element.days.Friday?.is_out_of_schedule ? 'out_of_schedule' : ''">
+        <label class="show_in_resp">Fri</label>
+        {{ element.days.Friday?.work_hour_format | time}}
+        <span *ngIf="isLocationEnabled && element.days.Friday?.is_outof_radius">
+          <i class="fas fa-map-marker-alt outof-fence" [nbTooltip]="'Out of geo-fence'"></i></span>
+        <span><i class="fa fa-flag" [nbTooltip]="'Out of schedule'"></i></span>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sat">
+      <th style="min-width: 80px;" mat-header-cell *matHeaderCellDef>
+
+        <span class="date-text"> {{weekDates[weeksArr.indexOf('sat')] | date: 'd'}}</span>
+        <br>
+        <span class="date-text">Sat</span>
+      </th>
+      <td style="min-width: 60px;" mat-cell *matCellDef="let element" (click)="selectItem(element, 'sat')"
+        [class]="element.days.Saturday?.is_out_of_schedule ? 'out_of_schedule' : ''">
+        <label class="show_in_resp">Sat</label>
+        {{ element.days.Saturday?.work_hour_format | time}}
+        <span *ngIf="isLocationEnabled && element.days.Saturday?.is_outof_radius">
+          <i class="fas fa-map-marker-alt outof-fence" [nbTooltip]="'Out of geo-fence'"></i></span>
+        <span><i class="fa fa-flag" [nbTooltip]="'Out of schedule'"></i></span>
+
+      </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef class="black_color bolder"> Logged Hours </th>
+      <td mat-cell *matCellDef="let element" [ngClass]="{'overtime': element.is_max_hours_exceed }">
+        <label class="show_in_resp">Logged Hours</label>
+        {{element.work_hour_format | time}}
+        <i *ngIf="element.is_max_hours_exceed" class="fa fa-flag" [nbTooltip]="'Overtime'"></i>
+      </td>
+    </ng-container> -->
+
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef style="min-width: 70px;padding-right: 15px;">Actual Hours
+        <app-sort *ngIf="!gs?.isRespMode" class="sort" [iconType]="'number'" [isSelected]="filters.actual_hours_sort !== 0 ? true : false" 
+        (onSort)="onSort($event, 'actual_hours_sort')"></app-sort>
+      </th>
+      <!-- [ngClass]="{'clockin_progress': false}" -->
+      <td mat-cell *matCellDef="let element" [ngClass]="{
+        overtime: element.is_max_hours_exceed,
+        out_of_schedule: element.is_out_of_schedule,
+        double_flags: element.is_out_of_schedule && element.is_max_hours_exceed
+      }">
+        <label class="show_in_resp">Actual Hours</label>
+        <!-- {{ element.total_hour_format | time }} -->
+        <span class="">{{ element.total_hour_format | time }}</span>
+        <i alt="out of schedule icon" *ngIf="element.is_max_hours_exceed && element.is_out_of_schedule==1"></i>
+        <i alt="out of schedule icon" *ngIf="element.is_max_hours_exceed && !element.is_out_of_schedule"
+          class="fa fa-flag" nbTooltipAdjustment="noop" [nbTooltip]="'Overtime'"></i>
+        <i alt="flag icon" *ngIf="element.is_out_of_schedule && !element.is_max_hours_exceed" class="fa fa-flag"
+          nbTooltipAdjustment="noop" [nbTooltip]="'Out of schedule'"></i>
+        <img alt="out of schedule and overtime flag" *ngIf="element.is_out_of_schedule && element.is_max_hours_exceed"
+          src="../../../assets/flags.svg" nbTooltipAdjustment="noop" [nbTooltip]="'Out of schedule & overtime'" />
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'disable_row': row.is_empty}"></tr>
+  </table>
+  <app-no-records [display]="emptyResults" [animation]="'timesheet'"></app-no-records>
+  <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+
+</div>

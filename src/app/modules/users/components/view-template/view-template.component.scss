@@ -1,0 +1,90 @@
+.modal_wrapper {
+  width: 60% !important;
+  margin: 0px auto !important;
+  img {
+    margin: 0px auto;
+    display: block;
+    margin-top: 10px;
+    // width: 60% !IMPORTANT;
+    width: 95% !important;
+  }
+}
+@media (min-width: 931px) {
+  .modal_wrapper {
+    width: 50% !important;
+    margin: 0px auto !important;
+  }
+}
+@media (max-width: 930px) and (min-width: 606px) {
+  .import_modal {
+    width: 590px !important;
+  }
+}
+@media (max-width: 605px) and (max-width: 500px) {
+  .import_modal {
+    width: 75% !important;
+  }
+  img {
+    display: none !important;
+  }
+}
+@media (max-width: 499px) and (max-width: 450px) {
+  .import_modal {
+    width: 317px !important;
+    overflow: auto;
+  }
+  img {
+    display: none !important;
+  }
+}
+@media (max-width: 449px) and (max-width: 400px) {
+  .import_modal {
+    width: 360px !important;
+    overflow: auto;
+  }
+  img {
+    display: none !important;
+  }
+}
+@media (max-width: 399px) and (max-width: 320px) {
+  .import_modal {
+    width: 300px !important;
+    overflow: auto;
+  }
+  img {
+    display: none !important;
+  }
+}
+
+
+.import_modal
+{
+  nb-card-header
+  {
+
+    background: #7b68ee;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    label
+    {
+      color: white;
+    }
+  }
+
+}
+ul {
+  list-style: none;
+}
+.instructions-list
+{
+  line-height: 1.5;
+  padding-bottom: 8px;
+}
+ul li::before {
+  content: "\2022";
+  color: #5d5ddb;
+  font-weight: bold;
+  display: inline-block; 
+  width: 1em;
+  margin-left: -1.3em;
+}

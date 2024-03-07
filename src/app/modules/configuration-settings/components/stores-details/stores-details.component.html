@@ -1,0 +1,152 @@
+<app-loader [loading]="loading"></app-loader>
+<!-- <ng-container>
+    <span class="floating test">
+        <a class="float" nbTooltip="New Store" nbTooltipPlacement="left" (click)="onAddStore()">
+            <i class="fa fa-plus icon"></i>
+        </a>
+    </span>
+</ng-container> -->
+<nb-card class="for_spinner" style="height: 100vh;top:-25px;">
+    <div class="stores-wrapper">
+        <span class="title">
+            <span style="color: #6e689b;">
+                Stores
+            </span>
+        </span>
+        <div class="stores-header">
+            <span class="sub-title"> Use this section to manage stores in your organization. <br>
+                <span style="color: #7b68ee;">Note: You need at least one store to begin using Azalio.</span>
+            </span>
+            <span class="child2">
+                <span class="resp-container">
+                    <span class="resp-search">
+                        <app-search-input [placeholder]="'Search by store name'" [showHelperButton]="true"
+                            (searchEvent)="onSearch($event)" (searchAll)="onSearchAll($event)"></app-search-input>
+                    </span>
+                    <span class="resp-search" *ngIf="paginator">
+                        <button size="medium" type="submit" nbButton status="primary" (click)="onAddStore()">Add
+                            Store</button>
+                    </span>
+                </span>
+
+                <span class="stores-pagination">
+                    <mat-paginator *ngIf="paginator" [length]="paginator.total_records"
+                        [pageIndex]="paginator.page_no - 1" [pageSize]="paginator.page_size"
+                        [pageSizeOptions]="pageSizes" (page)="pageEvent = $event; getData()" showFirstLastButtons>
+                    </mat-paginator>
+                </span>
+            </span>
+        </div>
+        <div class="table-height">
+
+            <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8 stores-table">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef style="width: 12%;">Store Name</th>
+                    <td mat-cell *matCellDef="let element" style="width: 12%">
+                        <span class="resp-view">
+                            <span class="truncate-name"><label class="show_in_resp">Store Name</label> 
+                                <span>{{element?.title}}</span>
+                            </span>
+                            <span *ngIf="element.group_missing == 1" (click)="$event.stopPropagation();goToSettings()" class="group-setting">
+                                <img  src="assets/open-shift.png">
+                                Add to open shift group</span>
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="shifts">
+                    <th mat-header-cell *matHeaderCellDef style="width: 20%;">Shifts</th>
+                    <td mat-cell *matCellDef="let element" style="width: 20%">
+                        <span class="resp-view">
+                           <label class="show_in_resp">Shifts</label> 
+                                <ng-container *ngIf="element.shifts">
+                                    <div *ngFor="let shift of element.shifts" class="shift-info">  
+                                        <span *ngIf="shift.start_time" style="display: flex;">
+                                            <div style="width: 25px;">
+                                                <i [nbTooltip]="shift.name" [class]="shift.icon" class="mr-7" style="font-size: 13px;"></i> 
+                                            </div>
+                                           <div class="shiftname">
+
+                                            {{changeTimezone(element, shift.start_time) | date: 'hh:mm a' }} - {{changeTimezone(element, shift.end_time )| date: 'hh:mm a'}}
+                                           </div> 
+                                        </span>
+                                    </div>
+                                </ng-container>
+                            </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="pin" >
+                    <th mat-header-cell *matHeaderCellDef style="width: 10%;">Store Pin</th>
+                    <td mat-cell *matCellDef="let element" style="width: 10%"> 
+                        <span class="resp-view">
+                            <span class="store-pin"><label class="show_in_resp">Store Pin</label> 
+                                <!-- <span class="pin" *ngIf="!element.showPin"><img src="assets/pin-code.png"></span> -->
+                                <span class="pin asterik" *ngIf="!element.showPin">****</span>
+                                <span class="pin" *ngIf="element.showPin"> {{element.pin}} </span>
+                                <i (click)="togglePin($event, element)" class="fas " [ngClass]="{'fa-eye show-pin': !element.showPin, 'fa-eye-slash hide-pin': element.showPin }"></i>
+                                <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+                            </span>
+                        </span>
+                        
+
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="timezone">
+                    <th mat-header-cell *matHeaderCellDef style="width: 13%;"> Time Zone </th>
+
+                    <td mat-cell *matCellDef="let element" style="width: 13%;"> 
+                        <span class="resp-view">
+                            <label class="show_in_resp">Time Zone</label> 
+                            <span>{{element?.timezone}}</span>
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="location">
+                    <th mat-header-cell *matHeaderCellDef [hidden]="!isLocationEnabled" style="width: 25%;"> Location
+                    </th>
+
+                    <td mat-cell *matCellDef="let element" [hidden]="!isLocationEnabled" style="width: 25%;"> 
+                        <span class="resp-view">
+                                <label class="show_in_resp">Location</label>
+                            <span>{{element?.address}}</span>
+                        </span>
+                     </td>
+
+                </ng-container>
+
+                <ng-container matColumnDef="geo_fence">
+                    <th mat-header-cell *matHeaderCellDef [hidden]="!isLocationEnabled" style="width: 12%;"> Fence
+                        Radius <br /> <span style="text-transform: lowercase ;">(meters) </span></th>
+
+                    <td mat-cell *matCellDef="let element" [hidden]="!isLocationEnabled" style="width: 12%;"><label
+                            class="show_in_resp">Geo
+                            Fence</label> {{element?.radius}} </td>
+
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width: 8%;" class="actions">Actions</th>
+                    <td mat-cell *matCellDef="let element" style="width: 8%;" (click)="$event.stopPropagation();" class="actions">
+                      <label class="show_in_resp">Actions</label>
+                      <span class="action">
+                       <span [style.visibility]="element.shifts?.length < 6 ? '' : 'hidden'" (click)="onAddShift(element)"class="add-shift-image" nbTooltip="Add shift">
+                       </span>
+                        <i [style.visibility]="element.shifts?.length > 0 ? '' : 'hidden'" 
+                        (click)="onEditShift(element)" class="fas fa-pen edit-shift pointer" nbTooltip="Edit shift"></i>
+                      </span>
+                    </td>
+                  </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ disable_row: row.is_empty }"
+                    (click)="editStore(row)" class="showhim"></tr>
+            </table>
+            <app-no-records [display]="emptyResults" [animation]="'organization'" [animation2]="'arrowBottom'"
+                [textMessage]="'Get started by adding stores.'">
+            </app-no-records>
+            <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+
+        </div>
+
+    </div>
+</nb-card>

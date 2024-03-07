@@ -1,0 +1,126 @@
+<app-loader [loading]="loading"></app-loader>
+<nb-layout-column class="colored-column-info timesheets_wrapper reports">
+    <div class="page-wrapper">
+        <ng-container *ngIf="!pageLoading">
+            <div class="wrapper_header" *ngIf="!pageLoading">
+                <span class="left-items">
+                    <span>
+                        <button (click)="navigateTo('tasks')" class="back-btn" size="medium" type="button" nbButton
+                            status="primary">
+                            <i class="fa fa-angle-left" aria-hidden="true" style="margin-right:7px;"></i> Tasks</button>
+                    </span>
+                    <span>
+                        <button *ngIf="isAzalioPlay" (click)="navigateTo('tasks/dailyReport')" class="back-btn" size="medium" type="button" nbButton
+                            status="primary">View Daily Report</button>
+                    </span>
+                </span>
+                <span class="right-items">
+                    <app-search-input class="search-task" style="margin-right: 10px;"
+                        [placeholder]="'Search by task, user, shift'" (searchEvent)="onSearch($event)">
+                    </app-search-input>
+                    <mat-paginator *ngIf="paginator" [length]="paginator.total_records"
+                        [pageIndex]="paginator.page_no - 1" [pageSize]="paginator.page_size"
+                        [pageSizeOptions]="pageSizes" (page)="pageEvent = $event; getData()" showFirstLastButtons>
+                    </mat-paginator>
+                </span>
+            </div>
+        </ng-container>
+
+
+        <div class="mat-elevation-z8 relative" *ngIf="dataSource && dataSource.data" class="logs">
+            <table mat-table [dataSource]="dataSource.data" *ngIf="!pageLoading">
+                <ng-container matColumnDef="user">
+                    <th mat-header-cell *matHeaderCellDef style="width: 15%;">Name</th>
+                    <td mat-cell *matCellDef="let element" style="width: 15%;">
+                        <span class="resp-container">
+                            <label class="show_in_resp">Name</label>
+                            <app-user-avatar size="small" [name]="element.user_name"
+                                [color]="element.user_color + opacity" [initialColor]="element.user_color">
+                            </app-user-avatar>
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef style="width: 27;">Task Name</th>
+                    <td mat-cell *matCellDef="let element" style="width: 27%;">
+                        <span class="resp-container">
+                            <label class="show_in_resp">Task Name</label>
+                            {{element.task_name}}
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="datetime">
+                    <th mat-header-cell *matHeaderCellDef style="width: 13%;">Done at</th>
+                    <td mat-cell *matCellDef="let element" style="width: 13%;" class="comment-field">
+                        <span class="resp-container">
+                            <label class="show_in_resp label-txt">Done at</label>
+                            <span>{{element.created_on | date: 'MMM d, y, h:mm a'}}</span>
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="shift">
+                    <th mat-header-cell *matHeaderCellDef style="width: 13%;">Shift</th>
+                    <td mat-cell *matCellDef="let element" style="width: 13%;">
+                        <span class="resp-container">
+                            <label class="show_in_resp">Shift</label>
+                            <span>{{element.shift_name}}</span>
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="store">
+                    <th mat-header-cell *matHeaderCellDef style="width: 14%;">Store</th>
+                    <td mat-cell *matCellDef="let element" style="width: 14%;">
+                        <span class="resp-container">
+                            <label class="show_in_resp">Store</label>
+                            <span>{{element.region_title}}</span>
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="points">
+                    <th mat-header-cell *matHeaderCellDef style="width: 13%;">Points earned</th>
+                    <td mat-cell *matCellDef="let element" style="width: 13%;">
+                        <span class="resp-container">
+                            <label class="show_in_resp">Points</label>
+                            <span class="points" *ngIf="element.points !== null">
+                                <img src="assets/coin.png" *ngIf="!element.is_revoked">
+                                <img src="assets/revoked-coin.png" *ngIf="element.is_revoked">
+                                <span class="points-label">
+                                    {{element.points}}
+                                    <span *ngIf="element.is_revoked" class="revoked-tag">
+                                        revoked
+                                    </span>
+                                </span>
+                            </span>
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td mat-cell *matCellDef="let element" style="width: 5%;">
+                        <span class="resp-container">
+                            <label class="show_in_resp">Actions</label>
+                                <span class="action">
+                                    <app-confirm-popup [isComment]="true" [checkboxLabel]="'Mark task as undone.'" [type]="'Revoke'" [title]="'Points'" [textToDisplay]="revokeText"
+                                        (proceedDelete)="revokePoints($event, element.id)" (proceedCancel)="selectedRow = null;"
+                                        (proceedWithComment)="revokePointsWithComment($event, element.id)">
+                                        <img *ngIf="element.points && !element.is_revoked" (mouseenter)="hoveredRow = element;" (mouseleave)="hoveredRow = null;" 
+                                        (click)="setRevokeData(element)" nbTooltip="Revoke points" 
+                                        [src]="(selectedRow?.id == element.id || hoveredRow?.id == element.id)? 'assets/revoked.png' : 'assets/revoke-points.png'" >
+                                    </app-confirm-popup>
+                                </span>
+                            </span>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"
+                    [ngClass]="{ 'revoked': row.is_revoked == 1, 'revoked-row': selectedRow?.id == row.id}">
+                    <!-- [ngClass]="{ assign_row: selectedForAssignment == row.id, disable_row: row.is_empty, edit_row: selectedRowDataEdit?.id == row.id, selected: selectedRowData?.id == row.id  }" -->
+                </tr>
+            </table>
+            <app-no-records class="tasksanimation" [display]="emptyResults" [animation]="'timesheet'"
+                [animation2]="animation2" [textMessage]="'No logs.'"></app-no-records>
+            <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+        </div>
+    </div>
+</nb-layout-column>

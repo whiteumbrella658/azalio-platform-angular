@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <clipPath id="clip-loader">
+      <rect width="1024" height="1024"/>
+    </clipPath>
+  </defs>
+  <g id="loader" clip-path="url(#clip-loader)">
+    <rect id="Rectangle_1066" data-name="Rectangle 1066" width="99.23" height="786.097" rx="49.615" transform="translate(897.465 785.424) rotate(89.751)" fill="#7b68ee"/>
+    <path id="Union_1" data-name="Union 1" d="M343.146,423.878,173.815,161.287l-60.684,117.88c-16.44,29.867-53.337,40.387-82.411,23.5S-8.6,247.874,7.844,218.008L111.9,28.974q.477-.867.953-1.686a46.569,46.569,0,0,1,81.518-5.955L421.407,373.412a46.561,46.561,0,1,1-78.261,50.466Z" transform="translate(314.06 129.322)" fill="#7b68ee"/>
+    <path id="Path_1162" data-name="Path 1162" d="M44.436,0A44.436,44.436,0,0,1,88.872,44.436V234.883a44.436,44.436,0,1,1-88.872,0V44.436A44.436,44.436,0,0,1,44.436,0Z" transform="matrix(-0.84, 0.542, -0.542, -0.84, 933.427, 846.515)" fill="#7b68ee"/>
+    <path id="Path_1161" data-name="Path 1161" d="M120.345,63.423a55.817,55.817,0,0,1,73.862-27.846h0a55.817,55.817,0,0,1,27.846,73.862L107.838,361.887a55.816,55.816,0,0,1-73.862,27.846h0A55.817,55.817,0,0,1,6.13,315.871Z" transform="translate(109.809 476.717)" fill="#7b68ee"/>
+  </g>
+</svg>

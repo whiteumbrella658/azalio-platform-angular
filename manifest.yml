@@ -1,0 +1,8 @@
+applications:
+  - path: .
+    name: Azal-Dev
+    environment_json: {}
+    memory: 1024M
+    instances: 2
+    disk_quota: 2048M
+    services: []

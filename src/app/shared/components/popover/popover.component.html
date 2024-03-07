@@ -1,0 +1,16 @@
+<!-- <div class="popover" [ngStyle]="{ display: displayProperty === 'inline' ? 'inline-block' : 'block' }" *ngIf="pop_array"> -->
+<span class="popover" *ngIf="pop_array">
+  <span style="color: blue; text-decoration: underline;" *ngIf="pop_array.length > 0" [nbPopover]="Ref"
+    nbPopoverTrigger="hover" nbPopoverPlacement="top">
+    <ng-content></ng-content>
+  </span>
+
+  <ng-template #Ref>
+    <div style="padding: 4px" *ngFor="let team of pop_array; let i = index">
+      {{ team[key] }}
+    </div>
+  </ng-template>
+</span>
+
+
+<!-- [ngStyle]="{ display: displayProperty === 'inline' ? 'inline-block !important' : 'block' }" -->

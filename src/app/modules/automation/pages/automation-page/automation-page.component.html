@@ -1,0 +1,60 @@
+<div class="flex">
+    <nb-layout-column class="colored-column-info timesheets_wrapper automation">
+        <div class="page-wrapper" *ngIf="isStore && (sharedRegion || singleRegion)">
+            <div class="wrapper_header heading">
+                Automation available out of the box
+            </div>
+            <div class="automation-cards">
+                <div class="automation-details">
+                    <span class="automation-desc">
+                        <span class="first-row">
+                            <!-- <i class="fa-solid fa-bolt-lightning bolt"></i> -->
+                            <i class="fa fa-user-clock auto-type"></i>
+                            <span class="auto-name">
+                                Confirm if an employee will show up for a shift.
+                            </span>
+                        </span>
+                        <span *ngIf="!loading"> 
+                            <button *ngIf="isSchedulerEnabled" (click)="openAddModal()" class="ml_40 auto-btn" nbButton status="primary" type="button">  
+                            <i class="fa-solid fa-bolt-lightning bolt"></i>Launch</button>
+                        </span>
+                        <app-confirm-popup [type]="''" [displayOnly]="true" [title]="'Pre-requisite missing.'" [textToDisplay]="setText()"
+                            [status]="'primary'">
+                            <button *ngIf="!loading && !isSchedulerEnabled" class="ml_40 auto-btn" nbButton status="primary" type="button"> 
+                                <i class="fa-solid fa-bolt-lightning bolt"></i>Launch
+                            </button>
+                        </app-confirm-popup>
+                    </span>
+
+                    <span class="automation-images">
+                        <img src="assets/shift-icon.png">
+                    </span>
+                </div>
+
+                <div class="automation-details">
+                    <span class="pro-automation">
+                        <span class="pro-title">
+                            +10 more
+                        </span>
+                        <app-confirm-popup [type]="''" [displayOnly]="true" [title]="'Coming soon!'" [textToDisplay]="contactText"
+                        [status]="'primary'">
+                        <span class="second-row">available in the <button class="ml_40 proplan-btn" nbButton
+                            status="primary" type="button">  <i class="fa-solid fa-bolt-lightning bolt"></i>Pro Plan</button></span>
+                        </app-confirm-popup>
+                    
+                    </span>
+
+                    <span class="proplan-image">
+                        <img src="assets/pro-automation.png">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="tasks-container" *ngIf="isSchedulerEnabled">
+            <div class="heading" *ngIf="isStore">
+                Your automated tasks
+            </div>
+            <app-auto-table [regionId]="singleRegion || sharedRegion"></app-auto-table>
+        </div>
+    </nb-layout-column>
+</div>

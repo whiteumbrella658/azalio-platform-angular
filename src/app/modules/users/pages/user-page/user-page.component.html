@@ -1,0 +1,57 @@
+<div class="flex add-store-link">
+  <!-- <div class="link-store">Get started by adding stores from <a>here</a>.</div> -->
+  <nb-layout-column class="colored-column-info timesheets_wrapper organization-module">
+ 
+    <div class="wrapper_header mb_10">
+      <div class="flex vertical_center_org search_input_fix">
+        <span class="toggle_buttons mr_10">
+          <nb-button-group>
+            <button (click)="setTab('all_users')" nbButton value="all_users"
+              [status]="selectedTab === 'all_users' ? 'primary' : ''" size="medium">
+              All Users
+            </button>
+            <button (click)="setTab('active_users')" nbButton value="active_users"
+              [status]="selectedTab === 'active_users' ? 'primary' : ''" size="medium">
+              Active
+            </button>
+            <button (click)="setTab('pending_users')" nbButton value="pending_users"
+              [status]="selectedTab === 'pending_users' ? 'primary' : ''" size="medium">
+              Pending
+            </button>
+          </nb-button-group>
+        </span>
+
+
+        <span class="search resp-search">
+
+          <app-search-input [placeholder]="'Search by name or role'" [showHelperButton]="showHelperButton"
+            (searchEvent)="onSearch($event)" (searchAll)="onSearchAll($event)"></app-search-input>
+          <span class="import-users desktopReport exportReport mr_10" (click)="showImport()"><i class="fas fa-file-import" aria-hidden="true"
+              nbTooltipAdjustment="noop" nbTooltip="Import users"></i>
+          </span>
+          <span>
+            <button size="medium" type="submit" nbButton status="primary" (click)="showUser()">Add User</button>
+          </span>
+        </span>
+
+
+
+      </div>
+
+      <!-- <div class="vertical_center">
+        <span class="select_region_org resp_region">
+      
+          <span class="region-org-resp" style="" (click)="showFilterResponsive = !showFilterResponsive">Region</span>
+        </span>
+      </div> -->
+    </div>
+
+    <div class="org-view">
+      <app-user-table-view [type]="'user-detail'" (totalUsers)="totalReceived($event)"
+        (callRegionHierarchy)="callRegionHierarchy()" [checked]="checked" [searchText]="searchOn"
+        [selectedTab]="selectedTab" [filterData]="filterOn">
+      </app-user-table-view>
+    </div>
+  </nb-layout-column>
+</div>
+<div></div>

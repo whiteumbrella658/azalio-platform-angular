@@ -1,0 +1,73 @@
+<nb-sidebar state="compacted" [class]="'sidebar-askQ ' + customClass">
+  <div class="action-items customClass">
+    <div class="logo-container">
+      <img src="assets/azal-logo.svg" class="logo-img">
+      <img nbTooltip="Admin home" style="cursor:pointer" *ngIf="storageService?.companyId" (click)="goToAdminView()"
+        src="assets/home.png" class="home-icon">
+      <!-- <span *ngIf="profileInfo" class="email comapnay_title">{{dataService?.getCompanyName()}}</span> -->
+    </div>
+    <div class="actions-container">
+      <div *ngFor="let item of icons" class="actions">
+        <span class="list" (click)="navigateTo(item.route)"
+          [ngClass]="{'disabled-item': item.key == null, 'selected-item': selectedRoute == item.key }">
+          <i [class]="item.icon" [ngClass]="{'fa-solid': selectedRoute == item.key}"></i>
+          <span *ngIf="customClass?.length > 0" class="list-title route">{{item?.title}}</span>
+        </span>
+      </div>
+    </div>
+  
+    <ng-container *ngIf="showConvo && !loading">
+      <div class="list-title box new-chat-btn" (click)="openNewChat()">
+        <span>
+          <i class="fa-solid fa-plus mr-05"></i>
+          <span>New chat</span>
+        </span>
+        <span class="azalio-img">
+          <img src="assets/new-chat-azalio.png">
+        </span>
+      </div>
+      <div class="searched-items-list">
+        <!-- <div class="list-title box searched-item" [ngClass]="{'selected-item': selectedConvo == item.id }"
+          *ngFor="let item of conversations" (click)="openChat(item)">
+          <span class="truncate">{{item.title}}</span>
+        </div> -->
+        <ng-container *ngFor="let obj of filteredConvos | keyvalue">
+            <span class="list-title-heading">{{obj.value.label}}</span>
+          <div class="list-title box searched-item" [ngClass]="{'selected-item': selectedConvo == item.id }"
+             *ngFor="let item of obj.value.data"  (click)="openChat(item)">
+              <span class="truncate">{{item.title}}</span>
+          </div>
+          <br>
+        </ng-container>
+
+      </div>
+    </ng-container>
+
+  </div>
+  <div class="action-items bottom-actions customClass">
+    <span class="sort" style="position: relative;">
+      <app-user-avatar (click)="$event.stopPropagation(); hideShowPopup()" size="medium" style="cursor:pointer;"
+        *ngIf="profileInfo" [name]="profileInfo?.name" [color]="'#0084FF'" [initialColor]="'white'" 
+        [title]="dataService?.getLoggedInUserEmail()">
+      </app-user-avatar>
+      <span class="sort-popup" *ngIf="displayPopup">
+        <span class="context-menu">
+          <ul class="sorting">
+            <li (click)="switchToAzalio()">
+              <nb-icon icon="diagonal-arrow-right-up-outline"></nb-icon>
+              Switch to Azalio
+            </li>
+            <li (click)="$event.stopPropagation(); $event.preventDefault()" class="disabled-item">
+              <nb-icon icon="settings-outline"></nb-icon>
+              Settings
+            </li>
+            <li (click)="logout()">
+              <nb-icon icon="log-out-outline"></nb-icon>
+              Sign out
+            </li>
+          </ul>
+        </span>
+      </span>
+    </span>
+  </div>
+</nb-sidebar>

@@ -1,0 +1,110 @@
+<nb-card [nbSpinner]="loading" class="for_spinner modal_sidepanel" style="height: 100vh;padding:0px !important">
+  <div class="setup_wrapper" *ngIf="isLinkValid">
+    <div class="left_section setup-signin">
+      <span class="logo-container">
+        <img src="assets/logo-azalio.svg" class="logo-img">
+        <img src="assets/logo-new.png" class="logo-text">
+      </span>
+      <h2 class="heading-text">Welcome {{name}}</h2>
+      <span class="relative gray_text subheading" style="font-size: 16px;">
+        Just two questions and you are ready to go.
+      </span>
+      <br />
+      <br />
+      <br />
+      <form #ngForm="ngForm" id="form" [formGroup]="form" (ngSubmit)="submit(ngForm)">
+        <div class="mb_20">
+          <label class="input-label">What's the name of your company? <span class="mandatory">*</span>
+          </label>
+          <input nbInput [formControlName]="'name'" />
+          <app-error-message [key]="'name'" [form]="form" [isSubmitted]="ngForm.submitted"></app-error-message>
+        </div>
+        <label class="input-label">
+          What's your mobile number?
+          <span class="mandatory">*</span>
+
+          <span class="needed input-label" style="float: right">
+
+            <i class="mr_10 gray_text" style="" (mouseenter)="addMobileTooltipAnalytics()"
+              nbTooltip="This number will be used to sign in to mobile application.">
+
+              why is it needed? <i class="fas fa-info-circle primary_color ml_10"></i>
+            </i>
+          </span>
+        </label>
+        <div class="flex space_between">
+          <div class="mb_20 country-code" style="width: 100px;">
+            <nb-select nbselect filled status="" class="size-medium status-basic shape-rectangle nb-transition"
+              [(selected)]="selectedCountry">
+              <nb-select-label>
+                <span class="vertical_center" style="display: inline-flex; vertical-align: middle;">
+                  <img [src]="selectedCountry.img" style="height: 15px;" class="mr_10" />
+                  {{selectedCountry.code}}
+                </span>
+              </nb-select-label>
+              <nb-option *ngFor="let country of countries" [value]="country">
+                <span class="vertical_center">
+                  <img [src]="country.img" style="height: 29px;" class="mr_10" />
+                  {{country.code}}
+                </span>
+              </nb-option>
+            </nb-select>
+
+          </div>
+          <div class="mb_20 phone-num" style="width: 85%;   margin-left: 80px;">
+            <input nbInput form="form" formControlName="phone_number" />
+            <app-error-message [key]="'phone_number'" [form]="form" [isSubmitted]="ngForm.submitted">
+            </app-error-message>
+          </div>
+
+        </div>
+
+        <div class="footer_button">
+          <app-submit-button [form]="form" class="launch-btn" [label]="'Let\'s Launch'"></app-submit-button>
+        </div>
+      </form>
+    </div>
+    <div class="right_section">
+      <span class="artwork">
+        <img src="https://azal-cdn-bucket.s3.us-south.cloud-object-storage.appdomain.cloud/login-image.png" alt="signin artwork" />
+      </span>
+    </div>
+  </div>
+
+  <div class="entry_wrapper accept_invite" *ngIf="!isLinkValid">
+    <div class="entry_page_header">
+      <div class="relative logo-wrapper">
+        <img src="assets/logo-azalio.png" class="logo-azalio">
+      </div>
+    </div>
+
+
+    <div class="link-expiry-wrapper main-section">
+
+      <div class="left_section">
+        <div class="mb_20">
+          <div class="animation-invite">
+            <app-no-records [display]="true" [animation]="'activationlinkExpire'" [textMessage]="''"></app-no-records>
+          </div>
+          <div class="email">
+            <span> {{email}} </span>
+          </div>
+          <div class="expiry-link">
+            <span>
+              Oops! The activation link to setup your company has expired.
+            </span>
+          </div>
+          <div class="label-txt" style="margin-bottom: 0px; font-size: 18px;">
+            Please contact <a href="mailto:customersupport@azal.io">customersupport@azal.io</a> to re-activate the link.
+          </div>
+          <br>
+          <div class="label-txt" style="margin-bottom: 0px; font-size: 18px;">
+            If you are already signed up click below to log in
+           </div>
+          <br>
+          <input type="button" status="primary" nbButton value="Log In" (click)="navigate()">
+        </div>
+      </div>
+    </div>
+  </div>
+</nb-card>

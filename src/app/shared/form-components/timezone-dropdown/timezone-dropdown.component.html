@@ -1,0 +1,14 @@
+<!-- <nb-card size="small"> -->
+<!-- <nb-card-body> -->
+<form [formGroup]="form">
+  <nb-select [placeholder]="placeholder" [formControlName]="controlName">
+    <nb-option [value]="null">{{placeholder}}</nb-option>
+    <nb-option *ngFor="let timezone of timezones" [value]="timezone.key" [id]="timezone.key">
+      <span *ngIf="showName">{{timezone?.name }}</span>
+      <span *ngIf="!showName">{{timezone?.key }}</span>
+    </nb-option>
+  </nb-select>
+</form>
+
+<!-- </nb-card-body> -->
+<!-- </nb-card> -->

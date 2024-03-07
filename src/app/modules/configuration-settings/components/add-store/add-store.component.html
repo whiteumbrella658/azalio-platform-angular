@@ -1,0 +1,109 @@
+<div class="modal_wrapper add-store">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <label> <b class="title">{{title}}
+                </b> </label>
+            <nb-icon icon="close" (click)="close({refresh: isAddAnotherStore, createAnother: isAddAnotherStore})"
+                class="cross_icon hidden"></nb-icon>
+        </nb-card-header>
+        <nb-card-body *ngIf="addStoreForm" [nbSpinner]="loading" class="for_spinner modal_sidepanel add_timesheets">
+            <form #ngForm="ngForm" id="form" [formGroup]="addStoreForm" (ngSubmit)="submit(ngForm)">
+                <div class="mb-20">
+                    <div class="flex vertical_center row-container relative">
+                        <div class="sname-label" nbTooltipPlacement="top" nbTooltip="Store">
+                            <!-- <img src="../../../../../assets/store-name.png"> -->
+                            <i class="fas fa-store icon-color"> <span class="mandatory"> *</span></i>
+                        </div>
+                        <div class="store">
+                            <!-- <input nbInput aria-label="add new region" [appAutoFocus]="true"
+                                [formControlName]="'store_title'" placeholder="Enter store name"> -->
+                            <app-text-input [autofocus]="true" [placeholder]="'Enter store name'"
+                                [controlName]="'store_title'" [form]="addStoreForm"> </app-text-input>
+                            <app-error-message [key]="'store_title'" [form]="addStoreForm"
+                                [isSubmitted]="ngForm.submitted" style="position: absolute; width: 100%">
+                            </app-error-message>
+                        </div>
+
+                        <!-- <div style="padding-right: 5px;padding-left: 5px;width: 7%;" bTooltipPlacement="top" nbTooltip="Time Zone">
+                            <i class="fa fa-globe fa-stack icon-color"  style="padding-left: 3px; font-size: 16px;">
+                                <span class="mandatory"> *</span></i>
+                        </div>
+                        <div style="width: 100%; padding-left: 5px;     padding-right: 5px;">
+                            <app-timezone-dropdown [controlName]="'timezone'" class="name_resp" [form]="addStoreForm"
+                                [showName]="true" [placeholder]="'Select time zone'"></app-timezone-dropdown>
+                            <app-error-message [key]="'timezone'" [form]="addStoreForm"
+                                [isSubmitted]="ngForm.submitted">
+                            </app-error-message>
+                        </div> -->
+                        <!-- <div class="info-icon">
+                        </div> -->
+                    </div>
+                    <div class="flex vertical_center relative row2-container">
+                        <div class="timezone-label" bTooltipPlacement="top" nbTooltip="Time Zone">
+                            <i class="fa fa-globe fa-stack icon-color">
+                                <span class="mandatory"> *</span></i>
+                        </div>
+                        <div class="timezone-input">
+                            <app-timezone-dropdown [controlName]="'timezone'" class="name_resp" [form]="addStoreForm"
+                                [showName]="true" [placeholder]="'Select time zone'"></app-timezone-dropdown>
+                            <app-error-message [key]="'timezone'" [form]="addStoreForm" [isSubmitted]="ngForm.submitted"
+                                style="position: absolute; width: 100%;">
+                            </app-error-message>
+
+                        </div>
+                        <!-- <div class="info-icon">
+                        </div> -->
+                    </div>
+                    <div class="flex vertical_center row2-container relative">
+                        <div class="geofence-label" nbTooltipPlacement="top" nbTooltip="Geo-fence">
+                            <i class="fas fa-crosshairs icon-color"></i>
+                        </div>
+                        <div class="geofence-input" [style.color]="!isLocationEnabled?'#ababab':''">Enable Geo-Fencing
+                        </div>
+                        <div>
+
+                        </div>
+                        <div class="child-container">
+                            <nb-toggle [disabled]="!isLocationEnabled" class="feature-toggle"
+                                [formControlName]="'is_geofencing'" labelPosition="end"
+                                (checkedChange)="onChange($event)" [checked]="showGeoMap">
+                            </nb-toggle>
+                            <span *ngIf="!isLocationEnabled" class="geofence-disabled">Go to Required Features >
+                                Timesheets, and enable location to use this feature. </span>
+                        </div>
+                    </div>
+                    <div>
+                        <app-geo-location *ngIf="showGeoMap && isLocationEnabled" [form]="addStoreForm"
+                            [autoInput]="storeAddress" [ngForm]="ngForm" [lat]="lat" [lng]="lng" [mapRadius]="mapRadius"
+                            [showGeoFence]="showGeoMap" (locationValue)="onLocationValue($event)"
+                            (geoFencing)="onGeoFencing($event)">
+                        </app-geo-location>
+                    </div>
+                </div>
+
+
+
+                <div class="footer_button">
+                    <span class="create-another" *ngIf="addNewStore && regionId === null">
+                        <nb-checkbox style="position: relative; top: 3px" [checked]="isAddAnotherStore"
+                            (checkedChange)="updateCreateAnother($event)"></nb-checkbox>
+                        Add another store
+                    </span>
+
+
+
+                    <span class="flex">
+                        <app-button (onClick)="close({refresh: isCreateAnother, createAnother: isCreateAnother})">Cancel</app-button>
+                        <button size="medium" type="submit" nbButton status="primary">{{buttonLabel}}</button>
+                    </span>
+                </div>
+                <app-confirm-popup [title]="'Store'"
+                    [textToDisplay]="'You\'re about to <b>permanently delete</b> this store. All the timesheet data of this store will also be deleted. Are you sure?'"
+                    (proceedDelete)="deleteRegion()" *ngIf="editStore">
+                    <span class="red-color pointer " style="position: relative;
+            top: -22px;"><i class="fas fa-trash pointer"></i> Delete store</span>
+                </app-confirm-popup>
+            </form>
+        </nb-card-body>
+    </nb-card>
+</div>

@@ -1,0 +1,318 @@
+.md-custom-event-cont {
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+    font-size: 13px;
+}
+
+.gray-text {
+    color: #969696;
+    // position: relative;
+    position: absolute;
+    // top: -7px;
+    top:14px;
+    font-size: 11px;
+    // left: 20px;
+    right: 0px;
+}
+
+::ng-deep {
+    .mbsc-windows.mbsc-calendar-week-day
+    {
+        height: 2.8em;
+    }
+    .mbsc-selected .mbsc-calendar-cell-text {
+        background: #7b68ee;
+        width: 50%;
+        color: #fff !important;
+        height: 25px;
+        left: 0px !important;
+        position: absolute;
+        text-align: center;
+        top: 0px;
+        line-height: 27px;
+        top: -2px !IMPORTANT;
+        border-radius: 5px;
+    }
+
+    .md-full-event-time {
+        font-size: 12px !IMPORTANT;
+    }
+
+    
+    // .mbsc-selected {
+    //     background: mediumslateblue !IMPORTANT;
+    //     color: #fff !important;
+    //     border-radius: 3px;
+    // }
+
+    .mobile-sch .mbsc-windows.mbsc-selected .mbsc-calendar-cell-inner, .mobile-sch .mbsc-windows.mbsc-range-day .mbsc-calendar-cell-inner {
+        background: transparent;
+    }
+
+// .mySchColor {
+//     // background-color: peru;
+//     display: block;
+//     height: 56px;
+// }
+
+// .mbsc-event-list.mbsc-event-list-scroll {
+//   padding: 6px 13px;
+// }
+
+// .mobile-sch .mbsc-windows.mbsc-schedule-date-header {
+//   display: none;
+// }
+
+
+mbsc-event-list-item[tabindex='0']:not(:first-child) .mesch {
+    opacity: 0 !important;
+    height: 0px;
+}
+
+mbsc-event-list-item[tabindex='0']:first-child .mySchColor {
+// border-top: 1px solid orange;
+display: flex;
+    align-items: center;
+}
+mbsc-event-list-item[tabindex='0']:first-child .myLeaveColor {
+    // border-top: 1px solid orange;
+    display: flex;
+        align-items: center;
+    }
+mbsc-event-list-item[tabindex='0'] ul:first-child .otherSchColor {
+border-top: 1px solid purple !important;
+}
+
+// mbsc-event-list-item[tabindex='0'] .child:is(:first-child)  {
+// border-top: 1px solid purple !important;
+// }
+
+mbsc-event-list-item[tabindex='0']:last-child .mySchColor:last-child {
+// border-bottom: 1px solid orange !important;
+// border-top: 10px solid red;
+margin-bottom: 10px;
+}
+mbsc-event-list-item[tabindex='0']:last-child .myLeaveColor:last-child {
+    // border-bottom: 1px solid orange !important;
+    // border-top: 10px solid red;
+    margin-bottom: 10px;
+    }
+ .otherSchColor:first-child {
+margin-top: 10px !important;
+display: flex !IMPORTANT;
+    align-items: center;
+}
+.mobile-sch .mbsc-event-list {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+.mySchColor {
+    background: rgb(254 126 33 / 5%) !IMPORTANT;
+}
+.mbsc-flex.mbsc-schedule-date-header.mbsc-windows {
+    display: none;
+    border-color: #f6f5f9;
+    background-color: #f6f5f9;
+    margin-bottom: 10px;
+}
+.mobile-sch .mbsc-windows.mbsc-calendar-week-day, .mbsc-windows.mbsc-calendar-cell, .mbsc-calendar-table {
+    background: #fff;
+}
+
+.mobile-sch .mbsc-calendar-table {
+    background: #eeeafd;
+    padding: 0;
+}
+
+
+.mbsc-windows.mbsc-eventcalendar { 
+    background: #f6f5f9; 
+    position: absolute; 
+    top: 0; 
+    width: 100%; 
+}
+}
+
+.mbsc-list-item {
+    position: inherit !IMPORTANT;
+}
+.mesch b {
+    margin-left: 10px;
+}
+
+mbsc-event-list-item[tabindex='0']:last-child .mySchColor {
+    border-bottom: 10px !important;
+    margin-bottom: 10px;
+    background: #fff !important;
+}
+
+.mesch {
+    display: flex;
+    align-items: center;
+}
+.nosch {
+    display: flex;
+    align-items: center;
+
+    span {
+        font-weight: 400;
+    }
+}
+.nosch b {
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+
+// .mySchColor:first-child .user-container .user-name {
+// color: mediumslateblue !important;
+// }
+// .mySchColor:first-child .user-container .user-name {
+ 
+// //  for tag look fill
+//   color: #fff !important;
+//   font-size: 1.2em;
+//   background: mediumslateblue !important;
+//   padding: 4px 17px;
+//   border-radius: 50px;
+//   width: auto;
+
+
+//   // For tag look transparent
+
+//   // color: mediumslateblue !important;
+//   // font-size: 1.2em;
+//   // background: #7b68ee2e !important;
+//   // padding: 4px 17px;
+//   // border-radius: 40px;
+//   // width: auto;
+//   // border: 1px solid;
+
+// }
+// .mySchColor:first-child .user-container .user-picture {
+// display: none !important;
+// }
+// // .mySchColor:first-child .user-container .user-picture::after {
+// // content: "";
+// // content: "";
+// // position: absolute;
+// // top: 0;
+// // left: 0;
+// // right: 0;
+// // bottom: 0;
+// // border-radius: 50px;
+// // border: 4px solid transparent;
+// // background: linear-gradient(45deg, #0b005e, mediumslateblue) border-box;
+// // -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+// // -webkit-mask-composite: destination-out;
+// // mask-composite: exclude;
+// // }
+
+// .mbsc-windows.mbsc-event-content {
+//   order: 0;
+// }
+
+// .mySchColor:first-child .user-container .user-picture {
+//   // border: 3px solid #2400ff !important;
+//   width: 3.2em;
+//   height: 3.2em;
+//   box-shadow: 0 0px 1px rgb(0 0 0 / 11%), 0 3px 6px rgb(0 0 0 / 20%)
+// }
+
+
+// .mbsc-windows.mbsc-event-color {
+//   width: 0.5em;
+//   margin: -0.5em 0 -0.5em -0.5em;
+//   /* align-self: stretch; */
+//   position: absolute;
+//   right: 18px;
+//   z-index: 1;
+//   height: 12px;
+//   top: 53%;
+//   border-radius: 20px;
+//   width: 12px;
+// }
+
+
+// .md-custom-event-cont.otherSchColor:first-child:before {
+//   content: '';
+//   width: 100%;
+//   position: absolute;
+//   top: -8px;
+//   background: #f6f5f9;
+//   left: 0;
+//   height: 12px;
+// }
+
+// .mbsc-windows.mbsc-event-time {
+//   width: 11em;
+//   padding: 0;
+//   font-size: 0.75em;
+//   box-sizing: border-box;
+//   display: flex;
+//   position: relative;
+//     right: 10px;
+// }
+// .mbsc-event-start:after {
+//   content: ' - ';
+// }
+// }
+
+.mySchColor {
+    // border-left: 2px solid orange;
+    // border-right: 2px solid orange;
+}
+
+.sch-row {
+    background-color: #fff;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px 15px 10px 6px;
+    border-radius: 8px;
+    font-family: nunito;
+    // margin-bottom: 4px;
+}
+
+
+::ng-deep {
+mbsc-event-list-item {
+    background: #f6f5f9 !IMPORTANT;
+}
+
+.md-full-event-details {
+    font-size: 13px !important;
+}
+}
+
+.dot {
+    font-size: 30px;
+    color: rgb(136, 213, 255);
+    position: relative;
+    left: 7px;
+    top: -1px;
+}
+
+
+.mobile-sch .mbsc-windows.mbsc-event.mbsc-list-item {
+    /* margin-bottom: 0px !important; */
+    padding: 0px !important; 
+}
+
+.otherleaveSchColor {
+    background-color: #e9e7f6;
+  }
+
+  .myLeaveColor {
+    background-color: #e9e7f6 !IMPORTANT;
+    display: flex;
+    align-items: center;
+  }
+
+  .ext-phone-number{
+    margin-top: 5px;
+    font-size: 11px;
+    margin-left: 39px;
+  }
+  

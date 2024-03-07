@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing Angular CLI
+      - npm install -g @angular/cli@11.2.4
+      - echo Finished installing Angular CLI
+      - echo Installing dependencies
+      - npm install
+      - echo Finished installing dependencies
+  build:
+    commands:
+      - echo Building project
+      - ng build --prod
+      - echo Finished building project
+artifacts:
+  files:
+    - "**/*"

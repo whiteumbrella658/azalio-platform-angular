@@ -1,0 +1,188 @@
+<div class="modal_wrapper add_task_modal">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <label>
+                <b class="title">{{headerTitle}}</b>
+            </label>
+        </nb-card-header>
+        <nb-card-body [nbSpinner]="loading">
+            <form *ngIf="form " #ngForm="ngForm" id="form" [formGroup]="form" autocomplete="off"
+                (ngSubmit)="submit(ngForm)" class="form_parent">
+                <span *ngIf="isAddEditTagsOnly">
+                    Enhance task organization by adding tags; this will help categorize them effectively on the mobile app.
+                </span>
+                <!-- <div class="flex vertical_center row-container relative">
+                    <div class="sname-label" bTooltipPlacement="top" nbTooltip="Task name">
+                        <i class="fa fa-tasks icon-color"><span class="mandatory"> *</span></i>
+                    </div>
+                    <div class="task-name">
+                        <app-text-input [maxlength]="120" [autofocus]="true"
+                            [placeholder]="'Add a task here for your store.'" [controlName]="'taskName'"
+                            [form]="form"></app-text-input>
+                        <app-error-message class="name_input_resp" [key]="'taskName'" [form]="form"
+                            [isSubmitted]="ngForm.submitted" style="position: absolute; width: 100%">
+                        </app-error-message>
+                    </div>
+                </div>
+
+                <div class="flex vertical_center row-container resp-container relative" style="">
+                    <span class="fields-wrapper">
+                        <div class="sname-label" nbTooltipPlacement="top" nbTooltip="Shift name">
+                            <i class="fas fa-user-clock icon-color">
+                                <span class="mandatory"> *</span>
+                            </i>
+                        </div>
+                        <div class="shift-details">
+                            <app-dropdown-multi [key]="'shift_name'" [Data]="shifts" [placeholder]="'Select one or more shifts'" [controlName]="'shift'"
+                                [form]="form" [show]="false">
+                            </app-dropdown-multi>
+                            <span class="assign-store-checkbox">
+                                <nb-checkbox [checked]="isAllChecked" (checkedChange)="checkedChange($event)"
+                                  style="position: relative; top: 5px"></nb-checkbox>
+                                 <span class="assign-user-txt">
+                                  Or select all shifts
+                                 </span> 
+                              </span>
+                            <app-error-message class="name_input_resp" [key]="'shift'" [form]="form"
+                            [isSubmitted]="ngForm.submitted" style="position: absolute; width: 100%">
+                            </app-error-message>
+                        </div>
+                    </span> -->
+                <!-- <span class="fields-wrapper">
+                        <div class="sname-label" nbTooltipPlacement="top" nbTooltip="Shift repeats">
+                            <i class="fa fa-undo icon-color next-icon"></i>
+                        </div>
+                        <div class="shift-details">
+                            <input (focusout)="onFocusOut()" type="text" value="1" formControlName="count" maxlength="1"
+                                class="add-task-occurences" aria-label="text input field" nbInput>
+                        </div>
+                    </span> -->
+
+                <!--  </div>
+                <div class="flex vertical_center row-container relative">
+                    <div class="sname-label" bTooltipPlacement="top" nbTooltip="Task points">
+                        <img src="assets/coin-task.png">
+                    </div>
+                    <div class="task-name pl-10">
+                        <app-dropdown [optionClass]="''" [Data]="points" [placeholder]="'Select an option'"
+                            [controlName]="'points'" [form]="form" [show]="false">
+                        </app-dropdown>
+                        <app-error-message class="name_input_resp" [key]="'points'" [form]="form"
+                        [isSubmitted]="ngForm.submitted" style="position: absolute; width: 100%">
+                        </app-error-message>
+                    </div>
+                </div> -->
+
+                <div class="flex vertical_center row-container relative">
+                    <div class="sname-label" bTooltipPlacement="top" nbTooltip="Task Tags">
+                        <i class="fa-solid fa-tag icon-color tag-icon"></i>
+                    </div>
+                    <div class="task-name pl-10">
+                        <!-- [selected]="filters?.role" -->
+                        <app-dropdown-multi [label]="'tags'" [optionClass]="'dot-tag'" [key]="'tag'" [key2]="'color'" [type]="'tag'"
+                        [optionId]="'id'" [Data]="tags" [selected]="tagsData" [placeholder]="'Select one or more labels'" [controlName]="'tagName'"
+                        [form]="form" [show]="false">
+                        </app-dropdown-multi>
+                        <!-- <app-error-message [key]="'description'" [form]="form" [isSubmitted]="ngForm.submitted">
+                        </app-error-message> -->
+                    </div>
+                </div>
+
+                <ng-container *ngIf="!isAddEditTagsOnly">
+                <div class="flex vertical_center row-container relative">
+
+                    <div class="sname-label" bTooltipPlacement="top" nbTooltip="Task Description">
+                        <i class="fa fa-comment icon-color"></i>
+                    </div>
+                    <div class="task-name pl-10">
+                        <textarea class="survey-txtarea" maxlength="500" aria-label="question input" nbInput fullWidth
+                            name="ques" formControlName="description" placeholder="Add task description"
+                            autocomplete="off"></textarea>
+                        <app-error-message [key]="'description'" [form]="form" [isSubmitted]="ngForm.submitted">
+                        </app-error-message>
+                    </div>
+                </div>
+                <div class="flex vertical_center row-container relative">
+                    <div class="sname-label" bTooltipPlacement="top" nbTooltip="Task repetition">
+                        <img src="assets/tasks-sch.png">
+                    </div>
+                    <div class="task-name pl-04">
+                        <app-dropdown [optionClass]="''" [Data]="repeatTypeData" [placeholder]="'Select an option'"
+                            [controlName]="'repeatType'" [form]="form" [show]="false">
+                        </app-dropdown>
+                        <app-error-message class="name_input_resp" [key]="'repeatType'" [form]="form"
+                            [isSubmitted]="ngForm.submitted" style="position: absolute; width: 100%">
+                        </app-error-message>
+                    </div>
+                </div>
+                <ng-container *ngIf="showDetails(1)">
+                    <div class="flex task-custom">
+                        <div class="sname-label" bTooltipPlacement="top" nbTooltip="Task custom dates">
+                            <i class="fa fa-clock icon-color"></i>
+                        </div>
+                        <div id="dates-wrapper" class="tasks-sch-container relative">
+                            <div class="flex vertical_center row-container-date relative"
+                                *ngFor="let date of dates.controls; let i = index;">
+                                <!-- <div class="sname-label" bTooltipPlacement="top" nbTooltip="Task custom dates">
+                                    <i [style.visibility]="i == 0 ? 'visible' : 'hidden'"
+                                        class="fa fa-clock icon-color"></i>
+                                </div> -->
+                                <div class="task-name pl-10">
+                                    <app-timer-input [onlyDate]="true" [controlName]="'value'" [form]="date"
+                                        [placeholder]="'Enter date'" [filter]="filter(i)"></app-timer-input>
+                                    <app-error-message [key]="'value'" [form]="date" [isSubmitted]="ngForm.submitted">
+                                    </app-error-message>
+                                    <!-- <div class="custom-errors" *ngIf="ngForm.submitted && date.controls?.value?.errors?.nbDatepickerMin">
+                                        <i class="fas fa-exclamation-triangle error-icon"></i>
+                                        <span class="red custom-txt">Past dates cannot be selected.</span>
+                                    </div> -->
+                                    <span class="delete_icon" *ngIf="dates.length > 1" (click)="removeRow(i)">
+                                        <i class="fa fa-times-circle" nbTooltipPlacement="top"
+                                            nbTooltip="Delete date."></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="right-actions pointer add-date" [ngClass]="{'disabled': dates.length > 11}">
+                        <span (click)="addDate()"> <i class="fas fa-calendar-plus"></i> Add date</span>
+                    </span>
+                </ng-container>
+
+                <div class="flex vertical_center row-container relative">
+                    <div class="daywise" *ngIf="showDetails(2)">
+                        <ng-container *ngFor="let day of days.controls; let i = index">
+                            <span class="week-days" [formGroup]="day">
+                                <nb-checkbox status="primary" [checked]="day.value.checked" formControlName="checked">
+                                    {{ day.value.name}}
+                                </nb-checkbox>
+                            </span>
+                        </ng-container>
+                    </div>
+                </div>
+                </ng-container>
+                <!-- <div class="flex vertical_center row-container relative assign-task">
+                    <div class="option-items">
+                    <ng-container *ngIf="!selectedData && permissions?.Tasks?.add && permissions?.Tasks?.add_bulk">
+                        Add task to:
+                        <nb-radio-group class="add-task-option" formControlName="isAllStores">
+                            <nb-radio value="1" class="option-txt">All stores</nb-radio>
+                            <nb-radio value="0" class="option-txt">Current store</nb-radio>
+                        </nb-radio-group>
+                    </ng-container>
+                    </div>
+                </div> -->
+
+                <span class="flex btns-row">
+                    <!-- <span class="right-actions pointer add-date" [ngClass]="{'disabled': dates.length > 5}" (click)="addDate()">
+                       <i class="fas fa-calendar-plus"></i> Add date
+                    </span> -->
+                    <span class="left-btns">
+                        <app-button (onClick)="close(null)"  nbTooltip="Any changes done will be discarded.">Cancel</app-button>
+                        <app-submit-button [form]="form" [label]="buttonLabel"></app-submit-button>
+                    </span>
+                </span>
+            </form>
+        </nb-card-body>
+    </nb-card>
+</div>

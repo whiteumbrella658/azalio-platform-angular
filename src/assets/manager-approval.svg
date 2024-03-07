@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23.234" height="23.606" viewBox="0 0 23.234 23.606">
+  <g id="Group_53576" data-name="Group 53576" transform="translate(6998.465 14453.151)">
+    <g id="Group_53575" data-name="Group 53575" transform="translate(0 -1.326)">
+      <path id="Icon_awesome-user-clock" data-name="Icon awesome-user-clock" d="M12.82,18.109a11.335,11.335,0,0,1,1.345-4.274c-.388-.072,1.5,0,1.091,0h-.811a8.536,8.536,0,0,1-7.08,0H6.554A6.494,6.494,0,0,0,.027,20.292v2c0,1.273-.668.675.619.675H17.838C15.638,21.434,12.82,20.968,12.82,18.109ZM10.9,12.3A6.182,6.182,0,0,0,17.12,6.149a6.216,6.216,0,0,0-12.431,0A6.182,6.182,0,0,0,10.9,12.3Z" transform="translate(-6998.319 -14451.825)" fill="#9782f1"/>
+      <circle id="Ellipse_2325" data-name="Ellipse 2325" cx="6" cy="6" r="6" transform="translate(-6987.231 -14440.219)" fill="#fff"/>
+      <path id="Icon_awesome-check-circle" data-name="Icon awesome-check-circle" d="M10.543,5.553A4.99,4.99,0,1,1,5.553.563,4.99,4.99,0,0,1,10.543,5.553ZM4.976,8.2l3.7-3.7a.322.322,0,0,0,0-.455l-.455-.455a.322.322,0,0,0-.455,0L4.748,6.6l-1.41-1.41a.322.322,0,0,0-.455,0l-.455.455a.322.322,0,0,0,0,.455L4.52,8.2A.322.322,0,0,0,4.976,8.2Z" transform="translate(-6986.784 -14439.771)" fill="#40d97d"/>
+    </g>
+  </g>
+</svg>

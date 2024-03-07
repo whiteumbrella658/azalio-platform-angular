@@ -1,0 +1,25 @@
+<div class="modal_wrapper enable-play">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <label> <b class="title">Enable Azalio Play</b> </label>
+            <nb-icon icon="close" (click)="close()" class="cross_icon hidden"></nb-icon>
+        </nb-card-header>
+        <nb-card-body [nbSpinner]="loading">
+            <form #ngForm="ngForm" id="form" [formGroup]="form" (ngSubmit)="submit(ngForm)">
+                <div class="mb_20">
+                    <label class="label-txt">Please specify the pin length of employee login. <span
+                            class="mandatory">*</span> </label>
+                    <app-radio [form]="form" [controlName]="'pinLength'" [items]="radioData"></app-radio>
+                </div>
+                <div class="mb_20">
+                    <label class="label-txt">How do you want to generate pin? <span class="mandatory">*</span> </label>
+                    <app-radio [form]="form" [controlName]="'autoPin'" [items]="radioData2"></app-radio>
+                </div>
+                <div class="footer_button" style="justify-content: flex-end; margin-top:15px !important">
+                    <app-button (onClick)="close()">Cancel</app-button>
+                    <button size="medium" type="submit" nbButton status="primary">Enable</button>
+                </div>
+            </form>
+        </nb-card-body>
+    </nb-card>
+</div>

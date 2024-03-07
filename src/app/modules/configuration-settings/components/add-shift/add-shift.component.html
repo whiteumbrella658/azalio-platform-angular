@@ -1,0 +1,128 @@
+<div class="modal_wrapper add-shift">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <span class="header-container">
+                <label class="title" style="text-align: center;">{{this.isEdit ? 'Edit ' : 'Add '}}
+                    shift{{store.shifts?.length > 1 ? 's' : ''}}</label>
+                <span class="store-name"><i class="fas fa-store"></i>{{store?.title}}</span>
+            </span>
+
+        </nb-card-header>
+
+        <nb-card-body [nbSpinner]="loading">
+            <ng-container *ngIf="AddShiftForm">
+                <form #ngForm="ngForm" id="form" [formGroup]="AddShiftForm" class="reward-form"
+                    (ngSubmit)="submit(ngForm)">
+                    <div class="wrapper">
+                        <ng-container *ngFor="let shift of shifts.controls; index as i">
+                            <div *ngIf="!isEdit || shift.controls.is_deleted.value == 0" class="mb-10 "
+                                [ngClass]="{'edit-tiles': isEdit}">
+                                <div class="flex vertical_center row-container relative">
+                                    <ng-container *ngFor="let icon of shiftIcons">
+                                        <span style="padding:0px;">
+                                            <i style="font-size:18px !important;" class="shift-icon"
+                                                [class]="icon.value"
+                                                [ngClass]="{'selected': shift.controls.icon.value.includes(icon.key)}"
+                                                aria-hidden="true" (click)="setIcon(shift, icon.value)"></i>
+                                        </span>
+                                    </ng-container>
+                                </div>
+                                <div class="flex vertical_center row-container relative">
+                                    <div class="sname-label" bTooltipPlacement="top" nbTooltip="Shift name">
+                                        <i class="fas fa-user-clock icon-color"><span class="mandatory"> *</span></i>
+                                    </div>
+                                    <div class="store">
+                                        <app-text-input [placeholder]="'Enter shift name'" [controlName]="'name'"
+                                            [form]="shift"></app-text-input>
+                                        <app-error-message style="position: absolute;width:100%;" [key]="'name'"
+                                            [form]="shift" [isSubmitted]="ngForm.submitted">
+                                        </app-error-message>
+                                    </div>
+                                </div>
+                                <div class="flex vertical_center row-container resp-container relative" style="">
+                                    <span class="fields-wrapper">
+                                        <div class="sname-label" nbTooltipPlacement="top"
+                                            nbTooltip="Shift start/end time">
+                                            <i class="fas fa-clock icon-color"><span class="mandatory"> *</span></i>
+                                        </div>
+                                        <div class="shift-time">
+                                            <app-timer-input [onlyTime]="true" [form]="shift"
+                                                [controlName]="'shiftStartTime'"
+                                                [placeholder]="'Enter shift start time'">
+                                            </app-timer-input>
+                                            <app-error-message [key]="'shiftStartTime'" [form]="shift"
+                                                [isSubmitted]="ngForm.submitted">
+                                            </app-error-message>
+                                        </div>
+                                    </span>
+                                    <span class="fields-wrapper">
+
+                                        <div class="sname-label" nbTooltipPlacement="top" nbTooltip="Shift end">
+                                            <i class="fa fa-arrow-right icon-color next-icon"></i>
+                                        </div>
+                                        <div class="shift-time">
+                                            <app-timer-input [onlyTime]="true" [form]="shift"
+                                                [controlName]="'shiftEndTime'" [placeholder]="'Enter shift end time'">
+                                            </app-timer-input>
+                                            <app-error-message [key]="'shiftEndTime'" [form]="shift"
+                                                [isSubmitted]="ngForm.submitted">
+                                            </app-error-message>
+                                            <!-- *ngIf="!shift.controls.shiftEndTime.errors" -->
+                                            <ng-container *ngIf="!shift.controls.shiftEndTime.errors">
+                                                <!-- <div *ngIf="ngForm.touched && AddShiftForm.errors?.invalidTime" class="red"
+                                    style="font-size: 11px; position: absolute;margin-top: 3px;">Shift end time must be greater</div> -->
+                                                <div *ngIf="shift.errors?.invalidSlot == true" class="red"
+                                                    style="font-size: 11px;position: absolute;margin-top: 3px;">
+                                                    A minimum of 1 hour slot is required
+                                                </div>
+                                                <!-- <div *ngIf="ngForm.touched && AddShiftForm.errors?.invalidMaxSlot" class="red"
+                                    style="font-size: 11px;position: absolute; margin-top: 3px;">Maximum allowed shift time is 24 hours</div> -->
+                                            </ng-container>
+                                        </div>
+                                    </span>
+
+                                </div>
+                                <div class="flex vertical_center row-container relative assign-shift">
+                                    <div class="sname-label" style="width: 8%;">
+                                    </div>
+                                    <div class="option-items" *ngIf="!isEdit">
+                                            Add shift to:
+                                            <nb-radio-group class="add-shift-option" [(ngModel)]="isAllChecked" [ngModelOptions]="{standalone: true}" >
+                                                <nb-radio value="1" class="option-txt">All stores</nb-radio>
+                                                <nb-radio value="0" class="option-txt">Current store</nb-radio>
+                                            </nb-radio-group>
+                                    </div>
+                                </div>
+                                <span class="delete_icon" *ngIf="isEdit && store.shifts[i].has_tasks == 0"
+                                    (click)="deleteShift(shift, i)">
+                                    <i class="fa fa-times-circle" nbTooltipPlacement="top"
+                                        nbTooltip="Delete shift."></i>
+                                </span>
+
+                            </div>
+                        </ng-container>
+                        <div class="delete-shifts" *ngIf="isEdit && hasAllDeletedShifts()">
+                            <app-no-records [display]="true" [animation]="'taskcomment'" [textMessage]="'No shifts.'">
+                            </app-no-records>
+                        </div>
+                    </div>
+
+                    <div class="footer_button">
+                        <span class="create-another" *ngIf="!isEdit && store?.shifts?.length < 5">
+                            <nb-checkbox style="position: relative; top: 3px" [checked]="isAddAnother"
+                                (checkedChange)="isAddAnother=$event">
+                                Add another shift
+                            </nb-checkbox>
+                        </span>
+                        <span class="flex">
+                            <app-button (onClick)="close()">Cancel</app-button>
+                            <app-submit-button [form]="AddShiftForm" [label]="isEdit ? 'Update' : 'Add'">
+                            </app-submit-button>
+                        </span>
+                    </div>
+                </form>
+            </ng-container>
+        </nb-card-body>
+    </nb-card>
+
+</div>

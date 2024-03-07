@@ -1,0 +1,27 @@
+<form [formGroup]="form">
+    <nb-select optionsListClass='multi-drpdown-filters' id="dropdown-display" multiple *ngIf="Data?.length > 0; else emptydrop" [placeholder]="placeholder" [formControlName]="controlName"
+        [(selected)]="selected" 
+        (selectedChange)="change($event)">
+        <nb-select-label *ngIf="(type == 'tag' || type == 'tag-full') && selectedItems?.length <= 3">
+            <ng-container *ngFor="let item of selectedItems; let i = index;">
+                    <span class="mr-5"><span class="bubble" [style.background-color]="item[key2]"></span>
+                    <span class="label-name">{{item[key]}}<ng-container *ngIf="i !== selectedItems?.length -1">,</ng-container></span>
+                </span>
+            </ng-container>
+        </nb-select-label>  
+        <nb-select-label *ngIf="selectedItems?.length > 3">
+            {{ selectedItems?.length }} {{label}}
+          </nb-select-label> 
+        <nb-option (click)="$event.stopPropagation()" [class]="optionClass" *ngIf="show" [value]="selectedItems">{{placeholder}}</nb-option>
+        <nb-option (click)="$event.stopPropagation(); revertSelection()" [class]="optionClass" *ngFor="let data of Data" [value]="data[id]" [id]="data[id]">
+            <span *ngIf="type == 'tag'" class="bubble" [style.background-color]="data[key2]"></span> {{ data[key] }}
+        </nb-option>
+    </nb-select>
+</form>
+
+<ng-template #emptydrop>
+    <form [formGroup]="form">
+        <nb-select disabled placeholder="No item to select" [formControlName]="controlName">
+        </nb-select>
+    </form>
+</ng-template>

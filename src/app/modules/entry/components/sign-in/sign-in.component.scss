@@ -1,0 +1,163 @@
+.nb-form-field-limited-width.nb-form-field-size-medium {
+  max-width: 100% !important;
+}
+
+@media (max-width: 650px) {
+  .for_spinner .modal_sidepanel {
+    align-items: center !important;
+  }
+}
+
+.flex-row-container {
+  background: white;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.flex-row-container > .flex-row-item {
+  flex: 1 1 30%; /*grow | shrink | basis */
+  height: 100vh;
+}
+
+.flex-row-item {
+  background-color: white;
+}
+
+.sign-in-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  padding: 10px;
+  justify-content: center;
+  flex-direction: column;
+}
+.sign-in-box {
+  background: white;
+  /* padding: 100px; */
+  border-radius: 15px;
+  box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
+  width: 90%;
+  // height: 75vh;
+  padding: 20px;
+}
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.logo-img {
+  width: 50px;
+  margin: 0 auto;
+}
+.logo-text {
+  width: 100px;
+  margin: 0 auto;
+}
+
+.sign-in-form {
+  padding-top: 50px;
+}
+.input-label {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #6e689b;
+  font-weight: 600;
+}
+
+.forgot-pass {
+  justify-content: flex-end;
+}
+.sign-up-row {
+  // margin-top: 30px;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #6e689b;
+  display: grid;
+}
+
+.sign-up-btn {
+  color: #7b68ee;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 6px;
+}
+@media (min-width: 1600px) {
+  .flex-row-container > .flex-row-item {
+    flex: 1 1 80%;
+  }
+  .row1 {
+    display: none;
+  }
+  .sign-in-box {
+    width: 90%;
+    height: fit-content;
+    padding: 15px;
+  }
+  .animated-icons {
+    display: none;
+  }
+  .row3 {
+    display: none;
+  }
+}
+@media (max-width: 1100px) and (min-width: 931px) {
+  .row1 {
+    display: none;
+  }
+  .flex-row-container > .flex-row-item {
+    flex: 1 1 0%;
+    height: 100vh;
+  }
+  .flex-row-container > .row2 {
+    flex: 1 1 40%;
+  }
+  .flex-row-container > .row3 {
+    flex: 1 1 30%;
+  }
+  .artwork img {
+    width: 70%;
+  }
+  .row2 {
+    z-index: 100;
+    background: none;
+  }
+  .sign-in-box {
+    width: 80%;
+    height: fit-content;
+    padding: 15px;
+  }
+}
+@media (max-width: 931px) {
+  .flex-row-container > .flex-row-item {
+    flex: 1 1 80%;
+  }
+  .row1 {
+    display: none;
+  }
+  .sign-in-box {
+    width: 90%;
+    height: fit-content;
+    padding: 15px;
+  }
+  .row3 {
+    display: none;
+  }
+}
+
+.sign-in {
+  padding: 0px !important;
+}
+
+.row3 {
+  width: fit-content;
+  background-image: url('https://azal-cdn-bucket.s3.us-south.cloud-object-storage.appdomain.cloud/login-image.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  object-fit: cover;
+}
+
+.mandatory {
+  font-size: initial;
+}

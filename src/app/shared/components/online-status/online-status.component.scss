@@ -1,0 +1,52 @@
+.online {
+    // display: none !important;
+    background-color: green;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    animation: online-response 0.5s 1;
+    -webkit-animation: online-response 0.5s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 2s;
+    -webkit-animation-delay: 1s; /* Safari and Chrome */
+    -webkit-animation-fill-mode: forwards;
+    position: fixed;
+    width: 100%;
+    display: block;
+    z-index: 22222;
+  }
+  
+  .offline {
+    background-color: red;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    z-index: 22222;
+    position: absolute;
+    width: 100%;
+  }
+  
+  @keyframes online-response {
+    from {
+      opacity: 1;
+      z-index: 1;
+    }
+  
+    to {
+      opacity: 0;
+      z-index: 0;
+    }
+  }
+  
+  @-webkit-keyframes online-response {
+    from {
+      opacity: 1;
+      z-index: 1;
+    }
+  
+    to {
+      opacity: 0;
+      z-index: 0;
+    }
+  }
+  

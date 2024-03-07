@@ -1,0 +1,52 @@
+
+<app-loader [loading]="actionLoading"></app-loader>
+
+<nb-card class="graph-wrapper" *ngIf="displayType !== 'result'">
+    <span class="graph-heading-row">
+        <span class="chart-title" [nbTooltip]="title">{{title}}</span>
+        <span class="graph-actions">
+            <span id="expand-graph" style="display: none;" nbTooltip="Maximize Graph"><i class="fa-regular fa-pencil-slash"></i></span>
+            <span id="save-graph" *ngIf="showSaveBtn" nbTooltip="Save Graph" (click)="saveGraph()"><i class="fa-regular fa-pencil-slash"></i></span>
+            <span id="unpin-graph"  *ngIf="showUnsaveBtn" nbTooltip="Remove from saved graphs" (click)="saveGraph(false)"><i class="fa-regular fa-pencil-slash"></i></span>
+        </span>
+     </span>
+    <div class="graph-container" [ngClass]="{'circular-graph' : chartType == 'doughnut' || chartType == 'polarArea' || chartType == 'radar'}" style="padding: 19px;">
+        <canvas height="200" width="340" [class]="chartType == 'doughnut' || chartType == 'polarArea' || chartType == 'radar'? 'round' : ''" baseChart #savedBaseChart="base-chart" [data]="data" [plugins]="chartPlugins" [options]="chartOptions" [type]="chartType">
+        </canvas>
+        <ng-container *ngIf="chartType == 'doughnut' || chartType == 'polarArea' || chartType == 'radar'">
+        <div *ngIf="data?.datasets">
+            <ul class="custom-legend-list">
+                <li [ngClass]="item.hidden ? 'li-hidden' : 'li-showing'" *ngFor="let item of data.datasets; let i = index" class="custom-legend-item" (click)="legendOnClick(i)">
+                    <span class="slice-color" [ngStyle]="{'background-color': item.backgroundColor}"></span>
+                    <span class="slice-title" [nbTooltip]="data.labels[i]">{{data.labels[i]}}</span>
+                </li>
+            </ul>
+        </div>
+        </ng-container>
+    </div>
+</nb-card>
+<div class="results-graph" *ngIf="displayType == 'result'">
+    <span class="graph-actions">
+        <span id="expand-graph" style="display: none;" nbTooltip="Maximize Graph"></span>
+        <span id="save-graph" *ngIf="showSaveBtn" nbTooltip="Save Graph" (click)="saveGraph()"></span>
+        <span id="unpin-graph"  *ngIf="showUnsaveBtn" nbTooltip="Remove from saved graphs" (click)="saveGraph(false)"></span>
+    </span>
+    <div>
+        <div [class]="chartType == 'pie' || chartType == 'doughnut' || chartType == 'polarArea' || chartType == 'radar' ? 'width-div' : 'full-width'">
+            <canvas baseChart #partsBaseChart="base-chart" 
+            [ngClass]="{'circular-graph-results' : chartType == 'pie' || chartType == 'doughnut' || chartType == 'polarArea' || chartType == 'radar'}" [data]="data" [plugins]="chartPlugins" [options]="chartOptions" [type]="chartType">
+            </canvas>
+        </div>
+        <ng-container *ngIf="chartType == 'pie' || chartType == 'doughnut' || chartType == 'polarArea' || chartType == 'radar'">
+            <div  class="width-div" *ngIf="savedBaseChart?.chart?.legend?.legendItems">
+                <ul class="custom-legend-list">
+                    <li *ngFor="let item of savedBaseChart.chart.legend.legendItems; let i = index" class="custom-legend-item" (click)="legendOnClick(i)"
+                        [ngClass]="item.hidden ? 'li-hidden' : 'li-showing'">
+                        <span class="slice-color" [ngStyle]="{'background-color': item.fillStyle}"></span>
+                        <span class="slice-title">{{ item.text }} </span>
+                    </li>
+                </ul>
+            </div>
+        </ng-container>
+    </div>
+</div>

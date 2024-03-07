@@ -1,0 +1,248 @@
+<app-loader [loading]="pageLoading || loading"></app-loader>
+<div class="flex">
+
+    <nb-layout-column class="colored-column-info timesheets_wrapper survey-responses">
+        <div class="wrapper_header" [style.visibility]="!paginator ? 'hidden': 'visible'">
+            <div class="flex container">
+                <span (click)="backToSurvey()">
+                    <button class="back-btn" size="medium" type="button" nbButton status="primary">
+                        <i class="fa fa-angle-left" aria-hidden="true" style="margin-right:7px;"></i> Survey Dashboard
+                    </button>
+                </span>
+                <span class="question-dropdown" *ngIf="form && !pageLoading && !emptyResults">
+                    <app-dropdown [optionClass]="'question-options'" [Data]="questionList" [key]="'id'"
+                        [display]="'title'" [displayDate]="'sent_on'" (valueChange)="onQuestionSelection()"
+                        [placeholder]="'Select a question'" [controlName]="'question'" [form]="form" [show]="true">
+                    </app-dropdown>
+                </span>
+                <span class="right-elements">
+                    <app-search-input class="search" [placeholder]="'Search by user'" (searchEvent)="onSearch($event)">
+                    </app-search-input>
+                    <span class="survey_responses_pagination">
+                        <mat-paginator *ngIf="paginator" [length]="paginator.total_records"
+                            [pageIndex]="paginator.page_no - 1" [pageSize]="paginator.page_size"
+                            [pageSizeOptions]="pageSizes" (page)="pageEvent = $event; getData()" showFirstLastButtons>
+                        </mat-paginator>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="response-details" *ngIf="!pageLoading && !emptyResults && summary.question_type != 4">
+            <div class="box-container box1">
+                <span class="row-wrapper1">
+                    <span class="first-element">
+                        <span class="heading-txt">
+                            Total Responses
+                        </span>
+                        <span class="img-container">
+                            <img src="assets/response.png">
+                        </span>
+                    </span>
+                    <span class="second-element">
+                        {{summary?.total_responses}}/{{summary?.total_questions_sent}}
+                    </span>
+                </span>
+                <span class="row-wrapper2">
+                    <span class="positive" *ngIf="summary?.total_responses > 0">+{{calcPerc()}}%</span>
+                </span>
+            </div>
+
+            <div class="box-container box2" *ngFor="let store of storeSummary">
+                <span class="row-wrapper1" *ngIf="summary.question_type != 3">
+                    <span class="first-element">
+                        <span class="sname-details">
+                            {{store.title}}
+                        </span>
+                        <span class="img-container">
+                            <img src="assets/store-img.png">
+                        </span>
+                    </span>
+                </span>
+                <span class="row-wrapper1" *ngIf="summary.question_type == 3">
+                    <span class="first-element">
+                        <span class="free-txt-questions">
+                            {{store.response}}
+                        </span>
+                        <!-- <span class="img-container">
+                            <img src="assets/free-txt.png" style="width: 50px; height: 50px;">
+                        </span> -->
+                    </span>
+                </span>
+
+                <span class="row-wrapper2 mt-27" *ngIf="summary.question_type == 1">
+                    <span class="fs-26 positive">
+                        {{store.count_yes}} <span class="response-txt">Yes</span>
+                    </span>
+                    <span class="fs-26 negative">
+                        {{store.count_no}} <span class="response-txt">No</span>
+                    </span>
+                </span>
+                <span class="row-wrapper2 mt-27" *ngIf="summary.question_type == 2">
+                    <span class="fs-26 positive">
+                        {{store.count_max}} <span class="response-txt">max</span>
+                    </span>
+                    <span class="fs-26 negative">
+                        {{store.count_min}} <span class="response-txt">min</span>
+                    </span>
+                    <span class="fs-26 avg-number">
+                        {{store.count_avg}} <span class="response-txt">Avg</span>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div [ngClass]="{'anonymous-responses': isAnonymous}">
+            <div class="survey-container" *ngIf="!pageLoading">
+                <table mat-table [dataSource]="dataSource" class="table-wrapper">
+                    <!-- User Column -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef style="width: 20%;">Name
+                            <app-sort [order]="filters?.name_sort"
+                                [isSelected]="isFiltered?.name_sort !== null ? true : false"
+                                (onSort)="onSort($event, 'name_sort')"></app-sort>
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="width: 20%">
+                            <div class="flex resp-mode trim_name username"> <label class="show_in_resp">Name </label>
+                                <span class="username-col">
+                                    <app-user-avatar class="user-table" size="medium" name="{{ element.name }}"
+                                        [color]="element.user_color + opacity" [initialColor]="element.user_color"
+                                        nbTooltipAdjustment="noop" [nbTooltip]="element.name">
+                                    </app-user-avatar>
+                                    <span class="tags-container"
+                                        (click)="$event.stopPropagation();openLabelModal(element);">
+                                        <ng-container *ngFor="let item of element.tags | slice:0:2">
+                                            <span class="tags" [style.background-color]="item.color">{{item.tag}}</span>
+                                        </ng-container>
+                                        <span class="tags" [style.background-color]="'#edeef4'"
+                                            *ngIf="element.tagsCount > 2">+{{element.tagsCount-2}}</span>
+                                    </span>
+                                </span>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="role">
+                        <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Role
+                            <app-filter-popup *ngIf="!gs?.isRespMode" [label]="'roles'" [isFiltered]="isFiltered?.role"
+                                (onClose)="closeFilter('role')" (onApply)="applyFilterMulti('role')"
+                                (onClear)="removeFilter('role')" (onOpen)="defaultOpen=!defaultOpen">
+                                <app-dropdown-multi [label]="'roles'" [defaultOpen]="defaultOpen"
+                                    [selected]="filters?.role" [key]="'role_title'" [optionId]="'role_id'"
+                                    [Data]="roles" [placeholder]="'Select one or more roles'" [controlName]="'role'"
+                                    [form]="form" [show]="false">
+                                </app-dropdown-multi>
+                            </app-filter-popup>
+                        </th>
+
+                        <td mat-cell *matCellDef="let element" style="width: 20%;">
+                            <span class="resp-view">
+                                <span class="truncate-name"><label class="show_in_resp">Role
+                                    </label>
+                                    <span> {{element.user_role}} </span>
+                                </span>
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="store">
+                        <th mat-header-cell *matHeaderCellDef style="width: 12%;">Store
+                            <app-filter-popup *ngIf="!gs?.isRespMode" [label]="'stores'"
+                                [isFiltered]="isFiltered?.store" (onClose)="closeFilter('store')"
+                                (onApply)="applyFilterMulti('store')" (onClear)="removeFilter('store')"
+                                (onOpen)="defaultOpen2=!defaultOpen2">
+                                <app-dropdown-multi [label]="'stores'" [defaultOpen]="defaultOpen2"
+                                    [selected]="filters?.store" [key]="'region_title'" [optionId]="'region_id'"
+                                    [Data]="stores" [placeholder]="'Select one or more stores'" [controlName]="'store'"
+                                    [form]="form" [show]="false">
+                                </app-dropdown-multi>
+                            </app-filter-popup>
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="width: 12%;" class="store-details">
+                            <span class="resp-container">
+                                <label class="show_in_resp">Store</label>
+                                <span class="pointer store-name" *ngIf="element.stores?.length > 1"
+                                    [nbTooltip]="displayStores(element)">
+                                    {{element.stores?.length}} stores
+                                </span>
+                                <span class="store-name" *ngIf="element.stores?.length === 1">{{element.stores}}</span>
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Status </th>
+                        <td mat-cell *matCellDef="let element" style="width: 15%;">
+                            <label class="show_in_resp">Status</label>
+                            <span class="status-tag default-tag" [nbTooltip]="(element.sent_at | date: 'MMM d, h:mm a')"
+                                [ngClass]="{'sent': element.status?.toLowerCase() == 'sent', 'failed': element.status?.toLowerCase() == 'failed'}">
+                                {{element.status}}
+                            </span>
+                            <span><i (click)="resendSMS(element.sms_id)" nbTooltip="Resend SMS"
+                                    *ngIf="element.status == 'Failed'"
+                                    class="fa-solid fa-arrow-rotate-left failed-icon"></i></span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="respondedAt">
+                        <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Responded At </th>
+                        <td mat-cell *matCellDef="let element" style="width: 15%;"> <label
+                                class="show_in_resp">Responded
+                                At</label> {{element.responded_at | date: 'MMM d, y, h:mm a'}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="responses">
+                        <th mat-header-cell *matHeaderCellDef style="width: 15%;" class="response"> Response </th>
+                        <td mat-cell *matCellDef="let element" style="width: 15%;"
+                            [class]="summary?.question_type == 3 ? 'response-survey' : ''">
+                            <label class="show_in_resp">Responses</label> {{element.response}}
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Report </th>
+           <td mat-cell *matCellDef="let element" style="width: 10%;"> 
+            <label class="show_in_resp">Download</label>  <i nbTooltip="Download survey report."
+                (click)="downloadReport(element.id)" class="fas fa-file-download download-icon"></i> </td>
+            </ng-container> -->
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+                <app-no-records [display]="emptyResults" [animation]="'timesheet'"
+                    [textMessage]="'No surveys.'"></app-no-records>
+                <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+            </div>
+            <ng-container *ngIf="isAnonymous">
+                <!-- <div> -->
+                <!-- <div class="two-column total_points_column">
+                        
+                    </div> -->
+                <div class="anonymous-responses-panel">
+                    <nb-card style="">
+                        <nb-card-body>
+                            <div class="response-header">
+                                Responses
+                            </div>
+                            <ul class="response-list">
+                                <app-no-records [display]="anonymousResponses?.length == 0 || anonymousResponses == null" 
+                                  [animation]="'timesheet'" [textMessage]="'No responses.'"></app-no-records>
+                                <!-- <li class="responses">
+                                    Yes
+                                </li>
+                                <li class="responses">
+                                    No
+                                </li>
+                                <li class="responses">
+                                    I am not sure about the answer
+                                </li> -->
+                                <ng-container *ngFor="let item of anonymousResponses">
+                                    <li class="responses">
+                                        {{item}}
+                                    </li>
+                                    <br>
+                                </ng-container>
+                            </ul>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+                <!-- </div> -->
+            </ng-container>
+        </div>
+
+
+    </nb-layout-column>
+
+</div>

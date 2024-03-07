@@ -1,0 +1,7 @@
+<nb-sidebar fixed large [left]="header?true:false" [state]="'collapsed'" (stateChange)="toggleSidebar()" [tag]="tag"
+  [class]="tag">
+  <i (click)="closeSideBar()" class="fa fa-times"></i>
+  <ng-content>
+  </ng-content>
+
+</nb-sidebar>

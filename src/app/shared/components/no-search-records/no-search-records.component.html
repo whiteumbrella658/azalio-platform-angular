@@ -1,0 +1,21 @@
+<ng-container *ngIf="show">
+ 
+      <!-- <div class="empty-state__icon">
+        <img src="../../../../assets/no_search.svg" alt="icon of no search result" />
+      </div> -->
+
+      <div class="lottie-animation search-animation">
+        <span style="display: flex;">
+          <ng-lottie [options]="option" (animationCreated)="onAnimate($event)"></ng-lottie>
+        </span>
+        <b class="no-rec-heading">
+          <!-- {{displayText}}  -->
+          Oops! No results found.
+        </b>
+      </div>
+      <!-- <div class="empty-state">
+        <div class="empty-state__content">
+      <div class="empty-state__message">Oops! No results found.</div>
+    </div>
+  </div> -->
+</ng-container>

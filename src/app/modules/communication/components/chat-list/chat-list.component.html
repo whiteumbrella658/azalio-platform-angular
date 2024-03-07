@@ -1,0 +1,31 @@
+<div class="view_chat_body" style="position:relative;" *ngIf="userMessage.length > 0">
+
+  <div class="chat-body" style="position: absolute; z-index: 1; left: 16px; top: 8px;" *ngIf="!is_currentMessagePopup">
+    <app-user-avatar id="chatOpenedAvatar" size="large" name="{{chatUser?.user?.name}}"
+      title="{{chatUser?.user?.role_title}}" [color]="(chatUser?.user?.user_color + opacity)"
+      [initialColor]="(chatUser?.user?.user_color)">
+    </app-user-avatar>
+  </div>
+
+  <nb-chat #chatComponent [scrollBottom]="true" [title]=" " class="chat_container" size="large">
+    <nb-chat-message [dateFormat]="'MM/dd/YYYY hh:mm aa'" *ngFor="let chat of userMessage, let i = index;" type="text"
+      [message]="chat?.message" [date]="i !== lastSeenMessageIndex ? chat?.createdAt?.toDate() : ''"
+      [readAt]="chat?.readAt?.toDate()" [files]="[]" [reply]="loginUserId === chat?.userId"
+      [sender]="i===lastSeenMessageIndex ? 'Read ' + lastSeenMessageTime : ''" class="msg-content"
+      [ngClass]="{'SeenMsg': i===lastSeenMessageIndex}">
+    </nb-chat-message>
+
+    <!-- convertDate(chat?.readAt?.toDate()) -->
+    <!-- chat?.readAt?.toDate().toLocaleString() -->
+    <span>a</span>
+    <nb-chat-form (send)="sendMessages($event)"></nb-chat-form>
+  </nb-chat>
+</div>
+<!--<nb-chat-message-->
+<!--  [type]="'text'"-->
+<!--  [message]="chat?.message"-->
+<!--  [reply]="false"-->
+<!--  [sender]="msg.user.name"-->
+<!--  [date]="msg.date"-->
+<!--  [files]="msg.files"-->
+<!--  [avatar]="msg.user.avatar">-->

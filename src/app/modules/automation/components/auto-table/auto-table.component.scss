@@ -1,0 +1,103 @@
+.auto-table thead {
+    display: none;
+}
+
+.txt-color {
+    color: #6e689b;
+    font-weight: 600;
+}
+
+.auto-table {
+    margin-top: 10px;
+}
+
+.actions {
+    font-size: 32px;
+    color: #ddd5d5;
+    cursor: pointer;
+}
+
+// .start {
+//     padding-right: 5px;
+// }
+
+// .pause {
+//     padding-right: 5px;
+// }
+
+.start-selected {
+    color: #71DBDB !important;
+}
+
+.pause-selected {
+    color: #FFBE7D !important;
+}
+
+.start:hover {
+    color: #71DBDB !important;
+}
+
+.pause:hover {
+    color: #FFBE7D !important;
+}
+
+.auto-type {
+    color: #71DBDB;
+    margin-right: 5px;
+}
+
+.tags {
+    border-radius: 20px;
+    padding: 2px;
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    align-items: baseline;
+    color: #000000;
+    font-size: 12px;
+    margin-left: 12px;
+}
+
+.expired {
+    background-color: #C9BFFF;
+}
+
+.running {
+    background-color: #9EF2F2;
+}
+
+.paused {
+    background-color: #FFC184;
+}
+
+.row-details {
+    align-items: center;
+}
+
+
+.resp-container
+{
+    display: flex;
+    align-items: center;
+}
+
+@media(max-width:499px)
+{
+    .row-details
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .tags{
+        margin-top: 10px;
+        margin-left: 0px;
+    }
+}
+
+.expired-row
+{
+    td.mat-cell
+    {
+        background-color: #f5f3ff !important;
+    }
+}

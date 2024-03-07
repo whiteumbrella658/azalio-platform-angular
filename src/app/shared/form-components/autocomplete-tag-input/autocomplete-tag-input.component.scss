@@ -1,0 +1,36 @@
+.assignmentField-disabled,.assignmentField-disabled:focus  {
+    color: #8f9bb37a;
+    background-color: #f7f9fc;
+    border-color: #e4e9f2;
+}
+
+.tags-disabled {
+    background-color: #f7f9fc;
+    color: #aaaaaa !important;
+}
+
+// .tags-disabled:focus, .tags-disabled:hover  {
+//     border: none !important;
+// }
+
+.icon-container
+{
+    margin-right: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    i
+    {
+        font-size: 15px;
+    }
+}
+
+.store-icon-survey
+{
+    width: 32px;
+    height: 32px;
+    i
+{
+    font-size: 19px;
+}
+}

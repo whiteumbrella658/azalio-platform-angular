@@ -1,0 +1,134 @@
+<app-loader [loading]="loading || actionLoading"></app-loader>
+<div class="header-container">
+    <div class="header">
+        <span class="heading">
+            {{isSwap ? 'Swap': ''}}{{isSwap && isOpen ? '/' : ''}}{{isOpen? 'Open': ''}} Shift History
+        </span>
+    </div>
+</div>
+<div id="history-wrapper" class="history-wrapper" *ngIf="requests">
+    <div class="mt-25"></div>
+    <app-no-records [display]="emptyResults" [animation]="'timeoff'" [textMessage]="'No history.'"></app-no-records>
+    <ng-container *ngFor="let item of requests">
+        <div class="swap-history-details" [class]="item.is_expired == 1 ? 'disabled-row' : ''"
+            *ngIf="item.is_swap_shift">
+            <span class="row1">
+                <span [ngClass]="{'done': item.is_accepted == 1}">
+                    <img src="assets/swap-icon.png">
+                </span>
+                <span class="details">
+                    <span class="user-details">
+                        <span class="user-info">{{item.requested_by}} </span> <span
+                            class="detail-txt">{{item.is_accepted ? ' swapped their shift' : ' requested a shift
+                            swap'}}</span>
+                    </span>
+                    <span class="right-info">
+                        <span class="requests-container" *ngIf="item.is_accepted && isSwapApprovalRequired">
+                            <span class="task-done">
+                                <app-confirm-popup [isComment]="true" [type]="'Reject'" [title]="'Swap Request'"
+                                    [textToDisplay]="rejectText" (proceedDelete)="respondToSwap($event, item.id)"
+                                    (proceedCancel)="selectedRow = null;"
+                                    (proceedWithComment)="rejectSwapWithComment($event, item.id)">
+                                    <span nbTooltip="Reject" nbTooltipPlacement="top" (click)="setRejectText(item)"
+                                        class="circle-btn"><i aria-hidden="true" class="fa-solid fa-xmark"
+                                            style="color: #e91e63;"></i></span>
+                                    <button [disabled]="item.is_expired == 1" (click)="setRejectText(item)" nbButton
+                                        type="button" class="reject-btn" status="primary">Reject</button>
+                                </app-confirm-popup>
+                            </span>
+                            <span class="task-done approve">
+                                <app-confirm-popup [type]="'Approve & Publish'" [title]="'Swap Request'"
+                                    [textToDisplay]="approveText" (proceedDelete)="respondToSwap(true, item.id)"
+                                    [status]="'primary'">
+                                    <span (click)="setPublishText(item)" nbTooltip="Approve & Publish"
+                                        nbTooltipPlacement="top" class="circle-btn">
+                                        <i aria-hidden="true" class="fa-solid fa-check"></i></span>
+                                    <button [disabled]="item.is_expired == 1" (click)="setPublishText(item)" nbButton
+                                        type="button" class="approve-btn" status="primary">Approve</button>
+                                </app-confirm-popup>
+                            </span>
+                        </span>
+                    </span>
+                </span>
+            </span>
+            <span class="row2">
+                <span class="label-txt">{{item.is_accepted ? 'New Shift:' : 'Current Shift:'}} </span> <span
+                    class="date-detail">
+                    {{item.to_start_time | date: 'MMM dd, hh:mm a'}} to {{item.to_end_time | date: 'hh:mm a'}}
+                </span>
+            </span>
+            <span class="row3">
+                <span class="label-txt" *ngIf="item.is_accepted != true">Requested swap with: </span>
+                <span class="swapped-with">{{item.accepted_by}}</span>
+                <span class="date-detail info-row">
+                    {{item.from_start_time | date: 'MMM dd, hh:mm a'}} to {{item.from_end_time | date: 'hh:mm a'}}
+                    <span *ngIf="item.is_accepted != true" class="pending-state"> Pending</span>
+                </span>
+            </span>
+            <span class="requested_on">
+                <ng-container *ngIf="item.accepted_on">Accepted on: {{item.accepted_on | date: 'MMM dd'}}
+                </ng-container>
+                <span class="created"> Created on: {{item.created_on | date: 'MMM dd'}}</span>
+            </span>
+        </div>
+        <div class="open-history-details" [class]="item.is_expired == 1 ? 'disabled-row' : ''"
+            *ngIf="item.is_open_shift">
+            <span class="row1">
+                <span [ngClass]="{'done': item.is_accepted == 1}">
+                    <img src="assets/open-shift-icon.png">
+                </span>
+                <span class="details">
+                    <span class="user-details">
+                        <span class="user-info">{{item.requested_by}}</span> <span class="detail-txt">opened their
+                            shift</span>
+                    </span>
+
+                    <span class="right-info">
+                        <span class="requests-container" *ngIf="item.is_accepted && isOpenApprovalRequired">
+                            <span class="task-done">
+                                <app-confirm-popup [isComment]="true" [type]="'Reject'" [title]="'Open Request'"
+                                    [textToDisplay]="rejectText" (proceedDelete)="respondToOpen($event, item.id)"
+                                    (proceedCancel)="selectedRow = null;"
+                                    (proceedWithComment)="rejectOpenWithComment($event, item.id)">
+                                    <span nbTooltip="Reject" nbTooltipPlacement="top" (click)="setRejectTextOpen(item)"
+                                        class="circle-btn"><i aria-hidden="true" class="fa-solid fa-xmark"
+                                            style="color: #e91e63;"></i></span>
+                                    <button [disabled]="item.is_expired == 1" (click)="setRejectTextOpen(item)" nbButton
+                                        type="button" class="reject-btn" status="primary">Reject</button>
+                                </app-confirm-popup>
+                            </span>
+                            <span class="task-done approve">
+                                <app-confirm-popup [type]="'Approve & Publish'" [title]="'Open Request'"
+                                    [textToDisplay]="approveText" (proceedDelete)="respondToOpen(true, item.id)"
+                                    [status]="'primary'">
+                                    <span (click)="setPublishTextOpen(item)" nbTooltip="Approve & Publish"
+                                        nbTooltipPlacement="top" class="circle-btn">
+                                        <i aria-hidden="true" class="fa-solid fa-check"></i></span>
+                                    <button [disabled]="item.is_expired == 1" (click)="setPublishTextOpen(item)"
+                                        nbButton type="button" class="approve-btn" status="primary">Approve</button>
+                                </app-confirm-popup>
+                            </span>
+                        </span>
+                    </span>
+                </span>
+            </span>
+            <span class="row2" [class]="item.is_accepted && isOpenApprovalRequired ? 'pt-10' : ''">
+                <span class="date-detail">{{item.start_time | date: 'MMM dd, hh:mm a'}} to
+                    {{item.end_time | date: 'hh:mm a' }}
+                    <span *ngIf="item.accepted_by" class="picked-up"> picked up by
+                        <span class="open-with"> {{item.accepted_by}}
+                            <span *ngIf="item.accepted_by_phone" class="phone-num">{{item.accepted_by_phone |
+                                phoneNumber}}</span>
+                        </span>
+                    </span>
+                </span>
+            </span>
+            <span class="requested_on">
+                <ng-container *ngIf="item.accepted_on">Accepted on: {{item.accepted_on | date: 'MMM dd'}}
+                </ng-container>
+                <span class="created"> Created on: {{item.created_on | date: 'MMM dd'}}</span>
+            </span>
+        </div>
+    </ng-container>
+
+</div>

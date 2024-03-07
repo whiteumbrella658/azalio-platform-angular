@@ -1,0 +1,37 @@
+<div class="modal_wrapper add_label">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <label>
+                <b class="title">Add Label</b>
+            </label>
+        </nb-card-header>
+
+        <nb-card-body [nbSpinner]="loading" class="search-user-resp">
+            <form #ngForm="ngForm" id="form" [formGroup]="AddLabel" (ngSubmit)=submit(ngForm)>
+                <app-user-avatar class="user-table" size="medium" [name]="userDetails.name"
+                   [color]="userDetails.user_color + opacity" [initialColor]="userDetails.user_color">
+                </app-user-avatar>
+                <div class="modal_body_wrapper stores-container">
+                    <span *ngFor="let store of stores.controls; let i = index" class="stores-row">
+                        <span class="storeinfo">
+                        <i class="fas fa-store icon-color"></i>
+                        {{store.controls?.regionName?.value}}
+                        </span>
+                        <span class="dropdown-multiselect">
+                            <app-dropdown-multi [max]="10" [optionClass]="'dot-tag'" [label]="'tags'" [key]="'tag'" [key2]="'color'" [type]="'tag'"
+                            [optionId]="'id'" [Data]="tags" [selected]="store.controls.tagName?.value" [placeholder]="'Select one or more labels'" [controlName]="'tagName'"
+                            [form]="store" [show]="false">
+                            </app-dropdown-multi>
+                    </span>
+                    </span>
+                </div>
+                <div>
+                    <span class="flex footer-btns-row">
+                        <app-button (onClick)="close()">Cancel</app-button>
+                        <app-submit-button [form]="AddLabel" [label]="'Add'"></app-submit-button>
+                    </span>
+                </div>
+            </form>
+        </nb-card-body>
+    </nb-card>
+</div>

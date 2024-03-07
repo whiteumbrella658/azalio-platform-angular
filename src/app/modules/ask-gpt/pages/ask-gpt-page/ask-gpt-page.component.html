@@ -1,0 +1,103 @@
+<app-side-menu [showConvo]="true" [customClass]="'large-width'" (onNewChat)="onNewChat()"
+    (onChat)="viewHistory($event)"></app-side-menu>
+<app-loader [loading]="loading"></app-loader>
+<div class="parent-wrapper ">
+    <div class="row1">
+        <span class="details-container">
+            <span class="main-heading">
+                {{results ? 'Answer to Questions' : getGreeting()}}
+            </span>
+            <span class="sub-text" *ngIf="!results">
+                Hope you have a good day.
+            </span>
+        </span>
+    </div>
+    <div class="second-container">
+        <div class="child1">
+            <!-- <div class="row2" [style.visibility]="data ? 'visible': 'hidden'">
+                <div class="flex-item" *ngFor="let item of data">
+                    <img [src]="iconPath[item.label] ? iconPath[item.label] : 'assets/icon1.png'">
+                    <span class="des-info">
+                        <span class="category-heading">
+                            {{item.label}}
+                            <span class="value">
+                                {{item.value}}
+                            </span>
+                        </span>
+                        <span class="raise-value">
+                            <span [class]="item.increment ? 'perc' : 'perc-dec'">
+                                <span class="numeric">{{item.increment ? '↑' + item.increment : '↓' +
+                                    item.decrement}}</span>
+                                <span class="lbl">this {{item.time}}</span>
+                            </span>
+                        </span>
+                    </span>
+                </div>
+            </div> -->
+            <div class="row3">
+                <!-- <span class="btns-row">
+                        <button [ngClass]="{'view-history': !results,'clear-history' : results}" status="primary" nbButton
+                            type="button" (click)="viewHistory()">
+                            {{results ? 'Back' : 'View History'}}
+                        </button>
+                    </span> -->
+
+                <div class="no-history" [ngClass]="{'hide-row2': !results && !data, 'hide-row2-parent': results}">
+                    <!-- <img (click)="viewHistory()" [src]="results ? 'assets/hide-history.png' : 'assets/view-history.png'" 
+                        [class]="results ? 'history-icon' : 'history-icon'" nbTooltip="{{results ? 'Hide History' : 'View History'}}"> -->
+                    <app-result-section [show]="showResultSection"></app-result-section>
+                    <ng-container *ngIf="!results">
+                        <span class="description-container">
+                            <img src="assets/magicpen.png">
+                            <span class="help-text">What would you like to learn about your data?</span>
+                            <span class="more-txt">Ask our database a question about your data and get a response in
+                                seconds!</span>
+                            <span class="suggestions-tags">
+                                <ng-container *ngIf="!results">
+                                    <span *ngFor="let item of suggestions" [nbTooltip]="item.question"
+                                        class="automated-tags" (click)="setText(item)">
+                                        <img src="assets/suggested-actions.png">
+                                        <span class="txt-area">
+                                            <span class="truncate title-suggested">
+                                                <!-- <i></i> -->
+                                                {{item.title}}</span>
+                                            <span class="truncate desc">{{item.description}}</span>
+                                        </span>
+                                    </span>
+                                </ng-container>
+
+                            </span>
+                        </span>
+
+                    </ng-container>
+
+                    <span class="askQ-input">
+                        <input (keydown.enter)="askQuestion()" class="input-padding-right" maxlength="255"
+                            [(ngModel)]="inputText" autocomplete="off" aria-label="text input field" nbInput fullWidth
+                            [placeholder]="'Let’s learn more about your business. Ask a question about your data.'">
+                        <button [disabled]="actionLoading" [nbSpinner]="actionLoading ? true : false" class="send" ghost
+                            nbButton type="button" (click)="showResults()">
+                            <i class="fa-light fa-paper-plane-top submit-btn"></i>
+                            <!-- <i class="fa-light fa-paper-plane-top submit-btn"></i> -->
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="section-right" class="child2">
+            <span [style.display]="automatedActions && results ? 'none' : 'block'">
+                <app-graph-section></app-graph-section>
+            </span>
+            <span class="automated-suggestions" *ngIf="automatedActions">
+                <span class="recipes-heading">Automated Actions</span>
+                <span class="automated-recipes">
+                    <span class="recipes" *ngFor="let action of automatedActions" nbTooltip="Go to communication"
+                        (click)="openAddModal(action)">
+                        <img src="assets/automated-action1.png">
+                        {{action}}
+                    </span>
+                </span>
+            </span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<!-- <div class="lottie-animation lottie-loader">
+  <ng-lottie [options]="options" (animationCreated)="onAnimate($event)"></ng-lottie>
+</div> -->
+<div class="new-message_container">
+  <form #ngForm="ngForm" id="form" [formGroup]="form" class="new-msg">
+    <div class="mb_20">
+      <span *ngIf="!isPopup">
+        <label style="margin-bottom: 6px; font-size: 14px;color: #6e689b;font-weight: 600;">Send message to <span
+            class="mandatory">*</span> </label>
+      </span>
+      <span class="msg_resp">
+        <app-autocomplete-input style="position: relative;" (userSelected)="onUserSelected($event)" (noRecords)="noRecordFound($event)">
+        </app-autocomplete-input>
+      </span>
+      <span class="error-no-user" *ngIf="noUserError">No user selected</span>
+
+    </div>
+  </form>
+  <span>
+    <!-- <app-no-search-records [display]="emptyResults"></app-no-search-records> -->
+  </span>
+  <nb-chat-form [ngClass]="{'disabled': users?.size === 0}" (send)="submit($event)"></nb-chat-form>
+</div>

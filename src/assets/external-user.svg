@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <radialGradient id="radial-gradient" cx="0.5" cy="0.5" r="0.839" gradientTransform="translate(0.305 -0.18) rotate(28.999)" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff2ed"/>
+      <stop offset="1" stop-color="#ffb196"/>
+    </radialGradient>
+  </defs>
+  <g id="Group_53285" data-name="Group 53285" transform="translate(-15346 -22233)">
+    <circle id="Ellipse_2174" data-name="Ellipse 2174" cx="20" cy="20" r="20" transform="translate(15346 22233)" fill="url(#radial-gradient)"/>
+    <path id="Icon_awesome-user-alt" data-name="Icon awesome-user-alt" d="M9.795,11.019a5.51,5.51,0,1,0-5.51-5.51A5.511,5.511,0,0,0,9.795,11.019Zm4.9,1.224H12.584a6.66,6.66,0,0,1-5.578,0H4.9a4.9,4.9,0,0,0-4.9,4.9v.612a1.837,1.837,0,0,0,1.837,1.837H17.753a1.837,1.837,0,0,0,1.837-1.837v-.612A4.9,4.9,0,0,0,14.692,12.243Z" transform="translate(15356.205 22243.205)" fill="#ffac90"/>
+  </g>
+</svg>

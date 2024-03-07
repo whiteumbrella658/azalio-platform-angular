@@ -1,0 +1,112 @@
+<app-side-menu [customClass]="'large-width'"></app-side-menu>
+<app-loader [loading]="loading || pageLoading"></app-loader>
+<!-- <app-sidebar class="scheduled-sms-sidebar" [showSideBar]="showSideBar" (closeDetails)="closeDetails()">
+    <app-comm-schedules [parent]="this" [show]="showSideBar"></app-comm-schedules>
+</app-sidebar> -->
+
+<div class="parent-wrapper flex" [ngClass]="{'empty': emptySearchResults}">
+    <nb-layout-column class="colored-column-info timesheets_wrapper survey-communication">
+        <div class="breadcrumbs">
+            <i class="fa-thin fa-house home-page"></i>
+            <i class="fa-light fa-angle-right right-arrow"></i>
+            <span class="previous-module">Communication</span>
+        </div>
+        
+        <div class="page-wrapper comm-emp">
+            <div class="header-row">
+                <!-- <img class="ds-img" src="assets/dashboard.png"> -->
+                <span class="heading-row">
+                    <span class="top-heading">
+                        AI & Automations
+                    </span>
+                    <span class="sub-heading">
+                        Discover numerous popular recipes that you can send with just a few clicks.
+                    </span>
+                </span>
+            </div>
+
+            <!-- <span class="add-input"> -->
+                <div class="categories-div">
+                    <ng-container *ngFor="let item of categories">
+                        <span  (click)="selectCategory(item.category)" class="category-tag" [ngClass]="{'selected': item.category == selectedCategory}">{{item.category}}</span>
+                    </ng-container>
+                </div>
+
+                <!-- <app-text-input maxlength="255" class="input-padding-right" (keydown.enter)="initiateFlow()"
+                    [placeholder]="'What do you want to learn about your team? (i.e. are they happy? how is their new manager, etc?) '"
+                    [controlName]="'question'" [form]="form">
+                    <button *ngIf="!pageLoading" ghost nbButton type="submit"
+                        [disabled]="form.controls.question.valid ? false : true">
+                        <i class="fa-light fa-paper-plane-top send-question" (click)="initiateFlow()"></i>
+                    </button>
+                </app-text-input> -->
+            <!-- </span> -->
+        </div>
+
+        <div class="categories-wrapper">
+            <div class="row1-element">
+                <span class="txt-heading">
+                    {{selectedCategory ? selectedCategory : 'Categories'}} 
+                    <span *ngIf="data" [style.visibility]="pageLoading ? 'hidden' : 'visible'" class="categories-count">{{data?.length > 0 ? data.length - 1 : 0}}</span>
+                </span>
+
+            </div>
+            <div class="row2-element">
+                <span>
+                    <app-search-input [isAnimated]="false" (searchEvent)="onSearch($event)" (searchAll)="onSearchAll($event)" class="search"
+                        [placeholder]="'Search question'">
+                    </app-search-input>
+                </span>
+
+                <span>
+                    <span class="responses-btn" (click)="openScheduledModal()">
+                        <button size="medium" type="button" nbButton status="secondary">Schedules</button>
+                    </span>
+
+                    <span class="responses-btn" (click)="goToResponses()">
+                        <button size="medium" type="button" nbButton class="view-responsebtn text-unset">View
+                            responses</button>
+                    </span>
+                </span>
+
+            </div>
+
+            <div *ngIf="data" class="populate-questions">
+
+                <div class="questions-list grow" [ngClass]="{'no-events': question.is_comming_soon == 1}"
+                    *ngFor="let question of data" (click)="openAddModal(question)">
+                    <span class="first-row">
+                        <!-- <img [src]="question.image_url"> -->
+                        <span class="category-icon">
+                            <i [class]="question.iconClass ? question.iconClass : 'fa-light fa-hand-wave'"></i>
+                        </span>
+                      
+                        <span class="clickable-actions" (click)="$event.stopPropagation()">
+                            <span *ngIf="question.is_comming_soon == 1" class="coming-soon">Coming soon</span>
+                            <nb-toggle  *ngIf="question.is_trigger == 1" [disabled]="question.is_comming_soon == 1" [(ngModel)]="question.is_enabled" class="emp-comm-toggle" (checkedChange)="updateTrigger($event, question)" labelPosition="end">
+                        </nb-toggle>
+                        <!-- <i class="fa-solid fa-ellipsis more-items"></i> -->
+                        </span>
+                    </span>
+
+                    <span class="question-txt">
+                        <!-- <span class"question-helptext">
+                            {{question.title}} -->
+                        <!-- <span class="question-type"
+                                [class]="question.type == 'Yes/No' ? 'binary' : question.type">{{displayQuestionType(question.type)}}
+                        </span> -->
+                        <span class="question-helptext">
+                            {{question.title}}
+                        </span>
+                        <!-- <span class="question-info">
+                            {{question.description}}
+                        </span> -->
+                    </span>
+                </div>
+            </div>
+            <app-no-search-records [display]="emptySearchResults"></app-no-search-records>
+        </div>
+
+        <!-- </div> -->
+    </nb-layout-column>
+</div>

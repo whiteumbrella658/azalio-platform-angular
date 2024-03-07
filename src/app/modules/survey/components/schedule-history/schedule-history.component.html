@@ -1,0 +1,52 @@
+<app-loader [loading]="pageLoading || actionLoading"></app-loader>
+<div class="header-container scheduled-sms">
+    <div class="header">
+        <span class="heading">
+            Scheduled SMS
+        </span>
+    </div>
+</div>
+<div class="sms-history-body" *ngIf="!pageLoading">
+    <app-no-records [display]="emptyResults" [textMessage]="'No scheduled SMS'" [animation]="'timeoff'"></app-no-records>
+    <div class="sms-history-wrapper" *ngFor="let item of history;">
+        <div class="row1">
+            <span class="left-items-sms" nbTooltipPlacement="bottom">
+                <span class="sch-info">Scheduled on </span>
+                <ng-container *ngFor="let row of item.schedule_dates">
+                    <span style="cursor: pointer;" [class]="row.sent ? 'old-sch' : 'upcoming-sch'" [nbTooltip]="row.sent == 1 ? 'SMS Sent' : 'Scheduled SMS' "
+                    > {{ row.schedule_date | date: 'MMM dd' : 'UTC'}} </span>
+                </ng-container>
+            </span>
+            <span class="right-items-sms">
+                <!-- <button nbButton type="button" class="manage-btn" status="primary">View</button> -->
+                <app-confirm-popup [isComment]="false" [type]="'Stop'" [title]="'Scheduled SMS'" [textToDisplay]="cancelText"
+                    (proceedDelete)="cancelScheduledSurvey(item.message_id)" (proceedCancel)="selectedRow = null;">
+                    <span nbTooltip="Cancel" nbTooltipPlacement="top" (click)="setText(item)" class="circle-btn">
+                        <i aria-hidden="true" class="fa-solid fa-xmark" style="color: #e91e63;"></i>
+                    </span>
+                    <button (click)="setText(item)" nbButton type="button" class="stop-btn" status="primary">Stop</button>
+                </app-confirm-popup>
+            </span>
+        </div>
+    
+       <div class="row2">
+            {{item.question}}
+            <span class="question-type"
+            [class]="item.question_type == 'Yes/No' ? 'binary' : item.question_type">
+            {{parent?.displayQuestionType(item.question_type)}}</span>
+        </div>
+    
+        <div class="row3" *ngIf="item.stores">
+            <b>Store: </b><span>{{item.send_to_all_stores ? 'All stores' : item.stores}}</span>
+        </div>
+    
+        <div class="row4" *ngIf="item.roles">
+            <b>Role: </b><span> {{item.roles.join(', ')}}</span>
+        </div>
+    
+        <div class="row5"  [ngClass]="{'createdOn-only' : !item.users}"> 
+            <span class="" *ngIf="item.users"> <b>User:</b><span> {{item.users.join(', ')}}</span></span>
+            <span>Created on {{item.created_on | date: 'MMM dd'}}</span>
+        </div>
+    </div>  
+</div>

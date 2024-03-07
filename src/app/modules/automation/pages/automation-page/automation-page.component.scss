@@ -1,0 +1,157 @@
+.timesheets_wrapper .wrapper_header {
+    padding: 36px 0px;
+    padding-bottom: 13px;
+    background: #f9faff;
+}
+
+.heading {
+    font-size: 16px;
+    color: #6e689b;
+    font-weight: 600;
+}
+
+.automation-cards {
+    display: flex;
+}
+
+.automation-details {
+    width: 349px;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 13px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-right: 10px;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-left: 1.2px solid #6e689b;
+}
+
+.automation-images {
+    img {
+        width: 70px;
+        padding-left: 5px;
+    }
+}
+
+.automation-desc {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 12px;
+    margin-bottom: 12px;
+
+    i {
+        margin-right: 5px;
+    }
+
+    .auto-name {
+        color: #353436;
+        font-size: 14px;
+    }
+
+    .first-row {
+        display: flex;
+        align-items: baseline;
+    }
+}
+
+.pro-automation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    align-items: baseline;
+    width: 75%;
+
+    i {
+        margin-right: 5px;
+    }
+
+    .pro-title {
+        color: #FC962F;
+        font-size: 27px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .second-row {
+        padding-left: 20px;
+        font-size: 14px;
+    }
+
+    .proplan-btn {
+        margin-left: 15px;
+        background: #FC962F;
+    }
+}
+
+.proplan-image {
+    img {
+        width: 79px;
+        padding-left: 5px;
+    }
+}
+
+.ml_40 {
+    margin-left: 40px;
+}
+
+.auto-btn {
+    background: #71DBDB !important;
+    box-shadow: rgb(0 0 0 / 11%) 0px 3px 8px;
+}
+
+.tasks-container {
+    padding: 21px 0px;
+    padding-bottom: 13px;
+    background: #f9faff;
+}
+
+.bolt {
+    color: white !important;
+}
+
+.auto-type {
+    color: #71DBDB;
+}
+
+@media(max-width:710px) and (min-width:500px)
+{
+    .proplan-btn,.auto-btn
+    {
+        margin-top: 20px;
+    }
+    .timesheets_wrapper .wrapper_header
+    {
+        position: initial !important;
+    }
+}
+
+@media(max-width:499px)
+{
+    .automation-cards
+    {
+        flex-direction: column;
+    }
+    .automation-details
+    {
+        margin-bottom: 20px;
+        width: auto;
+    }
+    .proplan-btn,.auto-btn
+    {
+        margin-top: 20px;
+    }
+    .timesheets_wrapper .wrapper_header
+    {
+        position: initial !important;
+    }
+}

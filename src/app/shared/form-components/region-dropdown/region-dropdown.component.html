@@ -1,0 +1,91 @@
+<ng-container *ngIf="!loading && header && regions">
+  <span class="companyname">
+    <span class="store-loc-icon">
+      <img *ngIf="isCompanyLevel() || (regions?.length<1)" src="assets/company-icon.png" style="width: 20px;" />
+      <img *ngIf="isStoreRequired() && (regions?.length==2)" src="assets/store.svg" style="width: 20px;" />
+    </span>
+    <span class="cname" [nbTooltip]="companyName" [style.display]="(isCompanyLevel() || (regions && regions?.length<1))?'':'none'">
+      {{companyName}}
+    </span>
+    <span class="cname" [style.display]="isStoreRequired() && (regions?.length==2)?'':'none'">
+      {{singleRegionName}}
+    </span>
+  </span>
+</ng-container>
+
+
+<span
+  [style.display]="(!header) || (header && (index<5 ||(index >6 && index < 9) && (regions && regions?.length>0)) && !(isStoreRequired()&& (regions && regions?.length==2))) ?'':'none'">
+
+  <span *ngIf="header && regions?.length<2 && roleId !=2" class="companyname">
+    <img src="assets/store.svg" style="width: 20px;" />
+    <span class="cname">
+      {{selectedRegionTitle}}
+    </span>
+  </span>
+  <span *ngIf="(header && regions?.length>1) || !header  ">
+    <form [formGroup]="form" class="store-dropdown">
+      <nb-select [optionsListClass]="header ? 'store-dropdown-header' : ''" *ngIf="regions?.length > 0; else emptydrop"
+        [placeholder]="placeholder" [formControlName]="controlName" (selectedChange)="change($event)"
+        [selected]=" selectedRegion" (click)="clearSearch()">
+        <nb-select-label *ngIf="header && selectedRegion">
+
+          <span *ngIf="(selectedRegion?.region_id==0 ||selectedRegion?.store_id==0) && isStoreRequired()"
+            class="vertical_center store-name">
+            <img src="assets/store.svg" class="drpdown-store" />
+            <span style="margin-top: 2px;     position: relative;" class="trim-storename">
+              Select store
+            </span>
+          </span>
+          <span
+            *ngIf="(selectedRegion?.region_id==0 ||selectedRegion?.store_id==0) && (!isStoreRequired()) && roleId !=2 && isPartner!=1 "
+            class="vertical_center store-name">
+            <img src="assets/company-icon.png" class="drpdown-store" />
+            <span style="margin-top: 2px;  position: relative;">
+              All stores
+            </span>
+          </span>
+          <span
+            *ngIf="(selectedRegion?.region_id==0 ||selectedRegion?.store_id==0) && (!isStoreRequired()) && (roleId ==2 || isPartner == 1)"
+            class="vertical_center store-name">
+            <img src="assets/company-icon.png" class="drpdown-store" />
+            <span style="margin-top: 2px;  position: relative;" class="trim-storename">
+              {{companyName}}
+            </span>
+          </span>
+          <span class="vertical_center store-name" *ngIf="(selectedRegion?.region_id>0 ||selectedRegion?.store_id>0)">
+            <img src="assets/store.svg" class="drpdown-store" />
+            <span style="margin-top: 2px;  position: relative;" class="trim-storename">
+              {{selectedRegion.region_title?selectedRegion.region_title:selectedRegion.store_title}}
+            </span>
+          </span>
+        </nb-select-label>
+        <nb-option *ngIf="!header" [value]=" null">{{placeholder}}</nb-option>
+
+        <nb-option *ngIf="regions.length > 5" class="relative" [style.display]="(header && isStoreRequired() && region?.region_id===0)?'none':'flex'">
+          <i *ngIf="!searchedOn" class="fas fa-search" alt="search icon" (click)="$event.stopPropagation()"></i>
+          <input id="store-search" nbInput type="text" placeholder="Search Store" (click)="$event.stopPropagation(); $event.preventDefault()"
+            [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText" (keyup)="filterRegions()" (keydown)="stopDdToClose($event)">
+          <i *ngIf="searchedOn" alt="search clear icon" class="fa fa-times pointer" (click)="$event.stopPropagation(); clearSearch()"></i>
+        </nb-option>
+
+        <nb-option *ngFor="let region of filteredRegions" [value]="region"
+          [id]="region.region_id?region.region_id:region.store_id" [isHidden]="false"
+          [style.display]="(header && isStoreRequired() && region?.region_id===0)?'none':'flex'">
+          <img *ngIf="header && region?.region_id===0" src="assets/company-icon.png"
+            class="drpdown-store" />
+          <img *ngIf="header && region?.region_id !=0" src="assets/store.svg" class="drpdown-store" />
+
+          <span style="margin-top: 2px;  position: relative;">
+            <i *ngIf="!header" class="fas fa-store"></i>
+            {{region.region_title?region.region_title:region.store_title }}</span>
+        </nb-option>
+      </nb-select>
+    </form>
+  </span>
+</span>
+<ng-template #emptydrop>
+  <form [formGroup]="form" *ngIf="!header">
+    <nb-select disabled placeholder="No item to select" [formControlName]="controlName">
+    </nb-select>
+  </form>

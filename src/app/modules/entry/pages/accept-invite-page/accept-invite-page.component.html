@@ -1,0 +1,74 @@
+<div class="entry_wrapper accept_invite">
+  <div class="entry_page_header">
+    <div class="relative logo">
+        <img src="assets/logo-azalio.png" class="logo-img">
+    </div>
+  </div>
+
+
+  <div class="setup_wrapper main-section">
+    <div class="left_section" *ngIf="!loading">
+      <div class="mb_20" *ngIf="!isRegistered && isLinkValid">
+        <div class="animation-invite">
+          <app-no-records [display]="true" [animation]="'acceptInvite'" [textMessage]="''"></app-no-records>
+        </div>
+        <div class="email">
+          Welcome to Azalio 
+        </div>
+        <div class="label-txt">
+          You have been invited to join your team <span style="color: #7b68ee; font-weight: 600;">{{companyName}}.</span> 
+        </div>
+
+        <div class="company-name">
+          Click sign up below to begin the process.
+        </div>
+        <br>
+        <br>
+        <input type="submit" status="primary" nbButton (click)="open()" value="Sign Up">
+      </div>
+
+      <div class="mb_20" *ngIf="isRegistered">
+        <div class="animation-invite">
+          <app-no-records [display]="true" [animation]="'registerSuccess'" [textMessage]="''"></app-no-records>
+        </div>
+        <div class="email">
+          Congratulations
+          <span class="txt-color">
+            {{name}}!
+          </span>
+        </div>
+        <div class="label-txt">
+          <span>
+            You are now part of <span style="color: #6e689b; font-weight: 600;">{{companyName}}</span> on Azalio.
+          </span>
+        </div>
+        <div class="company-name">
+          <!-- {{companyName}} -->
+          Click below to log in and start your adventure.
+        </div>
+        <br>
+        <br>
+        <input type="button" status="primary" nbButton value="Log In" (click)="navigate()">
+      </div>
+      <div class="mb_20" *ngIf="!isLinkValid">
+        <div class="animation-invite">
+          <app-no-records [display]="true" [animation]="'activationlinkExpire'" [textMessage]="''"></app-no-records>
+        </div>
+        <div class="email">
+           <span> {{email}} </span>
+        </div>
+        <div class="expiry-link">
+          <span>
+           Oops! The activation link sent to you by <span style="color: #6e689b; font-weight: 600;">{{companyName}}</span> has expired.
+          </span>
+        </div>
+        <div class="label-txt" style="margin-bottom: 0px; font-size: 18px;">
+         If you are already signed up click below to log in or ask your account owner to resend a new activation link.
+        </div>
+        <br>
+        <br>
+        <input type="button" status="primary" nbButton value="Log In" (click)="navigate()">
+      </div>
+    </div>
+  </div>
+</div>

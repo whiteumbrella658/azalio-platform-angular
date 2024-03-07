@@ -1,0 +1,162 @@
+.signup-options nb-card nb-card-header.card_header {
+    background: #f7f9fc;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    flex-direction: column;
+    border-bottom: none;
+    position: relative;
+}
+
+.signup-options nb-card nb-card-body {
+    padding: 0px !important;
+}
+
+.label-heading {
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+    color: #32124B;
+
+    img {
+        width: 35px;
+        margin-right: 10px;
+        margin-bottom: 5px;
+    }
+}
+
+.sub-heading {
+    color: #6E689B;
+    margin-top: 2px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.parent-container {
+    display: flex;
+    padding-top: 25px;
+}
+
+.left-item {
+    width: 50%;
+    background-image: linear-gradient(0.37turn, #63BFBF, #A99EFF);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+}
+
+.left-item::before {
+    content: "";
+    background: url('../../../../../assets/join-azalio.png');
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    top: -25px;
+    left: 40%;
+    background-repeat: no-repeat;
+}
+
+.right-item {
+    width: 50%;
+    background-image: linear-gradient(0.37turn, #FFAE5D, #FFB399);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+}
+
+.right-item::after {
+    content: "";
+    background: url('../../../../../assets/join-company.png');
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    top: -25px;
+    left: 40%;
+    background-repeat: no-repeat;
+}
+
+.text-content {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.text-desc {
+
+    font-size: 14.5px;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    line-height: 1.4;
+}
+
+.link {
+    color: #51316B;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+}
+
+.btn-setup {
+    background-color: white !important;
+    color: #7F84EA !important;
+    font-size: 14px;
+    font-weight: 600 !important;
+    margin-top: 21px;
+    padding: 3px !important;
+    padding-right: 4px !important;
+    padding-left: 10px !important;
+
+    i {
+        margin-left: 5px;
+        font-size: 23px;
+        color: #7F84EA;
+    }
+}
+
+.close {
+    z-index: 1;
+    position: absolute;
+    top: 14px;
+    right: 15px !important;
+    cursor: pointer;
+}
+
+@media(max-width:930px) {
+    .parent-container {
+        flex-direction: column;
+    }
+
+    .left-item,
+    .right-item {
+        width: 100%;
+        height: 180px;
+    }
+
+    .label-heading {
+        font-size: 17px;
+
+        img {
+            width: 30px;
+        }
+    }
+
+    .sub-heading {
+        font-size: 14px;
+    }
+
+    .text-content {
+        font-size: 16px;
+    }
+}

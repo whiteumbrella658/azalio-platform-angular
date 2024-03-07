@@ -1,0 +1,95 @@
+<div *ngIf="isSubmitted && form.controls[key]?.errors" class="errors">
+  <div *ngIf="form.controls[key].errors.nbDatepickerMin">
+    <i class="fas fa-exclamation-triangle error-icon"></i> 
+    {{errorDetails['nbDatepickerMin']}}
+  </div>
+  <div class="pos-abs" *ngIf="form.controls[key].errors.max">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['max']}}
+    {{form.controls[key].errors.max.max}}.
+  </div>
+  <div class="pos-abs" *ngIf="form.controls[key].errors.min">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['min']}}
+    {{form.controls[key].errors.min.min}}.
+  </div>
+  <div style="margin-left: 14px;margin-top: 3px;"
+    *ngIf="form.controls[key].errors.maxlength && (key !== 'email' || !form.controls[key].errors.pattern) && (key !== 'scheduling_notification_time'|| (key === 'scheduling_notification_time' && !form.controls[key].errors.pattern))">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['maxlength']}}
+    {{form.controls[key].errors.maxlength.requiredLength}}.
+  </div>
+  <div style="margin-left: 14px;margin-top: 3px;"
+    *ngIf="form.controls[key].errors.minlength && (key !== 'email' || !form.controls[key].errors.pattern)">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['minlength']}}
+    {{form.controls[key].errors.minlength.requiredLength}}.
+  </div>
+  <div class="pos-abs" *ngIf="form.controls[key].errors.required">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['required']}}
+  </div>
+  <div *ngIf="key==='email' && form.controls[key].errors.pattern" class="pos-abs">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['email']}}
+  </div>
+  <div *ngIf="form.controls[key].errors.pattern && key==='verificationCode'">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['verificationCode']}}
+  </div>
+  <div *ngIf="form.controls[key].errors.pattern && key==='password'">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['password']}}
+  </div>
+  <div *ngIf="form.controls[key].errors.pattern && key==='mobileNumber'">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['mobileNumber']}}
+  </div>
+  <ng-container *ngIf="form.controls[key].errors.pattern">
+    <div *ngIf="key === 'pin' || key === 'azalioPin'" class="pos-abs">
+      <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['pin']}}
+    </div>
+    <div *ngIf="key==='subject' || key ==='message'">
+      <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['whiteSpacesInput']}}
+    </div>
+    <!-- <div *ngIf="key==='newRegionName' || key==='teamName'"> -->
+    <div *ngIf="key === 'externalId' ||  key==='newRegionName' || key==='teamName' || key==='store_title'" class="pos-abs">
+      <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['patternInvalid']}}
+    </div>
+
+  </ng-container>
+  <ng-container>
+
+  </ng-container>
+  <div *ngIf="form.controls[key].errors.passwordNotMatch">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['confirmPassword']}}
+  </div>
+  <div *ngIf="form.controls[key].errors.samePassword">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['samePassword']}}
+  </div>
+  <div *ngIf="form.controls[key].errors.wrongPassword">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['wrongPassword']}}
+  </div>
+  <div *ngIf="form.controls[key].errors.duplicateEmail">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['duplicateEmail']}}
+  </div>
+  <div style="margin-left: 14px;margin-top: 3px;"
+    *ngIf="form.controls[key].errors.pattern && (key==='phone' || key==='phone_number' || key==='max_daily_hours' || key==='max_weekly_hours'||key === 'scheduling_notification_time')">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['pattern']}}
+  </div>
+  <div style="margin-left: 14px;margin-top: 3px;"
+    *ngIf="(form.controls[key].errors.unique && key !== 'phone' && key !== 'email') || (form.controls[key].errors.unique && key === 'phone' && !form.controls[key].errors.pattern) || (form.controls[key].errors.unique && !form.controls[key].errors.pattern && key === 'email')">
+    <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['unique']}}
+  </div>
+</div>
+
+<div *ngIf="isSubmitted && text" class="errors">
+  <i class="fas fa-exclamation-triangle error-icon"></i>
+    {{text}}
+</div>
+
+<div *ngIf="isSubmitted && form.controls.permissions">
+  <div *ngIf="form.controls.permissions.controls[index].controls[key]?.errors" class="errors">
+    <div *ngIf="form.controls.permissions.controls[index].controls[key]?.errors.maxlength">
+      <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['maxlength']}}
+      {{form.controls.permissions.controls[index].controls[key]?.errors.maxlength.requiredLength}}.
+    </div>
+    <div *ngIf="form.controls.permissions.controls[index].controls[key]?.errors.required">
+      <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['required']}}
+    </div>
+    <div *ngIf="form.controls.permissions.controls[index].controls[key]?.errors.unique">
+      <i class="fas fa-exclamation-triangle error-icon"></i> {{errorDetails['unique']}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+
+.assignment {
+    height: 4vh !important;
+}
+
+.spinner-search {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  color: #8f9bb3;
+}
+// .azalioplay-spinner
+// {
+//   top: 36px !important;
+// }
+.azalioplay-spinner
+{
+  top: 26px !important;
+}
+.azalioplay-spinner-more
+{
+  top: 38px !important;
+}
+.disabled-field, .disbaled-field:focus {
+    color: #8f9bb37a;
+    background-color: #f7f9fc;
+    border-color: #e4e9f2 !important;
+}

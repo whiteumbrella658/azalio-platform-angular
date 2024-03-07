@@ -1,0 +1,41 @@
+<div class="modal_wrapper verify_email" style="text-align:center;">
+    <!-- <nb-card-body [nbSpinner]="loading" ></nb-card-body> -->
+    <nb-card>
+        <nb-card-header style="background: #7b68ee !important;
+        border-top-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;">
+            <label> </label>
+            <span class="gray_text subheading">
+
+            </span>
+            <nb-icon icon="close" (click)="close()" class="cross_icon" style=" position: relative;
+            top: 0px;"></nb-icon>
+
+        </nb-card-header>
+        <nb-card-body [nbSpinner]="loading" style="    background: #f7f9fc !important;
+        border-bottom-left-radius: 10px !important;
+        border-bottom-right-radius: 10px !important;">
+            <br>
+            <!-- <nb-icon icon="star"></nb-icon> -->
+            <br>
+            <i class="fa fa-2x fa-envelope" aria-hidden="true"></i> <br>
+            <b style="font-size: 16px; color: #6e689b;">Please verify your email</b>
+            <br>
+            <br>
+            <br>
+
+            <p class="gray_text" style="font-size: 14px;">
+                We have sent you an email on "{{data.email}}", Once you verify your email address, we will setup your
+                account
+            </p>
+
+            <br>
+            <br>
+
+
+            <p class="gray_text" style="font-size: 13px;">
+                Didn't receive any email? <a (click)="resendInvite()">Resend?</a>
+            </p>
+        </nb-card-body>
+    </nb-card>
+</div>

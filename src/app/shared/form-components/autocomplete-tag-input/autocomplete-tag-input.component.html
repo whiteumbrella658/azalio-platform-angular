@@ -1,0 +1,50 @@
+<!-- <form [formGroup]="form"> -->
+<nb-card-body class="spinner-search" [nbSpinner]="loading"
+  nbSpinnerStatus="basic" style="position: absolute; right: 8px;top: 0px; bottom: 0; margin: auto;color: #8f9bb3;">
+</nb-card-body>
+<nb-tag-list [ngClass]="{'assignmentField-disabled': disabled}" (tagRemove)="onTagRemove($event)"
+  *ngIf="(!(data) || (data && data[0].id) || (data && data[0].name)); else emptydrop ">
+  <nb-tag *ngFor="let tree of trees" [text]="tree.name" [ngClass]="{'tags-disabled': disabled}"
+    [removable]="!disabled && !disableTags?.includes(tree.id)"></nb-tag>
+  <input [disabled]="disabled" #autoInput type="text" aria-label="search" [placeholder]="showPlaceholder ? placeholder : ''" nbTagInput
+    [readonly]="disabled" (tagAdd)="onTagAdd($event)" [nbAutocomplete]="auto" (input)="onAutocompleteChange()"
+    fullWidth />
+
+  <nb-autocomplete #auto (selectedChange)="onSelectionChange($event)">
+    <nb-option *ngFor="let option of filteredOptions$ | async" [value]="option">
+      <span *ngIf="option === -1">No matches found.</span>
+      <ng-container *ngIf="option !== -1">
+        <app-user-avatar *ngIf="option.type === 'User'" size="medium" [name]="option.name"
+        [title]="option.role_title" color="{{ option.color + opacity }}" [initialColor]="option.color">
+      </app-user-avatar>
+        <ng-container *ngIf="option.type !== 'User'">
+          <div class="icon-container" [ngClass]="{'store-icon-survey' : isSearchUsers}">
+            <!-- <i
+              *ngIf="option.type === 'Region'"
+              class="fa fa-map-marker-alt primary_color"
+            ></i> -->
+            <i class="fas fa-store icon-color" *ngIf="option.type === 'Region' && !option.is_partner"></i>
+            <i class="fas fa-store icon-color" *ngIf="option.type === 'Region' && option.is_partner"></i>
+            <!-- <img *ngIf="option.type === 'Region' && !option.is_partner" src="../../../../assets/store.svg"
+              alt="region icon" style="width: 20px;" />
+            <img *ngIf="option.type === 'Region' && option.is_partner" src="../../../../assets/store.svg"
+              alt="all region icon" style="width: 20px;" /> -->
+            <!-- <i
+
+              class="fa fa-users primary_color"
+            ></i> -->
+            <img *ngIf="option.type === 'Role' || option.type === 'Team'" src="../../../../assets/team.svg" alt="team icon" />
+          </div>
+          <span style="line-height: 32px">{{ option.name }}</span>
+        </ng-container>
+      </ng-container>
+    </nb-option>
+  </nb-autocomplete>
+</nb-tag-list>
+<!-- </form> -->
+
+<ng-template #emptydrop>
+
+  <nb-select #autoInput disabled placeholder="No store to select">
+  </nb-select>
+</ng-template>

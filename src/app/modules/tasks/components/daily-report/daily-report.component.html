@@ -1,0 +1,198 @@
+<app-loader [loading]="loading || fileDownloading"></app-loader>
+
+<div class="resp">
+    <div class="navbar-resp">
+        <div class="dropdown">
+            <button class="dropbtn">
+                Shifts
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <ul class="shifts-list">
+                    <li class="shift-info " [ngClass]="{'active': selectedShift?.id == shift?.id}"
+                        *ngFor="let shift of shifts" (click)="selectShift(shift)">
+                        <i [class]="shift.icon" [ngClass]="{'notVisible': shift.id == null}"></i>
+                        <img *ngIf="shift.id == null" src="assets/shifts-comment.png" class="default-icon">
+                        <span class="sname">
+                            {{shift.shift_name}}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="daily-report-wrapper">
+    <div *ngIf="shifts" class="reports-container"
+        style="border-top: 0.2px solid #efefef; border-right: 1px solid #efefef">
+        <ul class="shifts-list">
+            <li class="shift-info " [ngClass]="{'active': selectedShift?.id == shift?.id}" *ngFor="let shift of shifts"
+                (click)="selectShift(shift)">
+                <i [class]="shift.icon" [ngClass]="{'notVisible': shift.id == null}"></i>
+                <img *ngIf="shift.id == null" src="assets/shifts-comment.png" class="default-icon">
+                <span class="sname">
+                    {{shift.shift_name}}
+                </span>
+            </li>
+        </ul>
+    </div>
+
+
+    <nb-layout-column class="colored-column-info timesheets_wrapper dailyreports" id="daily-report">
+
+        <div class="wrapper_header first-row">
+            <span class="left-elements">
+                <span>
+                    <button (click)="navigateTo('tasks/report')" class="back-btn" size="medium" type="button" nbButton
+                        status="primary">
+                        <i class="fa fa-angle-left" aria-hidden="true" style="margin-right:7px;"></i> Back to
+                        reports</button>
+                </span>
+                <span class="input_datepicker">
+                    <span (click)="dateInput.click()" class="datepicker_span weekday_toggle">{{ selectedDate | date }}
+                        <i class="fa fa-chevron-down arrow-down" aria-hidden="true"></i></span>
+                    <nb-datepicker #dateTimePicker (dateChange)="setDate($event)"></nb-datepicker>
+                    <input aria-label="date picker" #dateInput nbInput placeholder="Pick Date"
+                        [nbDatepicker]="dateTimePicker" style="visibility: hidden;" />
+                </span>
+            </span>
+            <span class="flex input-row" *ngIf="sharedRegion !== 0" style="justify-content: flex-end;">
+                <div class="banner-wrapper"  *ngIf="fileDownloading"> 
+                    <span class="banner">
+                        <span class="banner-details">
+                            Please wait while the file is being prepared for download...
+                        </span>
+                    </span>
+                </div>
+                <app-search-input class="search-task" [placeholder]="'Search by task or user'"
+                    [showHelperButton]="false" (searchEvent)="onSearch($event)" (searchAll)="onSearchAll($event)">
+                </app-search-input>
+                <span [nbSpinner]="fileDownloading ? true : false" nbSpinnerStatus="primary" (click)="downloadDailyReport()" class="print_span"
+                    nbTooltip="Download daily task report" nbTooltipPlacement="top"><i class="fa fa-file-arrow-down"
+                        aria-hidden="true"></i>  
+                </span>
+            </span>
+        
+        </div>
+        <div class="dailyreport-table" style="padding: 0px !important;">
+            <ng-container *ngIf="!pageLoading && sharedRegion !== 0">
+                <table mat-table [dataSource]="data" class="daily-reports-tbl">
+                    <ng-container matColumnDef="task">
+                        <th mat-header-cell *matHeaderCellDef style="width: 25%;">Task</th>
+                        <td mat-cell *matCellDef="let element" style="width: 25%;">
+                            <span class="column-wrapper">
+                                <label class="show_in_resp">Task</label>
+                                <span class="resp-container">
+                                    <span class="taskname">
+                                        <i class="fa fa-angle-double-up priority"
+                                            [ngClass]="{'enable-priority': element.priority === 'HIGH'}"></i>
+                                        {{element.task_name}}
+                                    </span>
+                                    <span class="task-details" *ngIf="element.assigned_to_user_name">
+                                        <!-- <span class="pts">
+                                            <img src="assets/coin.png"> {{element.points ? element.points : '0 '}} points
+                                        </span> -->
+                                        <span class="assigned-user">
+                                            {{element.assigned_to_user_name}}
+                                        </span>
+                                    </span>
+                                </span>
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef style="width: 15%;">Action by</th>
+                        <td mat-cell *matCellDef="let element" style="width: 15%;">
+                            <span class="column-wrapper">
+                                <label class="show_in_resp">Action by</label>
+                                <ng-container
+                                    *ngIf="element.modification!== null && !element.modification?.includes('Created')">
+                                    <span class="resp-container">
+                                        <span class="align-col">
+                                            <app-user-avatar [class]="getStatusClass(element)" size="small"
+                                                [name]="element.modified_by" [color]="element.user_color + opacity"
+                                                [initialColor]="element.user_color" nbTooltipPlacement="top"
+                                                [nbTooltip]="element.modified_by">
+                                            </app-user-avatar>
+                                            <span class="time">{{element.modified_on | date: 'hh:mm aa'}} </span>
+
+                                            <ng-container *ngIf="element.points_earned">
+                                                <span class="pts">
+                                                    <img src="assets/coin.png">
+                                                    <span class="points">
+                                                        {{element.points_earned}} pts earned
+                                                    </span>
+                                                </span>
+                                            </ng-container>
+                                        </span>
+                                    </span>
+                                </ng-container>
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="shift">
+                        <th mat-header-cell *matHeaderCellDef style="width: 10%;">Shift</th>
+                        <td mat-cell *matCellDef="let element" style="width: 10%;">
+                            <ng-container>
+                                <label class="show_in_resp">Shift</label>
+                                {{element.shift_name}}
+                            </ng-container>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="comment">
+                        <th mat-header-cell *matHeaderCellDef style="width: 25%;">Comment</th>
+                        <td mat-cell *matCellDef="let element" style="width: 25%;">
+                            <ng-container *ngIf="!element.modification?.includes('Created')">
+                                <label class="show_in_resp">Comment</label>
+                                {{element.comment}}
+                            </ng-container>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="datetime">
+                        <th mat-header-cell *matHeaderCellDef style="width: 13%;">Time</th>
+                        <td mat-cell *matCellDef="let element" style="width: 13%;" class="comment-field">
+                            <ng-container *ngIf="!element.modification?.includes('Created')">
+                                <label class="show_in_resp label-txt">Time</label>
+                                {{element.modified_on | date: 'MMM d, hh:mm aa'}}
+                            </ng-container>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="picture">
+                        <th mat-header-cell *matHeaderCellDef style="width: 20%;">Picture</th>
+                        <td mat-cell *matCellDef="let element" style="width: 20%;">
+                            <span class="column-wrapper">
+                                <label class="show_in_resp">Picture</label>
+                                <span class="resp-container picture reports-azalio-play showhim"
+                                    *ngIf="element.image_url != null && !element.image_url?.includes('id=null')">
+                                    <app-user-avatar class="dailyreports-picture"
+                                        [picture]="element?.image_url | imageAuth | async" [task]="true" size="medium"
+                                        [showInitials]="false" onlyPicture>
+                                    </app-user-avatar>
+                                    <app-text-popup [imageClass]="'reports-azalio-play'"
+                                        [image]="element.image_url ? element.image_url : 'black'" class="relative">
+                                        <span class="image-preview">
+                                            <i class="fa fa-search-plus showme image" alt="preview image"
+                                                aria-hidden="true"></i>
+                                        </span>
+                                    </app-text-popup>
+                                </span>
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns" [class]="getStatusClass(row)"
+                        [ngClass]="{'large-row': (row.image_url?.includes('id') && !row.image_url.includes('id=null'))}">
+                    </tr>
+                </table>
+            </ng-container>
+            <app-no-records class="selecttask" [display]="sharedRegion == 0 && !singleRegion" [isScheduler]="true"
+                [animation]="'selectStoreForTask'" [animation2]="'arrowTop'"></app-no-records>
+            <app-no-records class="tasksanimation" [display]="emptyResults" [animation]="'timesheet'"
+                [textMessage]="'No tasks'"></app-no-records>
+            <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+        </div>
+
+    </nb-layout-column>
+</div>

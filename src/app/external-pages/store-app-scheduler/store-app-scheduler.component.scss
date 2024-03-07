@@ -1,0 +1,175 @@
+// @import "~@mobiscroll/angular/dist/css/mobiscroll.scss";
+
+// .sche_header {
+//   justify-content: space-between;
+//   padding: 12px;
+//   align-items: center;
+//   display: flex;
+
+  // span {
+  //     width: 300px;
+  // }
+// }
+
+// .filter_panel {
+//   padding: 10px;
+//   height: 91vh;
+//   position: fixed;
+//   right: 0;
+//   top: 46px;
+//   z-index: 9;
+//   // overflow: auto;
+//   width: 320px;
+//   background: #f9f7ff;
+//   box-shadow: 0 1px 4px 0 rgb(0 0 0 / 21%);
+//   // max-height: 91vh;
+//   display: none;
+
+//   .mbsc-form-group-title {
+//     font-weight: bold;
+//     border-bottom: 1px solid #efefef;
+//     display: flex;
+//     justify-content: space-between;
+//     cursor: pointer;
+//     padding: 11px;
+//   }
+// }
+
+// .show_filter_panel {
+//   display: block;
+// }
+
+// span.link_button {
+//   color: blue;
+//   text-decoration: underline;
+// }
+
+.calendar_flex {
+  flex-grow: 4 !important;
+}
+
+.calendar_flex_shrinked {
+  padding-left: 6px !important;
+}
+
+
+.all_jobs {
+  display: block;
+  margin: 11px 13px;
+}
+
+.custom-repeat-settings {
+  padding: 14px;
+  padding-bottom: 1px;
+  padding-top: 0px;
+
+  .mbsc-textfield-wrapper {
+    margin-left: 0 !important;
+  }
+}
+
+.time_toggle {
+  margin: 1em;
+  display: block;
+}
+
+.md-event-listing-cont {
+  position: relative;
+  padding-left: 50px;
+}
+
+.md-event-listing-avatar {
+  position: absolute;
+  max-height: 50px;
+  max-width: 50px;
+  top: 21px;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  left: 20px;
+}
+
+.md-event-listing-name {
+  font-size: 16px;
+}
+
+.md-event-listing-title {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.md-event-listing .mbsc-segmented {
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 1px;
+}
+
+.md-event-listing-picker {
+  flex: 1 0 auto;
+}
+
+.md-event-listing-nav {
+  width: 200px;
+}
+
+// .sche_body {
+//   .select_region {
+//     .fa-angle-double-left {
+//       left: 18.4% !important;
+//     }
+//   }
+// }
+
+
+.btns-align {
+  // margin-bottom: 5px;
+  position: relative;
+  left: 32px;
+  top: 2px;
+}
+
+
+// @media (max-width: 335px) and (min-width: 330px) {
+//   .scheduler-icon,
+//   .scheduler-edit-icon {
+//     position: absolute;
+//     transform: translate(285px, -60px);
+//   }
+// }
+
+.scheduler-calender {
+  position: relative;
+  bottom: 33px;
+  left: 281px;
+  // color: #7b68EE;
+  color: #4c30e8c9;
+  cursor: pointer;
+}
+// @media (max-width: 450px) {
+//   .scheduler-calender {
+//     position: relative;
+//     bottom: 38px;
+//     left: 165px;
+//     // color: #7b68EE;
+//     color: #4c30e8c9;
+//     cursor: pointer;
+//   }
+// }
+// @media (max-width: 400px) {
+//   .scheduler-calender {
+//     position: relative;
+//     bottom: 38px;
+//     left: 132px;
+//     // color: #7b68EE;
+//     color: #4c30e8c9;
+//     cursor: pointer;
+//   }
+// }
+// @media (max-width: 1100px) and (min-width: 930px) {
+//   .responsiveness-scheduler {
+//     margin-left: 55px !important;
+//   }
+// }
+
+.mbsc-calendar-controls .mbsc-windows {
+  background-color: #222b45;
+}

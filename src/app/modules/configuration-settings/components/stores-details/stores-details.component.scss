@@ -1,0 +1,272 @@
+.stores-wrapper {
+  width: 100%;
+  padding-top: 10px;
+  // padding-bottom: 20px;
+  padding-bottom: 4px;
+  padding-right: 45px;
+  padding-left: 45px;
+  overflow: auto;
+  max-height: calc(100vh - 100px);
+  margin: 0 auto;
+
+  .stores-header {
+    display: flex;
+    // flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    // margin-top: 10px;
+    margin-bottom: 10px;
+
+    .sub-title {
+      color: #6e698b;
+      font-size: 13px;
+      font-weight: 500;
+      padding-top: 10px;
+      text-align: justify;
+      // margin: 0px -60px 0px 0px;
+      line-height: 1.4;
+    }
+
+    .child2 {
+      display: flex;
+      width: 60%;
+      justify-content: flex-end;
+    }
+  }
+
+  .table-details {
+    background: white;
+    margin: auto;
+    border-radius: 5px;
+    border: 1px solid #efefef;
+    box-shadow: rgb(110 105 139 / 10%) 1px 0px 2px 2px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 23px;
+  }
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0px 0px 0px;
+  display: flex;
+  // flex-direction: column;
+}
+
+@media (max-width: 650px) {
+  .stores-wrapper {
+    padding-right: 20px;
+    padding-left: 20px;
+
+    .stores-header {
+      // flex-direction: column;
+    }
+  }
+}
+
+.table-height {
+  min-height: fit-content;
+  max-height: 70vh;
+  overflow: auto;
+  padding-bottom: 10px;
+}
+
+@media (max-width: 680px) {
+  .table-height {
+    height: 63vh;
+    padding-bottom: 20px;
+  }
+}
+
+// @media (max-width: 520px) and (min-width: 320px) {
+//   .resp-search {
+//     position: fixed;
+//     right: 20px;
+//     top: 100px;
+//   }
+// }
+.stores-table {
+  width: 99.8%;
+}
+
+.fa-stack {
+  width: 1.3em !important;
+}
+
+.truncate-name {
+  width: 190px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+.resp-search {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+@supports selector(:nth-child(1 of x)) {
+  .stores-wrapper {
+
+    // overflow: hidden;
+    .table-height {
+      overflow: auto;
+      max-height: 70vh;
+      min-height: 70vh;
+      display: block;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .stores-wrapper {
+    .stores-header {
+      flex-direction: column;
+
+      .child2 {
+        width: 100%;
+        flex-direction: column;
+        padding-top: 10px;
+      }
+    }
+  }
+
+  .child-container {
+    width: 50%;
+  }
+}
+
+.fa-stack {
+  width: 1.3em !important;
+}
+
+.resp-container {
+  display: inline-flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 1150px) and (min-width: 650px) {
+  .stores-header {
+    flex-direction: column;
+  }
+
+  .child2 {
+    justify-content: flex-end !important;
+    width: 100% !important;
+    padding-top: 10px;
+  }
+}
+
+@media (max-width: 930px) {
+  .resp-view {
+    display: flex;
+    align-items: center;
+  }
+
+  .show_in_resp {
+    padding-right: 75px;
+    margin-right: 0px;
+  }
+
+  .shift-info {
+    display: flex;
+    flex-direction: column;
+    width: 160px;
+  }
+}
+
+.hide-pin {
+  color: #6e689b;
+  margin-left: 5px;
+  // border: 1px solid #6e689b;
+  padding: 5px;
+  // border-radius: 3px;
+  // box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.pin {
+  margin-left: 5px;
+}
+
+.asterik {
+  margin-top: 7px;
+}
+
+.store-pin {
+  display: flex;
+  align-items: center;
+}
+
+.show-pin {
+  color: #6e689b;
+  margin-left: 13px;
+  font-size: 14px;
+  // border: 1px solid #6e689b;
+  padding: 5px;
+  // border-radius: 3px;
+  // box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.show-pin:hover,
+.hide-pin:hover {
+  background: #d1caf9;
+  border-radius: 50px;
+  padding: 5px;
+}
+
+.shift-info {
+  // display: flex;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+}
+
+.edit-shift {
+  color: #ddd5d5;
+}
+
+.edit-shift:hover {
+  color: #90e0c3;
+}
+
+.add-shift-image {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background: url('../../../../../assets/shifts.png') no-repeat;
+  margin-right: 10px;
+  background-size: cover;
+}
+
+.add-shift-image:hover {
+  background: url('../../../../../assets/shifts-comment.png') no-repeat;
+  background-size: cover;
+}
+
+.shiftname {
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+
+.group-setting {
+  color: #8085FF;
+  display: flex;
+  align-items: flex-start;
+  img
+  {
+    width: 15px;
+    margin-right: 4px;
+  }
+}
+
+.group-setting:hover
+{
+  text-decoration: underline;
+  font-weight: 600;
+}

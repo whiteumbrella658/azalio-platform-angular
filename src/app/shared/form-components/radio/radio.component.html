@@ -1,0 +1,10 @@
+<ng-container *ngIf="form">
+    <form [formGroup]="form" autocomplete="off">
+        <span>
+            <nb-radio-group [formControlName]="controlName" class="for-automation">
+                <nb-radio *ngFor="let item of items" [disabled]="item.disabled" [value]="item.value" class="option-txt">{{item.label}}</nb-radio>
+            </nb-radio-group>
+        </span>
+    </form>
+</ng-container>
+

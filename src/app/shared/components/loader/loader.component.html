@@ -1,0 +1,9 @@
+<!-- <div class="spinner spinner-circle"></div> -->
+
+<ng-container *ngIf="display">
+  <div class="loader1">
+  <div class="bar1">
+    <ng-lottie [options]="options" (animationCreated)="onAnimate($event)"></ng-lottie>
+  </div> 
+  </div>
+</ng-container>

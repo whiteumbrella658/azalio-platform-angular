@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="95" height="81" viewBox="0 0 95 81">
+  <defs>
+    <filter id="Union_2" x="0" y="0" width="95" height="81" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_19" data-name="Group 19" transform="translate(-365 -1036)">
+    <g transform="matrix(1, 0, 0, 1, 365, 1036)" filter="url(#Union_2)">
+      <path id="Union_2-2" data-name="Union 2" d="M1620-1779.5a31.5,31.5,0,0,1,31.5-31.5,31.349,31.349,0,0,1,16.6,4.723,17.43,17.43,0,0,1,11.4-4.224A17.5,17.5,0,0,1,1697-1793a17.505,17.505,0,0,1-14.214,17.192A31.5,31.5,0,0,1,1651.5-1748,31.5,31.5,0,0,1,1620-1779.5Z" transform="translate(-1611 1817)" fill="#fff"/>
+    </g>
+    <path id="Icon_awesome-mobile-alt" data-name="Icon awesome-mobile-alt" d="M19.125,0H3.375A3.376,3.376,0,0,0,0,3.375v29.25A3.376,3.376,0,0,0,3.375,36h15.75A3.376,3.376,0,0,0,22.5,32.625V3.375A3.376,3.376,0,0,0,19.125,0ZM11.25,33.75A2.25,2.25,0,1,1,13.5,31.5,2.248,2.248,0,0,1,11.25,33.75Zm7.875-7.594a.846.846,0,0,1-.844.844H4.219a.846.846,0,0,1-.844-.844V4.219a.846.846,0,0,1,.844-.844H18.281a.846.846,0,0,1,.844.844Z" transform="translate(390 1055.5)" fill="#7b68ee"/>
+    <path id="Icon_awesome-reply" data-name="Icon awesome-reply" d="M.479,11.341,10.616,2.587A1.383,1.383,0,0,1,12.9,3.633V8.244C22.154,8.35,29.49,10.2,29.49,18.972a11.774,11.774,0,0,1-4.8,8.878,1.026,1.026,0,0,1-1.617-1.073c2.612-8.352-1.239-10.57-10.171-10.7v5.064a1.383,1.383,0,0,1-2.286,1.046L.479,13.433a1.383,1.383,0,0,1,0-2.092Z" transform="matrix(0.966, -0.259, 0.259, 0.966, 415.254, 1047.459)" fill="#7b68ee"/>
+  </g>
+</svg>

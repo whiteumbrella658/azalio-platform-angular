@@ -1,0 +1,11 @@
+<ng-container *ngIf="onlineStatus === 'online'">
+  <div class="online">
+    <span>{{message}}</span>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="onlineStatus === 'offline'">
+  <div class="offline">
+    <span>{{message}}</span>
+  </div>
+</ng-container>

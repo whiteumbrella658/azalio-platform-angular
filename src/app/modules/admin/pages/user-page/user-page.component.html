@@ -1,0 +1,131 @@
+<app-admin-header></app-admin-header>
+<app-loader [loading]="loading"></app-loader>
+<nb-layout-column class="colored-column-info timesheets_wrapper">
+  <div class="page-wrapper">
+    <div class="wrapper_header" [style.visibility]="!paginator ? 'hidden': 'visible'">
+      <div class="flex container search_input_fix">
+        <span class="left-section">
+          <!-- <i class='fas fa-user-cog icon-color' style="font-size: 21px;"></i> -->
+          <span>
+            <button (click)="back()" type="button" nbbutton="" status="primary"
+              class="back-btn appearance-filled size-medium shape-rectangle status-primary nb-transition"
+              aria-disabled="false" tabindex="0">
+              <i aria-hidden="true" class="fa fa-angle-left" style="margin-right: 7px;"></i>
+              Back
+            </button>
+          </span>
+          <span class="heading">
+           <span class="info-details">
+             <img src="assets/company-icon.png" style="width: 25px;margin-right: 5px;"/>
+            Users of {{companyName}}
+           </span> 
+           
+          </span>
+        </span>
+        <span class="right-actions search resp-search">
+          <app-search-input class="search" [placeholder]="'Search by name'" (searchEvent)="onSearch($event)">
+          </app-search-input>
+          <span class="survey_pagination">
+            <mat-paginator *ngIf="paginator" [length]="paginator.total_records" [pageIndex]="paginator.page_no - 1"
+              [pageSize]="paginator.page_size" [pageSizeOptions]="pageSizes" (page)="pageEvent = $event; getData()"
+              showFirstLastButtons>
+            </mat-paginator>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="customer-container">
+      <table mat-table [dataSource]="dataSource.data" class="table-wrapper">
+
+        <!-- User Column -->
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef style="width: 18%;">Name</th>
+          <td mat-cell *matCellDef="let element" (click)="selectRow(element)" style="width: 18%">
+            <div class="trim_name">
+              <app-user-avatar class="user-table" size="medium" name="{{ element.name }}"
+                [color]="element.color + opacity" [initialColor]="element.color"
+                [class]="{link_name: type === 'user-detail' && !element.is_account_owner }" nbTooltipAdjustment="noop"
+                [nbTooltip]="element.name">
+              </app-user-avatar>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef style="width: 18%;"> Role </th>
+          <td mat-cell *matCellDef="let element" style="width: 18%;"> {{element.role}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="regionsAndTeams">
+          <th mat-header-cell *matHeaderCellDef style="width: 18%;">Store</th>
+          <td mat-cell *matCellDef="let element" style="width: 18%;">
+            <span *ngIf="element?.regions?.length >1">
+              <span class="works_with_column" *ngIf="!element.is_account_owner && !element.is_partner; else templateAll"
+                [nbTooltip]="regions" nbTooltipPlacement="top" nbTooltipTrigger="hover" (mouseenter)="OnHover(element)">
+                {{ element | regionsTeams : 'stores'}}
+              </span>
+            </span>
+            <span *ngIf="element?.regions?.length <2">
+              <span class="works_with_column"
+                *ngIf="!element.is_account_owner && !element.is_partner && element?.regions?.length<2; else templateAll">
+                {{ element | regionsTeams : 'stores'}}
+              </span>
+            </span>
+            <ng-template #templateAll>
+              <!-- <span *ngIf="isTeam">All {{ nameConfig?.team_plural }} | </span>  -->
+              <span class="all-stores">
+                All stores
+              </span>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef style="width: 18%; padding-left: 38px !important;">Email</th>
+          <td mat-cell *matCellDef="let element" style="width: 18%">
+            {{ element.email }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone_number">
+          <th mat-header-cell *matHeaderCellDef style="width: 18%;">Phone number</th>
+          <td mat-cell *matCellDef="let element" style="width: 18%;">
+            <div class="flex">
+              <span *ngIf="!element.is_account_owner && element.resend_mobile_invite" class="relative pointer"
+                (click)="resendInvite(element.id, 'mobile')">
+              </span>
+              <span class="phone_trim"> {{ element.phone_number | phoneNumber }} </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef style="width: 18%;">Status</th>
+          <td mat-cell *matCellDef="let element" class="status_badge" style="width: 18%;">
+            <span [ngClass]="{'active': element.status == 1, 'pending': element.status == 0 }">
+              {{element.status == 1 ? 'Active' : 'Pending' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Action </th>
+          <td mat-cell *matCellDef="let element" style="width: 10%;">
+            <label class="show_in_resp">Action</label>
+            <span [hidden]="!element.email" (click)="openModal(element)" class="view-icon" nbTooltip="{{element.status == 1 ? 'Change password' : 'Activate and change password'}}">
+              <i class="fa fa-user-gear" style="font-size: 18px;"></i></span>
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ disable_row: row.is_empty }"
+          class="showhim"></tr>
+      </table>
+      <app-no-records [display]="emptyResults" [animation]="'timesheet'" [textMessage]="'No users.'">
+      </app-no-records>
+      <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+    </div>
+  </div>
+</nb-layout-column>

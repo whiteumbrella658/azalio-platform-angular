@@ -1,0 +1,94 @@
+<span class="intro_wrapper what-new">
+    <div class="modal_wrapper">
+        <nb-card style="min-height: 350px;">
+            <nb-card-header>
+                <span style="position: relative;top: 10px;">
+                    <label style="display: flex; color: white; align-items: center;">
+                        <span class="mheading">
+                            Hello August, Embrace the innovation! 🚀
+                        </span>
+                    </label>
+                    <nb-icon icon="close" (click)="close(null)" class="cross_icon close"
+                        style="color: white;"></nb-icon>
+                </span>
+            </nb-card-header>
+
+            <nb-card-body class="resp-scroll">
+                <span class="body-container" style="">
+                    <div style="position:relative;width:100%">
+                        <img src="assets/whats-new.png" class="thanks-giving">
+                        <div class="overlay overlay_3">
+                        </div>
+                    </div>
+
+                    <span class="christmas-txt">
+                        <div class="desc-label">
+                            <ul>
+                                <li class="first-list-item" style="">
+                                    <span>
+
+                                        If rewards gateway is enabled, mobile app users <i
+                                            class="fa-solid fa-mobile-screen-button" style="color: #3F51B5;"></i> can
+                                        use accumulated <b style="color: orange;">points <img src="assets/coin.png"
+                                                style="    margin-right: 2px;
+                                            margin-bottom: -3px;"></b> earned from
+                                        tasks to request for <b>Gift vouchers</b> like <b style="color: red;">Netflix</b>, <b style="color: green;">Spotify</b>, <b style="color: orangered;">Amazon</b>  etc.
+
+                                        <div style="margin-top: 9px;">
+                                            Web user with access to recognition will have an option to accept/reject the
+                                            gift card requests from
+                                            <span><a style="color: #ff9800;" *ngIf="isRecognitionEnabled"
+                                                    (click)="navigate('/recognition')">recognition.<i
+                                                        class="fa fa-trophy" style="color: #ff9800;"></i> </a>
+                                                        The gift cards will be delivered via an Azalio representative.
+                                                <!-- <b *ngIf="!isSchedulerEnabled">recognition </b> -->
+                                            </span>
+                                            <br>
+                                            Contact <a
+                                                href="mailto:customersupport@azal.io?subject=Query about leaves and time-off.">
+                                                customersupport@azal.io</a>.
+
+                                            <!-- <br>
+                                         Disabled: manager can view Gift Card Requets. -->
+
+                                        </div>
+                                    </span>
+                                </li>
+
+                                <li>
+                                    You can now customize task tags <i class="fa fa-tasks" style="color: #0ebaaa;"></i>
+                                    via <span><a *ngIf="isSettingsEnabled"
+                                            (click)="navigate('settings/rules')">settings.</a>
+                                        <b *ngIf="!isSettingsEnabled">settings </b></span>
+                                    <i class="fas fa-cog" style="color: #673AB7;
+                                    margin-right: 2px;
+                                    margin-left: 3px;"></i>.
+
+                                    These tags can be used to group tasks for the mobile app user <i
+                                        class="fa-solid fa-mobile-screen-button" style="color: #3F51B5;"></i>.
+
+                                </li>
+
+                                <!-- <li>
+                                    Now <b>'Task Tags' </b> <i class="fa fa-tags" style="color:#e91e63"></i> you assign to
+                                    Tasks will show as sections to the mobile user. <i
+                                        class="fa-solid fa-mobile-screen-button" style="color: #3F51B5;"></i>
+                                </li> -->
+                            </ul>
+
+                        </div>
+
+                    </span>
+                    <div class="footer-text">
+                        <span class="last-row">We love what we do because of customers like you.</span>
+                        <span class="footer-subtext">
+                            Team Azalio
+                        </span>
+                    </div>
+
+                </span>
+
+            </nb-card-body>
+        </nb-card>
+    </div>
+</span>

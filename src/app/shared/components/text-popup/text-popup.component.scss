@@ -1,0 +1,86 @@
+.user_image_expand_wrapper {
+  display: flex;
+  overflow: auto;
+  max-width: 400px;
+  max-height: 350px;
+  // height: 400px;
+  // width: 400px;
+  height: auto;
+  width: auto;
+  padding: 5px;
+}
+
+.tasks-azalio-play {
+  display: flex !important;
+  max-width: 650px !important;
+  max-height: 600px !important;
+}
+
+.reports-azalio-play {
+  max-width: 650px !important;
+  max-height: 600px !important;
+}
+
+@media(max-width:600px) {
+  .reports-azalio-play {
+    max-width: 250px !important;
+    max-height: 400px !important;
+  }
+}
+
+.user_image_expand {
+  margin: 0px auto;
+  display: block;
+  /* width: 100%; */
+  height: auto;
+  /* height: 100%; */
+  /* max-height: 100%; */
+  width: auto;
+  max-width: -webkit-fill-available;
+  max-height: -webkit-fill-available;
+  max-height: -moz-available;
+  min-width: -moz-available;
+  // padding-top: 7px;
+  object-fit: contain;
+}
+
+.loading_image {
+  // display: flex;
+  // max-width: 350px;
+  // max-height: 450px;
+  // height: 450px;
+  // width: 350px;
+  // // background-image: url(https://gifimage.net/wp-content/uploads/2017/08/spinner-gif-7.gif);
+  // background-image: url("../../../../assets/loading.gif");
+  // background-color: #ffffff;
+  // background-position: center;
+  // background-repeat: no-repeat;
+  // background-size: 300px 150px !important;
+  // background-size: contain;
+  // align-items: center;
+
+
+
+
+  display: flex;
+  max-width: 350px;
+  max-height: 450px;
+  height: 450px;
+  width: 350px;
+  background-image: url("../../../../assets/loading.gif");
+  background-color: #ffffff;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: auto !important;
+  overflow: hidden;
+  max-width: -webkit-fill-available;
+  max-height: -webkit-fill-available;
+  max-height: -moz-available;
+  min-width: -moz-available;
+}
+
+.note-desp {
+  color: black;
+  font-size: 11px;
+  flex-wrap: wrap;
+}

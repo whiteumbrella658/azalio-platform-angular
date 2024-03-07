@@ -1,0 +1,45 @@
+<div class="modal_wrapper import-users">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <label> <b class="title">Import Users</b> </label>
+            <nb-icon icon="close" (click)="close()" class="cross_icon hidden"></nb-icon>
+            <!-- <span class="relative white_text subheading"> To get started, choose an excel file containing data of users
+                to be imported. View the template file with the instructions for importing the data. </span> -->
+        </nb-card-header>
+        <nb-card-body [nbSpinner]="loading">
+            <div class="templete_wrapper flex space_between">
+                <div class="link_button" style="font-size: 13px;">You can add users to the system by uploading an excel file. Please <a (click)="open('viewTemp')">click here</a> to view the template file containing instructions on how the data should be arranged in an excel.</div>
+                <!-- <i class="fas fa-2x fa-file-excel" aria-hidden="true"></i> -->
+
+            </div>
+            <form #ngForm="ngForm" id="form" [formGroup]="UploadFileForm" (ngSubmit)="submit(ngForm)">
+                <div class="upload_file cetner">
+                    <!-- <i class="fas fa-2x fa-file-excel" aria-hidden="true"></i> <br><br> -->
+
+                    <b class="">Select a file to import<br>
+                        <!-- <input type="file"  id="file" (change)="handleFileInput($event.target.files)" /><br> -->
+                        <!-- <input formControlName="file" hidden/> -->
+                    </b> <br>
+
+                    <button class="excel-btn" size="medium" type="button" (click)="clickSelectFile()" id="filebutton" outline nbButton
+                        status="primary">  <i class="fas fa-2x fa-file-excel" aria-hidden="true"></i> Choose File</button> <br>
+                    <input type="file" aria-label="choose file button" accept=".xlsx" #fileUpload (change)="handleFileInput($event)" hidden /> <br>
+                    {{fileName}}
+                    <!-- <span class="gray_text">Or drag and drop here to upload</span> -->
+
+                </div>
+                <br>
+                <app-error-message [key]="'file'" [form]="UploadFileForm" [isSubmitted]="ngForm.submitted">
+                </app-error-message>
+                <ng-container *ngIf="!UploadFileForm.controls.file.errors">
+                    <div *ngIf="ngForm.submitted && UploadFileForm.errors?.invalidFileType" class="red"
+                        style="font-size: 13px;">Invalid file type.</div>
+                </ng-container>
+                <div class="footer_button" style="justify-content: flex-end; margin-top:15px !important">
+                    <app-button (onClick)="close()">Cancel</app-button>
+                    <button size="medium" type="submit" nbButton status="primary">Upload</button>
+                </div>
+            </form>
+        </nb-card-body>
+    </nb-card>
+</div>

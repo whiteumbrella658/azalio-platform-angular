@@ -1,0 +1,231 @@
+// .header-container {
+//   display: flex;
+//   flex-direction: column;
+//   border-bottom: 1px solid #efefef;
+//   padding-top: 10px;
+//   background-color: #7f84ea;
+//   border-top-left-radius: 10px;
+
+//   .header {
+//     display: flex;
+//     justify-content: space-between;
+//     min-height: 40px;
+
+//     .heading {
+//       display: flex;
+//       flex-direction: column;
+//       margin: 0 auto;
+//       align-items: center;
+//       font-size: 17px;
+//       color: white;
+//       font-weight: 400;
+//       padding-top: 5px;
+//       padding-bottom: 5px;
+//       padding-left: 10px;
+//       padding-right: 10px;
+//     }
+//   }
+// }
+
+.tasks-wrapper {
+  overflow: auto;
+  padding: 8px;
+  margin-top: 2px;
+  max-height: 81vh;
+  min-height: 81vh;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 28px;
+
+  .task-details {
+    background: white;
+    padding: 5px;
+    border-radius: 10px;
+    margin-top: 9px;
+
+    .row1 {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      padding-left: 12px;
+      padding-right: 12px;
+      align-items: center;
+      padding-bottom: 0px;
+
+      .user-details {
+        font-size: 11px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .datetime {
+        color: #0000007d;
+        font-size: 12px;
+        font-weight: 600;
+      }
+    }
+
+    .row2 {
+      display: flex;
+      padding-left: 46px;
+      padding-right: 12px;
+      padding-bottom: 3px;
+
+      .date {
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        font-size: 15px;
+        color: #7b68ee;
+        font-weight: 600;
+      }
+
+      .days-tag {
+        background: #ffcfbe;
+        color: black;
+        padding: 1px;
+        border-radius: 15px;
+        font-size: 10px;
+        padding-left: 7px;
+        padding-right: 7px;
+        font-weight: 500;
+      }
+    }
+
+    .row3 {
+      display: flex;
+      justify-content: space-between;
+      padding-left: 46px;
+      padding-right: 12px;
+      padding-bottom: 5px;
+
+      .leave-type {
+        font-size: 13px;
+        color: black;
+      }
+    }
+
+    .row4 {
+      display: flex;
+      justify-content: space-between;
+      padding-left: 46px;
+      padding-right: 12px;
+      padding-bottom: 3px;
+
+      .comment {
+        font-size: 13px;
+        color: grey;
+      }
+    }
+  }
+}
+
+// .reject-btn {
+//   background: white !important;
+//   border: 1px solid #e91e63 !important;
+//   color: #e91e63 !important;
+//   height: 26px;
+// }
+
+// .approve-btn {
+//   background: white !important;
+//   border: 1px solid #7b68ee !important;
+//   color: #7b68ee !important;
+//   height: 26px;
+// }
+
+.approve-publish-btn {
+  background: white !important;
+  border: 1px solid #4caf50 !important;
+  color: #4caf50 !important;
+  height: 26px;
+  // margin-right: 5px;
+}
+
+.approve-publish-btn {
+  height: 26px;
+}
+
+.requested_on {
+  padding-left: 46px;
+  padding-right: 12px;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 11px;
+}
+
+// .circle-btn {
+//   background: #ffffff;
+//   padding: 5px 8px;
+//   border-radius: 10px;
+//   color: #7b68ee !important;
+//   cursor: pointer;
+//   font-weight: 500;
+//   border-radius: 2px;
+//   border-radius: 52%;
+//   width: 25px;
+//   height: 25px;
+//   box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+//   display: inline-flex;
+
+//   i {
+//     font-size: 16px;
+//   }
+// }
+
+// .approve {
+//   .circle-btn {
+//     padding: 5px 5px !important;
+//   }
+// }
+
+.markdone-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 305px;
+}
+
+@media(max-width:600px) {
+  .tasks-wrapper .task-details .row2 {
+    margin-top: 12px;
+  }
+}
+
+// @media(min-width:700px) {
+//   .circle-btn {
+//     display: none;
+//   }
+
+//   .approve-btn,
+//   .reject-btn,
+//   .approve-publish-btn {
+//     display: flex;
+//   }
+// }
+
+// @media(max-width:699px) {
+//   .circle-btn {
+//     display: flex;
+//   }
+
+//   .approve-btn,
+//   .reject-btn,
+//   .approve-publish-btn {
+//     display: none;
+//   }
+//   .markdone-container {
+//     width: 90px;
+//   }
+// }
+
+// .disabled-row {
+//   background: #efefef !important;
+// }
+
+@media(max-width:1050px) {
+  .tasks-wrapper .task-details .row2 {
+    padding-top: 10px;
+  }
+}

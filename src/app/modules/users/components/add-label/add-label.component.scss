@@ -1,0 +1,41 @@
+
+.title {
+    display: contents;
+}
+
+.stores-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.storeinfo {
+    display: flex;
+    align-items: center;
+    width: 30%;
+    i {
+        margin-right: 5px;
+    }
+}
+
+.user-table {
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
+}
+
+.stores-container {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.dropdown-multiselect {
+    width: 70%;
+}
+
+.footer-btns-row {
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,93 @@
+<div class="modal_wrapper new-reward">
+    <nb-card>
+
+        <nb-card-header class="card_header">
+            <span>
+                <label class="title" style="text-align: center;">Recognize {{selectedUser.user_name}}</label>
+            </span>
+        </nb-card-header>
+
+        <nb-card-body [nbSpinner]="loading">
+            <ng-container *ngIf="form">
+                <form #ngForm="ngForm" id="form" [formGroup]="form" class="reward-form" (ngSubmit)="submit(ngForm)">
+                    <div class="two-column_reward">
+                        <div class="left-wrapper">
+                            <span class="label-txt">
+                                Select a Badge
+                            </span>
+                            <div class="badge-container">
+                                <div class="small-badge-row">
+                                    <ng-container *ngFor="let badge of badges">
+                                        <div class="badge-box">
+                                            <span class="badges" (click)="selectedBadge = badge;">
+                                                <!-- <img alt="badge" [ngClass]="{'selected': selectedBadge?.id === badge.id}"
+                                                    [src]="(badge.image_url | imageAuth | async)"> -->
+                                                <app-user-avatar
+                                                    [ngClass]="{'selected': selectedBadge?.id === badge.id}"
+                                                    [picture]="badge?.image_url | imageAuth | async" size="medium"
+                                                    [showInitials]="false" onlyPicture>
+                                                </app-user-avatar>
+                                            </span>
+                                            <span class="title-badge">{{badge.title}}</span>
+
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex_item3">
+                            <div class="main-container">
+
+                            </div>
+                            <div>
+                                <div class="text-wrapper">
+                                    <span class="name">
+                                        {{webUserName | titlecase}}
+                                    </span>
+                                    <span class="recognize-txt">
+                                        has recognized you with the badge
+                                    </span>
+                                </div>
+                                <div class="badge-info">
+                                    <span class="badge-title" [style.color]="selectedBadge?.color">
+                                        {{selectedBadge?.title}}
+                                    </span>
+                                    <span class="badge-reward-image">
+                                        <app-user-avatar [picture]="selectedBadge?.image_url | imageAuth | async"
+                                            size="medium" [showInitials]="false" onlyPicture>
+                                        </app-user-avatar>
+                                    </span>
+                                </div>
+                                <div class="" style="padding:15px;padding-top: 0px;">
+                                    <textarea maxlength="255" aria-label="description input" nbInput fullWidth
+                                        name="message" formControlName="description"
+                                        placeholder="Add a personalized note (optional)."></textarea>
+                                    <app-error-message [key]="'description'" [form]="form"
+                                        [isSubmitted]="ngForm.submitted">
+                                    </app-error-message>
+                                    <span class="note">
+                                        Note: All the employees in your store will be notified.
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="two-column_Marathon">
+                        <div class="flex_item2">
+                            <span class="footer-reward">
+                                <app-button (onClick)="close()">Cancel</app-button>
+                                <app-submit-button [form]="form" [label]="'Send'">
+                                </app-submit-button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </ng-container>
+        </nb-card-body>
+    </nb-card>
+
+</div>

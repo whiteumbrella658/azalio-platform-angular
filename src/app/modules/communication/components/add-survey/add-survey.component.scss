@@ -1,0 +1,52 @@
+.survey{
+    width: 650px;
+}
+
+.survey nb-card nb-card-header.card_header
+{
+    padding-top:10px !important;
+    padding-bottom: 10px !important;
+    .title
+    {
+        margin: 5px 0px 5px 0px;
+    }
+}
+
+.input-row
+{
+    display: flex;
+}
+.field-wrapper
+{
+    width: 100%;
+    margin: 10px;
+    display: block;
+}
+.input-field
+{
+    width: 100%;
+    margin:10px;
+}
+
+.btns-row
+{
+    justify-content: flex-end;
+    margin:10px;
+}
+
+// .field-wrapper textarea{
+//     height: 92px;
+// }
+
+.store-user
+{
+    display: flex;
+    align-items: center;
+}
+::ng-deep{
+    .survey-txtarea
+    {
+        padding-top: 9px !important;
+        padding-left: 10px !important;
+    }
+}

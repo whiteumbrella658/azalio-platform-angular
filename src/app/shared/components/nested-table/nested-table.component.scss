@@ -1,0 +1,51 @@
+.example-tree-invisible {
+    display: none;
+  }
+  
+  .example-tree ul,
+  .example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+
+  .mat-icon-button {
+    margin: 4px;
+    background: #f7f7f7;
+}
+
+.footer_buttons {
+  justify-content: flex-end;
+  width: 100%;
+  display: flex;
+  // margin-top: 30px;
+  margin-top: 0px;
+}
+.mat-tree-node {
+  background: #f7f7f7;
+    margin-bottom: 2px;
+}
+
+
+// .example-tree ul, .example-tree li {
+//   padding: 0;
+// }
+
+.example-tree ul {
+  margin-top: 0;
+  margin-bottom: 20px;
+  list-style-type: none;
+  background: #f7f7f7;
+}
+
+i.fas.fa-times-circle {
+  position: absolute;
+  right: 40px;
+  font-size: 15px;
+  margin-top: 2px;
+  color: #ff3d71;
+}
+
+.region_only {
+  position: absolute; right: 30px;
+}

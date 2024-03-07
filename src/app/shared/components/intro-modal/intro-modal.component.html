@@ -1,0 +1,190 @@
+<span class="intro_wrapper">
+  <div class="modal_wrapper">
+    <nb-card>
+      <nb-card-header style="background-color:#7b68ee; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+        <span style="position: relative;top: 10px;"> <label
+            style="display: inline-block; margin-bottom: 15px; color: white;">Welcome to Azalio</label>
+          <nb-icon icon="close" (click)="close(null)" class="cross_icon" style="color: white;"></nb-icon>
+        </span>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="routes" [ngClass]="{'hideHeader': slideIndex === 1}"
+          style="cursor: not-allowed; pointer-events: none; display: flex; justify-content: center;">
+          <span class="myHeadings timesheet" *ngIf="isTimesheetEnabled">
+            <i class="fas fa-clock resp-icon" [style.color]="'#83C8FF'" alt="timesheets icon"></i>
+            <div class="routes_label" [style.color]="'#83C8FF'" alt="timesheets icon">
+              Timesheets</div>
+          </span>
+          <span class="myHeadings scheduler" *ngIf="isSchedulerEnabled">
+            <i class="fas fa-calendar-alt resp-icon" [style.color]="'#ffac90'"></i>
+            <div class="routes_label" [style.color]="'#ffac90'">
+              Scheduler</div>
+          </span>
+          <span class="myHeadings task" *ngIf="isTaskEnabled">
+            <i class="fas fa-tasks resp-icon" [style.color]="'#90E0C3'"></i>
+            <div class="routes_label" [style.color]="'#90E0C3'">
+              Tasks</div>
+          </span>
+          <span class="myHeadings recognition" *ngIf="isRecognitionEnabled">
+            <i class="fas fa-trophy resp-icon" [style.color]="'#ffd276'"></i>
+            <div class="routes_label" [style.color]="'#ffd276'">
+              Recognition</div>
+          </span>
+          <span class="myHeadings organization" *ngIf="isOrganizationEnabled">
+            <!-- <i class="fas fa-building"></i> -->
+            <i class="fa fa-users resp-icon" [style.color]="'#C1E950'"></i>
+            <div class="routes_label" [style.color]="'#C1E950'">
+              Organization</div>
+          </span>
+          <span class="myHeadings messaging" *ngIf="isCommunicationEnabled">
+            <i class="fas fa-comment resp-icon" [style.color]="'#E3B3E3'"></i>
+            <div class="routes_label" [style.color]="'#E3B3E3'">
+              Messaging</div>
+          </span>
+        </div>
+
+        <div class="slideshow-container">
+
+          <div class="mySlides fade">
+            <div class="text">
+              <h4>Timesheets</h4>
+              <p>
+                Here’s to new beginnings.
+
+                Azalio will track time and attendance of your employees for you.
+              </p>
+              <span>
+                <app-no-records [display]="true" [animation]="'organization'"
+                  [textMessage]="''"></app-no-records>
+              </span>
+            </div>
+          </div>
+
+
+          <div class="mySlides fade" *ngIf="isTimesheetEnabled">
+            <!-- <div class="numbertext">3 / 3</div> -->
+            <!-- <img src="img_mountains_wide.jpg" style="width:100%"> -->
+            <div class="text">
+              <h4>Timesheets</h4>
+              <ul class="list timesheet">
+                <li> View timesheets along with photo and location data.</li>
+                <li>
+                  View overtime red flags and out of schedule yellow flags with each entry.
+                </li>
+                <li> Export timesheets for payroll.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="mySlides fade" *ngIf="isSchedulerEnabled">
+            <div class="text">
+              <h4>Scheduler</h4>
+              <ul class="list schedule">
+                <li>
+                  Create schedules for your employees. 
+                </li>
+                <li>
+                  At run time, manage the store hours.
+                </li>
+                <li>
+                  Employees can view their and schedules of other team members on their mobile app.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mySlides fade" *ngIf="isTaskEnabled">
+            <div class="text">
+              <h4>Task</h4>
+              <ul class="list tasks">
+                <li>
+                  Easily create tasks for your team. 
+                </li>
+                <li>
+                  Prioritize and assign tasks.
+                </li>
+                <li>
+                  Use task history for communication between team members.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mySlides fade" *ngIf="isRecognitionEnabled">
+            <div class="text">
+              <h4>Task</h4>
+              <ul class="list recognition">
+                <li>
+                  Make your employees feel special. 
+                </li>
+                <li>
+                  Recognize your employees on a job well done.
+                </li>
+                <li>
+                  Choose from a number of badges.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mySlides fade" *ngIf="isOrganizationEnabled">
+            <!-- <div class="numbertext">2 / 3</div> -->
+            <!-- <img src="img_snow_wide.jpg" style="width:100%"> -->
+            <div class="text">
+              <h4>Organization</h4>
+              <ul class="list organization">
+                <li>
+                  Create a database of your employees.  
+                </li>
+                <li>
+                  Assign them role‐based permissions.
+                </li>
+                <li>
+                  For web users, enter their email address. For mobile app, enter their phone number and 4‐digit PIN. 
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mySlides fade" *ngIf="isCommunicationEnabled">
+            <div class="text">
+              <h4>Messaging</h4>
+              <ul class="list messaging">
+                <li>
+                  Chat with your employees anytime anywhere. 
+                </li>
+                <li>
+                  Send a message to all employees of any store. 
+                </li>
+                <li>
+                  View read receipts.  
+                </li>
+              </ul>
+            </div>
+          </div>
+          <br>
+
+
+          <!-- <a class="prev" (click)="plusSlides(-1)">&#10094;</a> -->
+          <!-- <a class="next" (click)="plusSlides(1)">&#10095;</a> -->
+
+        </div>
+        <br>
+        <span class="buttons_foot">
+          <app-button (onClick)="plusSlides(-1)">Back</app-button>
+          <button size="medium" style="height: 30px;  width: 70px;" *ngIf="!(slides?.length === slideIndex)" nbButton
+            status="primary" (click)="plusSlides(1)" class="mr_10">
+            Next
+          </button>
+          <button size="medium" *ngIf="slides?.length === slideIndex" nbButton status="primary" (click)="close(null)"
+            class="mr_10">
+            Done
+          </button>
+
+        </span>
+        <div class="dots_footer">
+          <!-- <span class="dot" (click)="currentSlide(1)"></span>  -->
+          <span class="dot" *ngFor="let dot of slides; index as i" (click)="currentSlide(i+1)"></span>
+        
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</span>

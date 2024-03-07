@@ -1,0 +1,326 @@
+<div class="modal_wrapper add_user_modal">
+  <nb-card>
+    <nb-card-header class="card_header" style=" position: relative;">
+      <label *ngIf="!showDelete">
+        <b class="title" style="position: relative;top: 4px;">New User</b>
+      </label>
+      <span *ngIf="showDelete">
+        <span class="title" style="font-size: 18px;font-weight: 400; margin-top: 5px;">
+          {{userDetails.name}}
+        </span>
+        <br>
+        <span class="role-title">
+          {{userDetails.role_title}}
+        </span>
+        <br>
+      </span>
+    </nb-card-header>
+
+    <nb-card-body [nbSpinner]="loading || rolesLoading" class="search-user-resp">
+      <ng-template #templateId style="padding-top: 20px">
+        <span>
+          <span class="para_txt_resp">
+            <p>
+              Users with access to mobile application, will use a 4-digits PIN to login. If the PIN is not manually set,
+              then a random PIN
+              will be sent via text message to the user.
+            </p>
+          </span>
+          <span style="font-size: 1.05rem; margin-left: 6px;"><b>Roles: Permissions</b> </span>
+          <ul class="popup_ui">
+            <ng-container *ngIf="roles">
+              <li *ngFor="let role of roles">
+                <b> {{ role.role_title }}:</b> {{ role.role_description }}
+              </li>
+            </ng-container>
+          </ul>
+        </span>
+      </ng-template>
+
+      <form #ngForm="ngForm" id="form" [formGroup]="AddUserForm" autocomplete="off" (ngSubmit)="submit(ngForm)"
+        class="form_parent">
+        <div class="unassign-store" *ngIf="showDelete && !isEditingAccountOwner"><i class="fa fa-exclamation-triangle"
+            style="margin-right: 10px;"></i>Remove user from a store by clicking on the cross icon.</div>
+
+        <div class="flex space_between vertical_center Personal_details relative "
+          [ngClass]="{'mb_30': isShowCheckbox()}" style="padding: 1rem 1.5rem; padding-bottom: 0px;">
+
+          <div style="width: 6%; padding-right: 8px;display: flex;" nbTooltipPlacement="top" nbTooltip="Store">
+            <i class="fas fa-store icon-color"> </i><span class="mandatory"> *</span>
+          </div>
+
+          <div style="width: 100%;position: relative;" class="name_resp">
+            <span>
+              <app-autocomplete-tag-input [disableTags]="disableStoreIds"
+                [disabled]="isEditingAccountOwner || isAllChecked"
+                [data]="userDetails?.assignments ? userDetails.assignments : defaultAssignment"
+                [placeholder]="placeholder" (changeClick)="onTagSelectionChange($event)"></app-autocomplete-tag-input>
+              <!-- <i class="pi pi-spin pi-spinner" style="position: absolute; right: 10px;top: 3px; color: #8f9bb3;"></i> -->
+            </span>
+            <div style="position: absolute; width: 100%;margin-top: 4px;">
+              <span class="sub-row">
+                <span class="assign-store-checkbox" *ngIf="isShowCheckbox()">
+                  <nb-checkbox [checked]="isAllChecked" (checkedChange)="checkedChange($event)"
+                    style="position: relative; top: 5px">Or assign user to all current and future stores
+                    <!-- <span class="assign-user-txt">Or assign user to all current and future stores</span> -->
+                  </nb-checkbox>
+                  <!-- <span class="assign-user-txt">
+                    Or assign user to all current and future stores
+                  </span> -->
+                </span>
+                <span class="error-msg">
+                  <app-error-message [key]="'regionTeams'" [form]="AddUserForm" [isSubmitted]="ngForm.submitted">
+                  </app-error-message>
+                </span>
+              </span>
+
+            </div>
+          </div>
+          <div style="width: 5%; padding-right: 5px;">
+          </div>
+        </div>
+        <div class="modal_body_wrapper">
+          <div class="wrappper" *ngFor="let user of users.controls; let i = index">
+
+            <div *ngIf="isEditingAccountOwner && isAccountOwner"
+              class="flex space_between vertical_center Personal_details mb_30 relative">
+              <div style="width: 6%; padding-right: 5px;display: flex;" nbTooltipPlacement="top" nbTooltip="Company">
+                <i class="fa fa-building icon-color"> </i><span class="mandatory"> *</span>
+              </div>
+              <div style="width: 100%;" class="name_resp">
+                <app-text-input [autofocus]="true" [placeholder]="'Enter company name'" [controlName]="'companyName'"
+                  [form]="user"> </app-text-input>
+                <app-error-message class="name_input_resp" [key]="'companyName'" [form]="user"
+                  [isSubmitted]="ngForm.submitted" style="position: absolute; width: 100%">
+                </app-error-message>
+
+              </div>
+              <div style="width: 5%; padding-right: 5px;">
+              </div>
+
+            </div>
+
+            <div class="flex space_between vertical_center Personal_details mb_30 relative">
+              <div style="width: 6%; padding-right: 5px;display: flex;" class="role_resp" nbTooltipPlacement="top"
+                nbTooltip="Role">
+                <i class="fa fa-briefcase icon-color"> </i><span class="mandatory"> *</span>
+              </div>
+              <div style="width: 100%" class="name_resp">
+                <app-roles-dropdown [roleData]="roles" [placeholder]="'Select role'" [controlName]="'role'"
+                  [form]="user" (roleChange)="updateValidations($event, i)" (gettingRoles)="setRoles($event)"
+                  [roleId]="roleId">
+                </app-roles-dropdown>
+                <app-error-message [key]="'role'" [form]="user" [isSubmitted]="ngForm.submitted"
+                  style="position: absolute; width: 100%;">
+                </app-error-message>
+              </div>
+              <div style="width: 5%; padding-right: 5px;">
+              </div>
+
+            </div>
+
+            <div *ngIf="isAzalioPlay && isCustomAzalioPin && azalioPinRequired[i]"
+              class="flex space_between vertical_center Personal_details mb_30 relative">
+              <div style="width: 6%; padding-right: 5px;display: flex;" class="role_resp" nbTooltipPlacement="top"
+                nbTooltip="Azalio play pin">
+                <i class="fa fa-lock icon-color"> </i><span *ngIf="azalioPinRequired[i]" class="mandatory"> *</span>
+              </div>
+              <div style="width: 100%" class="name_resp">
+                <app-text-input autocomplete="off" [type]="'text'" [controlName]="'azalioPin'"
+                  [maxlength]="azalioPinLength"
+                  [placeholder]="userDetails ? 'Update custom pin for azalio play' : 'Enter a unique pin for azalio play'"
+                  [form]="user">
+                </app-text-input>
+                <app-error-message [key]="'azalioPin'" [form]="user" [isSubmitted]="ngForm.submitted"
+                  style="position: absolute; width: 100%;">
+                </app-error-message>
+              </div>
+              <div style="width: 5%; padding-right: 5px;">
+              </div>
+
+            </div>
+
+            <div class="flex space_between vertical_center Personal_details mb_30 relative">
+              <div style="width: 6%; padding-right: 5px;display: flex;" nbTooltipPlacement="top" nbTooltip="Name">
+                <i class="fa fa-user icon-color"></i> <span class="mandatory"> *</span>
+              </div>
+              <div style="width: 100%;" class="name_resp">
+                <app-text-input [autofocus]="true" [placeholder]="'Enter name'" [controlName]="'fullName'"
+                  [form]="user"> </app-text-input>
+                <app-error-message class="name_input_resp" [key]="'fullName'" [form]="user"
+                  [isSubmitted]="ngForm.submitted" style="position: absolute; width: 100%">
+                </app-error-message>
+
+              </div>
+              <div style="width: 5%; padding-right: 5px;">
+              </div>
+
+            </div>
+
+            <div class="flex space_between vertical_center Personal_details relative" style="margin-bottom: 25px;">
+
+              <div style="width: 6%; padding-right: 5px;display: flex;" nbTooltipPlacement="top" nbTooltip="Email">
+                <i class="fa fa-envelope icon-color"> </i><span span *ngIf="emailRequired[i]" class="mandatory">
+                  *</span>
+              </div>
+              <div style="width: 95%;" class="name_resp">
+                <app-text-input class="email_input_resp" [placeholder]="'Enter email to log into web app'"
+                  [controlName]="'email'" [form]="user">
+                </app-text-input>
+                <app-error-message [key]="'email'" [form]="user" [isSubmitted]="ngForm.submitted"> </app-error-message>
+              </div>
+              <div style="width: 5%; padding-right: 5px;">
+              </div>
+
+            </div>
+            <div *ngIf="!rolesLoading" class="flex space_between vertical_center Personal_details relative"
+              style="display: inline-flex;margin-bottom: 25px;">
+              <div style="width: 6%; padding-right: 5px;display: flex;" nbTooltipPlacement="top"
+                nbTooltip="Phone number"  [ngClass]="{'mb-22': showSMSCheckbox}">
+                <i class="fa fa-phone icon-color phone"></i><span *ngIf="phoneRequired[i]" class="mandatory" style="position: absolute;margin-left: 20px;
+                  margin-top: -2px;"> *</span>
+              </div>
+
+
+              <div class="ow" [ngClass]="{'pin_hidden': user.controls.pin.disabled }">
+                <span class="flex name_resp">
+                  <app-country-code-dropdown class="country_drpdown" [controlName]="'countrycode'" [form]="user">
+                  </app-country-code-dropdown>
+                  <app-error-message [key]="'countrycode'" [form]="user" [isSubmitted]="ngForm.submitted">
+                  </app-error-message>
+                  <app-text-input [controlName]="'phone'"
+                    [placeholder]="user.controls.pin.disabled ? 'Phone number' : 'Enter phone number to log into mobile app'"
+                    [form]="user" class="phone_resp">
+                  </app-text-input>
+                </span>
+                <span class="align-subrow" *ngIf="showSMSCheckbox">
+                  
+                  <span class="create-another enable-phonepin ">
+                    <span class="send-sms-checkbox">
+                      <nb-checkbox class="assign-user-text" [checked]="user.controls?.sendSMS?.value" (checkedChange)="setSMSCheckbox($event)"
+                        style="position: relative; top: 5px">
+                        {{userDetails ? 'Send SMS on pin change' : 'Send SMS with app link'}}
+                      </nb-checkbox>
+                      <!-- <span class="assign-user-txt">
+                        {{userDetails ? 'Send SMS on pin change' : 'Send SMS with app link'}}
+                      </span> -->
+                    </span>
+
+                    <!-- <nb-checkbox style="position: relative; top: 4px" [checked]="user.controls?.sendSMS?.value" (checkedChange)="setSMSCheckbox($event)">
+                      {{userDetails ? 'Send SMS on pin change' : 'Send SMS with app link'}}
+                   
+                    </nb-checkbox> -->
+                  </span>
+                  <span class="phone_error ">
+                    <app-error-message [key]="'phone'" [form]="user" [isSubmitted]="ngForm.submitted">
+                    </app-error-message>
+                  </span>
+                  
+                </span>
+
+              </div>
+
+              <ng-container *ngIf="user.controls.pin.disabled === false">
+                <div style="width: 5%; padding-left: 5px;padding-right: 5px;" [ngClass]="{'mb-22': showSMSCheckbox}">
+                  <!-- <i class="fa fa-lock icon-color" nbTooltipPlacement="top" nbTooltip="PIN"></i> -->
+                  <img src="assets/phone-lock.png" nbTooltipPlacement="top" nbTooltip="PIN">
+                </div>
+                <div style="width: 30%; " class="pinplacholder name_resp" [ngClass]="{'mb-22': showSMSCheckbox}">
+                  <app-text-input autocomplete="off" (focusin)="onPinFocus(user)" (focusout)="onPinFocusOut(user)"
+                    [type]="pinInputType" [controlName]="'pin'" [maxlength]="4"
+                    [placeholder]="userDetails ? 'Update pin for mobile app' : 'Enter pin for mobile app' "
+                    [form]="user">
+                  </app-text-input>
+                  <app-error-message [key]="'pin'" [form]="user" [isSubmitted]="ngForm.submitted"
+                    style="position: absolute; width: 140px;">
+                  </app-error-message>
+                </div>
+                <div style="width: 5%; padding-left: 12px;"  [ngClass]="{'mb-22': showSMSCheckbox}">
+                  <img src="../../../../../assets/info-icon.svg" class="label-info-icon" (mouseenter)="phoneAnalytics()"
+                    nbTooltip="The PIN length should be 4-digits. If you do not set a PIN, a randomly generated PIN will be sent.">
+                </div>
+              </ng-container>
+            </div>
+            <!-- <div class="create-another enable-phonepin mb_30">
+              <nb-checkbox style="position: relative; top: 3px">
+              </nb-checkbox>
+              Send SMS with app link
+            </div> -->
+
+            <div class="flex space_between vertical_center Personal_details mb_30 relative">
+              <div style="width: 6%; padding-right: 5px;display: flex;" nbTooltipPlacement="top"
+                nbTooltip="Employee ID">
+                <i class="fa fa-user icon-color"></i>
+              </div>
+              <div style="width: 100%;" class="name_resp">
+                <app-text-input maxlength="145" [autofocus]="true" [placeholder]="'Enter employee ID (optional)'"
+                  [controlName]="'externalId'" [form]="user"> </app-text-input>
+                <app-error-message class="name_input_resp" [key]="'externalId'" [form]="user"
+                  [isSubmitted]="ngForm.submitted" style="position: absolute; width: 100%">
+                </app-error-message>
+
+              </div>
+              <div style="width: 5%; padding-right: 5px;">
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <div class="assign_regionTeams_section pointer flex space_between" *ngIf="selected?.length > 0">
+          <span> Assigned {{ nameConfig?.region_plural }} & {{ nameConfig?.team_plural }}</span>
+          <span (click)="openNestedSideBar()">
+            <nb-icon icon="plus-circle-outline"></nb-icon> <span class="right"> Assign New </span>
+          </span>
+        </div>
+
+        <span class="flex modal-footer">
+          <span>
+            <span class="flex" *ngIf="isShowDisclaimer()">
+              <img src="assets/info-icon.svg" class="label-info-icon mr_10" alt="reason icon" />
+              <span>You need account owner access to remove this user. Please contact your administrator.
+              </span>
+            </span>
+            <app-confirm-popup *ngIf="isShowDelete()" [title]="'User'"
+              [textToDisplay]="'You\'re about to <b>permanently delete</b> this user. Once deleted, the user will not be able to use Azalio. Are you sure?'"
+              (proceedDelete)="deleteUser(null)">
+              <span [ngClass]="{'hide': userDetails.is_account_owner}" class="pointer red-color"
+                style="position: relative;top:5px;">
+                <i class="fas fa-trash pointer mr_10"></i><span>Delete User</span>
+              </span>
+            </app-confirm-popup>
+            <app-confirm-popup *ngIf="isShowRemove()" [title]="'User'" [type]="'Remove'" [textToDisplay]="'You\'re about to <b>permanently remove</b> this user from ' 
+            + commonStoreCount + ' store(s). 
+            Once removed, the user will not be able to access these store(s). Are you sure?'"
+              (proceedDelete)="deleteUserFromStore()">
+              <span class="pointer red-color" style="position: relative;top:5px;">
+                <i class="fas fa-trash pointer mr_10"></i><span>Remove User</span>
+              </span>
+
+            </app-confirm-popup>
+
+            <span class="create-another" *ngIf="showDelete === false">
+              <nb-checkbox style="position: relative; top: 3px" [checked]="isCreateAnother"
+                (checkedChange)="updateCreateAnother($event)">
+                <!-- Add another user -->
+              </nb-checkbox>
+              Add another user
+            </span>
+
+
+          </span>
+
+          <span class="footer-add-user">
+            <app-button (onClick)="close()">Cancel</app-button>
+            <app-submit-button [form]="AddUserForm" [label]="buttonLabel"></app-submit-button>
+          </span>
+
+        </span>
+        <div class="footer_button" style="display: none"></div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</div>

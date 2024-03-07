@@ -1,0 +1,208 @@
+<app-loader [loading]="loading"></app-loader>
+
+<span class="filters-wrapper" *ngIf="gs?.isRespMode">
+  <span class="roles-filter" *ngIf="tags?.length > 0">
+    <app-filter-popup [label]="'Tags'" [isFiltered]="isFiltered?.tag" (onClose)="closeFilter('tag')" (onApply)="applyFilterMulti('tag')" (onClear)="removeFilter('tag')" (onOpen)="defaultOpen=!defaultOpen">
+      <app-dropdown-multi [label]="'tags'" [defaultOpen]="defaultOpen2" [selected]="filter?.tag" [key]="'tag'" [type]="'tag'" [optionClass]="'dot-tag'" [key2]="'color'" 
+      [optionId]="'id'" [Data]="tags" [placeholder]="'Select one or more tags'" [controlName]="'tag'"
+      [form]="form" [show]="false">
+    </app-dropdown-multi>
+  </app-filter-popup>
+</span>
+  <span class="">
+    <app-filter-popup [label]="'Roles'" [isFiltered]="isFiltered?.role" (onClose)="closeFilter('role')"
+      (onApply)="applyFilterMulti('role')" (onClear)="removeFilter('role')" (onOpen)="defaultOpen=!defaultOpen">
+      <app-dropdown-multi [label]="'roles'" [defaultOpen]="defaultOpen" [selected]="filters?.role" [key]="'role_title'"
+        [optionId]="'role_id'" [Data]="roles" [placeholder]="'Select one or more roles'" [controlName]="'role'"
+        [form]="form" [show]="false">
+      </app-dropdown-multi>
+    </app-filter-popup>
+  </span>
+
+  <span class="email-filter">
+    <app-filter-popup #emailFilterResp [label]="'Email'" [isFiltered]="isFiltered['email']"
+      (onClose)="closeFilter('email')" (onApply)="applyFilter('email')" (onClear)="removeFilter('email')">
+      <app-text-input [placeholder]="'Enter email to search'" [controlName]="'email'"
+        (onEnter)="onEnter('emailFilterResp')" [form]="form"></app-text-input>
+    </app-filter-popup>
+  </span>
+
+  <span class="phone-filter">
+    <app-filter-popup #phoneFilterResp [label]="'Phone'" [isFiltered]="isFiltered['phone']"
+      (onClose)="closeFilter('phone')" (onApply)="applyFilter('phone')" (onClear)="removeFilter('phone')">
+      <app-text-input [placeholder]="'Enter phone to search'" [controlName]="'phone'"
+        (onEnter)="onEnter('phoneFilterResp')" [form]="form"></app-text-input>
+    </app-filter-popup>
+  </span>
+
+  <app-sort class="email-filter" [order]="filters?.name_sort"
+    [isSelected]="isFiltered?.name_sort !== null ? true : false" [label]="'Name'"
+    (onSort)="onSort($event, 'name_sort')"></app-sort>
+</span>
+
+
+<span class="user_page_pagination">
+  <mat-paginator *ngIf="paginator" [length]="paginator.total_records" [pageIndex]="paginator.page_no - 1"
+    [pageSize]="paginator.page_size" [pageSizeOptions]="pageSizes" (page)="pageEvent = $event; getData()"
+    showFirstLastButtons>
+  </mat-paginator>
+</span>
+<div class="mat-elevation-z8 relative view_resp_org" *ngIf="dataSource && dataSource.data" style="top: 0px;">
+  <table [id]="type" mat-table [dataSource]="dataSource.data" class="resp_org_table">
+
+    <!-- User Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%;">Name
+        <app-sort [order]="filters?.name_sort" [isSelected]="isFiltered?.name_sort !== null ? true : false"
+          (onSort)="onSort($event, 'name_sort')"></app-sort>
+          <span class="roles-filter" *ngIf="tags?.length > 0">
+            <app-filter-popup [label]="'Tags'" [isFiltered]="isFiltered?.tag" (onClose)="closeFilter('tag')" (onApply)="applyFilterMulti('tag')" (onClear)="removeFilter('tag')" (onOpen)="defaultOpen=!defaultOpen">
+              <app-dropdown-multi [type]="'tag'" [optionClass]="'dot-tag'" [label]="'tags'" [defaultOpen]="defaultOpen2" [selected]="filter?.tag" [key]="'tag'" [key2]="'color'" [optionId]="'id'" [Data]="tags" [placeholder]="'Select one or more tags'" [controlName]="'tag'"
+              [form]="form" [show]="false">
+            </app-dropdown-multi>
+          </app-filter-popup>
+          </span>
+      </th>
+      <td mat-cell *matCellDef="let element" (click)="selectRow(element)" style="width: 20%">
+        <div class="flex resp-mode trim_name username"> <label class="show_in_resp">Name </label>
+          <span class="username-col">
+            <app-user-avatar class="user-table" size="medium" name="{{ element.name }}"
+              [color]="element.user_color + opacity" [initialColor]="element.user_color"
+              [class]="{link_name: type === 'user-detail' && !element.is_account_owner }" nbTooltipAdjustment="noop"
+              [nbTooltip]="element.name">
+            </app-user-avatar>
+            <div *ngIf="tags?.length > 0 && !element.is_account_owner && !element.is_partner && (!element.tags || element.tags?.length < 1)" 
+              (click)="$event.stopPropagation();openLabelModal(element)" class="employee-label">
+              <i class="fa-solid fa-user-tag user-tag"></i>Add label</div>
+            <span class="tags-container" (click)="$event.stopPropagation();openLabelModal(element);">
+              <ng-container *ngFor="let item of element.tags | slice:0:2">
+                <span class="tags" [style.background-color]="item.color">{{item.tag}}</span>
+              </ng-container>
+              <span  class="tags" [style.background-color]="'#edeef4'" *ngIf="element.tagsCount > 2">+{{element.tagsCount-2}}</span>
+            </span>
+          </span>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Role
+        <app-filter-popup *ngIf="!gs?.isRespMode" [label]="'roles'" [isFiltered]="isFiltered?.role"
+          (onClose)="closeFilter('role')" (onApply)="applyFilterMulti('role')" (onClear)="removeFilter('role')"
+          (onOpen)="defaultOpen=!defaultOpen">
+          <app-dropdown-multi [label]="'roles'" [defaultOpen]="defaultOpen" [selected]="filters?.role"
+            [key]="'role_title'" [optionId]="'role_id'" [Data]="roles" [placeholder]="'Select one or more roles'"
+            [controlName]="'role'" [form]="form" [show]="false">
+          </app-dropdown-multi>
+        </app-filter-popup>
+      </th>
+
+      <td mat-cell *matCellDef="let element" style="width: 20%;">
+        <span class="resp-view">
+          <span class="truncate-name"><label class="show_in_resp">Role
+            </label>
+            <span> {{element.role_title}} </span>
+          </span>
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="regionsAndTeams">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%;">Store</th>
+      <td mat-cell *matCellDef="let element" style="width: 20%;">
+        <label class="show_in_resp">Store </label>
+        <span *ngIf="element?.regions?.length >1">
+          <span class="works_with_column" *ngIf="!element.is_account_owner && !element.is_partner; else templateAll"
+            [nbTooltip]="regions" nbTooltipPlacement="top" nbTooltipTrigger="hover" (mouseenter)="OnHover(element)">
+            {{ element | regionsTeams: regionConfig:teamConfig }}
+          </span>
+        </span>
+        <span *ngIf="element?.regions?.length <2">
+          <span class="works_with_column"
+            *ngIf="!element.is_account_owner && !element.is_partner && element?.regions?.length<2; else templateAll">
+            {{ element | regionsTeams: regionConfig:teamConfig }}
+          </span>
+        </span>
+        <ng-template #templateAll>
+          <!-- <span *ngIf="isTeam">All {{ nameConfig?.team_plural }} | </span>  -->
+          <span class="all-stores">
+            All {{ nameConfig?.region_plural }}
+          </span>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef class="email-col" style="width: 20%; padding-left: 38px !important;">Email
+        <app-filter-popup #emailFilter [label]="'email'" [isFiltered]="isFiltered['email']"
+          (onClose)="closeFilter('email')" (onApply)="applyFilter('email')" (onClear)="removeFilter('email')">
+          <app-text-input [placeholder]="'Enter email to search'" [controlName]="'email'"
+            (keydown.enter)="onEnter('emailFilter')" [form]="form"></app-text-input>
+        </app-filter-popup>
+      </th>
+      <td mat-cell *matCellDef="let element" class="email-col" style="width: 20%">
+        <div class="flex desktop-resend" style="align-items: center;">
+          <span class="flex" style="align-items: center;" *ngIf="element.email"
+            [class]="(!element.is_account_owner && element.resend_web_invite)?'relative pointer':'hide-active-email'"
+            (click)="resendInvite(element.id, 'web')">
+            <img src="assets/resend-email1.png" class="resend_image" alt="kindly resend pin"
+              nbTooltip="Resend email invite." />
+          </span>
+          <span class="email_trim"> {{ element.email }} </span>
+        </div>
+        <div class="flex resp-resend" style="align-items: center;">
+          <label class="show_in_resp">Email</label>
+          <span class="email_trim"> {{ element.email }} </span>
+          <span class="flex" style="align-items: center; margin-left: 4px;" *ngIf="element.email"
+            [class]="(!element.is_account_owner && element.resend_web_invite)?'relative pointer':'hide-active-email'"
+            (click)="resendInvite(element.id, 'web')">
+            <img src="assets/resend-email1.png" class="resend_image" alt="kindly resend pin"
+              nbTooltip="Resend email invite." />
+          </span>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone_number">
+      <th mat-header-cell *matHeaderCellDef class="phone-col" style="width: 20%;">Phone number
+        <app-filter-popup #phoneFilter [label]="'phone'" [isFiltered]="isFiltered['phone']"
+          (onClose)="closeFilter('phone')" (onApply)="applyFilter('phone')" (onClear)="removeFilter('phone')">
+          <app-text-input [placeholder]="'Enter phone to search'" [controlName]="'phone'"
+            (keydown.enter)="onEnter('phoneFilter')" [form]="form"></app-text-input>
+        </app-filter-popup>
+      </th>
+      <td mat-cell *matCellDef="let element" class="phone-col" style="width: 20%;">
+        <div class="flex resp-mode"> <label class="show_in_resp">Phone number </label>
+          <span *ngIf="!element.is_account_owner && element.resend_mobile_invite" class="relative pointer"
+            (click)="resendInvite(element.id, 'mobile')">
+            <!-- <img src="../../../../../assets/resend1.svg" class="resend_image" nbTooltip="Resend Mobile PIN"> -->
+          </span>
+          <span class="phone_trim"> {{ element.phone_number | phoneNumber }} </span>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef style="width: 20%;">Status</th>
+
+      <td mat-cell *matCellDef="let element" class="status_badge" style="width: 20%;">
+        <label class="show_in_resp">Status</label>
+        <span [ngClass]="{ active: element.status === 'Active', pending: element.status === 'Pending' }"> {{
+          element.status }} </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>ACTION</th>
+      <td mat-cell *matCellDef="let element"><span> Unassign </span></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ disable_row: row.is_empty }"
+      class="showhim"></tr>
+  </table>
+
+  <app-no-records [display]="emptyResults" [animation]="animation" [animation2]="animation2"
+    [textMessage]="textMessage"></app-no-records>
+  <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+</div>

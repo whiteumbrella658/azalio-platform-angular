@@ -1,0 +1,278 @@
+.custom-layout-header {
+    button.store-dropdown-header {
+        min-height: 15px !important;
+    }
+
+    // .user-picture
+    // {
+    //   width: 2rem !important;
+    //   height: 2rem !important;
+    // }
+
+    .custom-header .store-dropdown {
+        top: 35px;
+    }
+
+    .custom-header .store-dropdown nb-select.appearance-outline.size-medium .select-button {
+        height: 25px !important;
+        min-height: 25px !important;
+    }
+
+    .custom-header .companyname {
+        top: 35px;
+    }
+}
+
+.custom-header {
+    .home-icon {
+        // margin-left: 7px !important;
+    }
+
+    .routes {
+        margin-top: 6px !important;
+    }
+
+    nb-select.appearance-outline.size-medium .select-button {
+        padding-right: 1px !important;
+    }
+}
+
+.custom-layout {
+    .page-wrapper {
+        padding: 20px 0px !important;
+        padding-bottom: 0px !important;
+    }
+
+    .reports .wrapper_header {
+        padding: 40px 0px 14px 0px !important;
+    }
+
+    .float-container {
+        top: 150px !important;
+    }
+
+    .organization-module, .survey-responses,
+    .automation {
+        .wrapper_header {
+            padding: 55px 0px !important;
+            padding-bottom: 31px !important;
+        }
+    }
+
+    .ts-module {
+        .wrapper_header {
+            padding: 55px 0px;
+            padding-bottom: 13px;
+        }
+    }
+
+    .weekly_view,
+    .daily_view {
+        top: 0px !important;
+    }
+
+    .weekly-table,
+    .daily_view {
+        thead {
+            top: 110px !important;
+        }
+    }
+
+
+    .resp_org_table thead {
+        top: 130px !important;
+    }
+
+    @media (min-width: 1099px) {
+        .user_page_pagination .mat-paginator {
+            top: 14% !important;
+        }
+
+        .timesheet_page_pagination .mat-paginator {
+            top: 12% !important;
+        }
+
+    }
+
+    .reward-container {
+        margin-top: 60px !important;
+    }
+
+    .tasks-module {
+        .wrapper_header {
+            padding: 35px 0px !important;
+            padding-bottom: 0px !important;
+        }
+
+        .tasks {
+            height: 58vh !important;
+        }
+    }
+
+    .scheduling_page {
+        .modes-wrapper {
+            top: 70px !important;
+        }
+
+        .sche_bod {
+            .sche_header {
+                // padding: 50px 0px !important;
+                // padding-bottom: 4px !important;
+            }
+
+            .header-sch-page .mbsc-windows.mbsc-calendar-controls {
+                top: 122px !important;
+            }
+        }
+
+        .height {
+            height: 90% !important;
+        }
+    }
+
+    .chats_page_wrapper {
+        padding-top: 50px !important;
+    }
+
+    .survey-module {
+        .wrapper_header {
+            padding: 40px 0px !important;
+            padding-bottom: 13px !important;
+        }
+    }
+
+    .settings-container {
+        margin-top: 23px !important;
+        height: 89vh !important;
+    }
+
+    .all_reg {
+        top: 15px !important;
+    }
+
+    .req-features-wrapper .req-features-header {
+        padding-top: 10px !important;
+    }
+
+    .roles-wrapper .roles-header {
+        padding-top: 8px !important;
+    }
+
+    .roles-wrapper {
+        padding-right: 30px !important;
+        padding-left: 30px !important;
+    }
+
+    .comment-sidebar {
+        .main-container-fixed {
+            top: 77px !important;
+        }
+
+        .fixed {
+            top: 85px !important;
+        }
+
+        .footer {
+            bottom: 30px !important;
+        }
+    }
+
+    .fixed {
+        top: 85px !important;
+    }
+
+    .main-container-fixed {
+        top: 77px !important;
+    }
+
+    nb-sidebar .scrollable {
+        border-top-left-radius: 10px !important;
+    }
+
+    .navbar-resp {
+        margin-top: 33px !important;
+    }
+
+    .md-switching-timeline-view-cont {
+        margin-top: 39px;
+    }
+}
+
+@media (max-width: 999px) {
+    .custom-layout-header {
+        .small-devices {
+            margin-top: 30px !important;
+        }
+    }
+}
+
+@media (max-width: 920px) and (min-width: 725px) {
+    .custom-layout-header {
+        .store-dropdown {
+            margin-top: 26px;
+        }
+    }
+}
+
+@media (max-width: 724px) and (min-width: 320px) {
+    .custom-layout-header {
+        .store-dropdown {
+            margin-top: 22px;
+        }
+    }
+}
+
+@media (max-width: 679px) and (min-width: 320px) {
+    .custom-layout {
+        .left-actions {
+            top: 147px !important;
+        }
+
+        .filters-wrapper {
+            top: 145px !important;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .custom-layout {
+        .default {
+            padding: 37px 0px !important;
+            padding-bottom: 0px !important;
+        }
+    }
+}
+
+@media (max-width: 930px) {
+    .custom-layout {
+        .survey-module .container {
+            margin-top: 20px;
+        }
+    }
+}
+
+
+@media (max-width: 725px) and (min-width: 320px) {
+    .custom-layout {
+        .organization-module {
+            .search_input_fix {
+                flex-direction: column;
+                margin-top: 25px;
+                padding-bottom: 20px;
+                background: #f9faff;
+                width: 95%;
+            }
+        }
+
+        .req-features-wrapper {
+            padding-top: 0px !important;
+        }
+    }
+
+}
+
+.custom-header {
+    .logo img {
+        margin-top: 0px !important;
+    }
+}

@@ -1,0 +1,17 @@
+<span [nbPopover]="templateRef2" nbPopoverPlacement="left">
+   <ng-content></ng-content>
+</span>
+<ng-template #templateRef2 style="padding-top: 20px;">
+   <div style="max-width: 300px;">
+      <span *ngIf="text" style="font-size: 11px;">
+         <ng-container *ngIf="textLabel">{{textLabel}} </ng-container>
+         <span class="note-desp">{{text}}</span>
+      </span>
+   </div>
+   <div *ngIf="image" [class]="'user_image_expand_wrapper ' + imageClass">
+      <div class="loading_image"></div>
+      <img class="user_image_expand" [src]="image | imageAuth : true | async" (load)="onImgLoad()">
+   </div>
+
+
+</ng-template>

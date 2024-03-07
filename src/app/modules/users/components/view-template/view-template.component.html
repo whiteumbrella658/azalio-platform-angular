@@ -1,0 +1,46 @@
+<div class="modal_wrapper import_modal">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <label> <b class="title" style="text-align: center;  margin: 5px;">Instructions for Import File</b> </label>
+            <nb-icon icon="close" (click)="close(null)" class="cross_icon hidden"></nb-icon>
+           
+        </nb-card-header>
+        <nb-card-body>
+            <ul>
+                <li class="instructions-list">
+                    The format of the file must be .xlsx.
+                </li>
+
+                <li class="instructions-list">
+                    Following columns must be included in the file: Name, Email, Phone, PIN, Role and Store.
+                </li>
+
+                <li class="instructions-list">
+                     Email addresses and phone numbers have to be <b>unique</b>, as these will be used to send
+                    <b>invitation</b> links to the users.
+                </li>
+
+                <li class="instructions-list">
+                    PIN is the only optional column. It is used to login the mobile application. If PIN is entered, it
+                    will be sent via text message. If it is not entered for a user, then a random <b>4-digits PIN</b>
+                    will be sent.
+                </li>
+
+                <li class="instructions-list">
+                   The added user must exist in at least one {{nameConfig?.region | lowercase}}. In the
+                    <b>Store</b> column, specify the {{nameConfig?.region_plural | lowercase}} in which the user
+                    works in, separating them with a semicolon(;).
+                </li>
+
+
+
+                <img src="assets/templ.PNG" alt="image to view excel template">
+
+            </ul>
+            <div class="footer_button" style="justify-content: flex-end; margin-top:15px !important">
+                <app-button (onClick)="close(null)">Cancel</app-button>
+            </div>
+        </nb-card-body>
+    </nb-card>
+
+</div>

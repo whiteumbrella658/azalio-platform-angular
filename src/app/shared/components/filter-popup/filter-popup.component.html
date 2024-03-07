@@ -1,0 +1,31 @@
+
+
+<span [class]="isBtnStyle ? '' : 'filter-icon'" (click)="toggleFilter()" [class]="isFiltered ? 'filter-selected' : ''">
+  <ng-container *ngIf="!isBtnStyle">
+    <span *ngIf="!hideRespLabel" class="show_in_resp">{{label}}</span>
+    <i [class]="icon" aria-hidden="true" style="margin-right: 4px;"></i>
+    <span *ngIf="isFiltered" class="bubble"></span>
+  </ng-container>
+  <ng-container *ngIf="isBtnStyle">
+    <button size="medium" type="button" nbButton class="view-responsebtn">
+      <i class="fa-light fa-filter" style="margin-right: 10px;"></i>
+      Filter
+    </button>
+  </ng-container>
+</span>
+<span class="filter-mainwrapper" *ngIf="showPopup">
+    <span [class]="isBtnStyle ? 'filter-container left' : 'filter-container'">
+        <span class="inner-body">
+            <span class="filter-label">Filter by {{label}}</span>
+            <span class="field"> <ng-content></ng-content></span>
+            <span class="popup-footer">
+              <app-button (onClick)="clear()">Clear</app-button>
+              <app-button (onClick)="apply()" [appearance]="'filled'" [className]="'done'">Apply</app-button>
+                <!-- <button size="medium" *ngIf="slides?.length === slideIndex" nbButton status="primary"
+              class="mr_10">
+              Done
+            </button> -->
+            </span>        
+        </span>
+    </span>
+</span>

@@ -1,0 +1,33 @@
+<span [nbPopover]="templateRef" nbPopoverPlacement="bottom" class="resp-leave clickable-area">
+    <ng-content></ng-content>
+  </span>
+  <ng-template #templateRef>
+    <div [class]="'modal_wrapper resp-confirm ' + className" style="width: 350px;">
+      <nb-card class="popup-card" style="">
+        <nb-card-header style="">
+          <label style="color: white;font-weight: 500;">{{type}} {{title}}</label>
+          <span class="gray_text subheading"></span>
+        </nb-card-header>
+        <nb-card-body style="background-color: white;">
+          <span [innerHtml]="textToDisplay" style="font-weight:500;"></span>
+          <!-- <br> -->
+          <br *ngIf="checkboxLabel">
+          <span *ngIf="checkboxLabel">
+            <nb-checkbox  class="checkbox-shifts" [(ngModel)]="isChecked" (checkedChange)="isChecked=$event">{{checkboxLabel}}</nb-checkbox>
+          </span>
+          <br *ngIf="checkboxLabel">
+          <!-- <br> -->
+          <div class="manager-comment" *ngIf="isComment">
+            <textarea [(ngModel)]="reason" maxlength="500" aria-label="description input" nbInput fullWidth
+                name="message" placeholder="Add comment (optional)"></textarea>
+        </div>
+          <div class="confirm_popup_footer" style="display: flex;justify-content: flex-end;align-items: center;">
+            <app-button *ngIf="!displayOnly" (onClick)="close()">Cancel</app-button>
+            <button style="height: 30px;  width: 70px;" nbButton [status]="status" type="submit" (click)="proceed()">
+              {{displayOnly ? 'Okay' : type}}
+            </button>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </ng-template>

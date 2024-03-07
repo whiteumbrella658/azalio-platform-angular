@@ -1,0 +1,51 @@
+<nb-card [nbSpinner]="loading" class="for_spinner modal_sidepanel sign-in" style="height: 100vh">
+  <div class="flex-row-container">
+    <div class="flex-row-item row1" [style.display]="gs?.deviceWidthEqualOrGreater?'':'none'">
+      <app-animate-icons></app-animate-icons>
+    </div>
+    <div class="flex-row-item row2">
+      <div class="sign-in-wrapper">
+        <span class="sign-in-box">
+          <span class="logo-container">
+            <img src="assets/logo-azalio.svg" class="logo-img">
+            <img src="assets/logo-new.png" class="logo-text">
+          </span>
+          <span>
+            <form #ngForm="ngForm" id="form" [formGroup]="form" (ngSubmit)="submit(ngForm)" class="sign-in-form">
+              <div class="mb_20">
+                <label for="email" class="input-label">Email <span class="mandatory">*</span> </label>
+                <input name="email" id="email" nbInput [formControlName]="'email'" placeholder="Enter email here" />
+                <app-error-message [key]="'email'" [form]="form" [isSubmitted]="ngForm.submitted"></app-error-message>
+              </div>
+              <div class="mb_20">
+                <nb-form-field>
+                  <label for="password" class="input-label">Password <span class="mandatory">*</span> </label>
+                  <input name="password" id="password" [type]="getInputType()" placeholder="Enter password here"
+                    [formControlName]="'password'" nbInput />
+                  <button class="show-pass" size="medium" aria-label="eye-button" type="button" nbSuffix nbButton ghost
+                    (click)="toggleShowPassword()">
+                    <nb-icon name="eye-button" [icon]="showPassword ? 'eye-off-2-outline' : 'eye-outline'" pack="eva"
+                      [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+                    </nb-icon>
+                  </button>
+                  <app-error-message [key]="'password'" [form]="form" [isSubmitted]="ngForm.submitted">
+                  </app-error-message>
+                </nb-form-field>
+              </div>
+              <div class="footer_button forgot-pass">
+                <span (click)="open('forgot_password', null)"><a style="font-size: 15px;">Forgot Password?</a></span>
+              </div>
+              <app-submit-button class="login-btn" [form]="form" [label]="'Log In'"></app-submit-button>
+            </form>
+          </span>
+        </span>
+        <span class="sign-up-row">Your company is not registered at Azalio? <span class="sign-up-btn" (click)="open('signup',null)"> Click here to create a company account</span>
+        </span>
+
+      </div>
+    </div>
+    <!-- [style.display]="gs?.deviceWidthEqualOrGreater?'':':'none'" -->
+    <div class="flex-row-item row3" *ngIf="gs?.deviceWidthEqualOrGreater">
+    </div>
+  </div>
+</nb-card>

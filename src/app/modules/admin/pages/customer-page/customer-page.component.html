@@ -1,0 +1,207 @@
+<app-admin-header></app-admin-header>
+<app-loader [loading]="pageLoading || loading"></app-loader>
+<nb-layout-column class="colored-column-info timesheets_wrapper super-admin">
+  <div class="page-wrapper">
+    <div class="wrapper_header" [style.visibility]="!paginator ? 'hidden': 'visible'">
+      <div class="flex container search_input_fix">
+        <span class="left-section">
+          <i class='fas fa-user-cog icon-color' style="font-size: 21px;"></i>
+          <span class="heading">
+            Welcome to super admin panel.
+            <span>
+              <button (click)="toggleTable()" type="button" nbbutton="" status="primary"
+                class="reports-btn appearance-filled size-medium shape-rectangle status-primary nb-transition"
+                aria-disabled="false" tabindex="0">
+                <i *ngIf="isTableModePlay" aria-hidden="true" class="fa fa-angle-left" style="margin-right: 7px;"></i>
+                {{isTableModePlay ? 'Hide Columns' : 'View Columns'}}
+                <i *ngIf="!isTableModePlay" aria-hidden="true" class="fa fa-angle-right" style="margin-left: 7px;"></i>
+              </button>
+            </span>
+          </span>
+        </span>
+        <span class="right-actions search resp-search">
+          <app-search-input class="search" [placeholder]="'Search by company/name'" (searchEvent)="onSearch($event)">
+          </app-search-input>
+          <span class="survey_pagination">
+            <mat-paginator *ngIf="paginator" [length]="paginator.total_records" [pageIndex]="paginator.page_no - 1"
+              [pageSize]="paginator.page_size" [pageSizeOptions]="pageSizes" (page)="pageEvent = $event; getData()"
+              showFirstLastButtons>
+            </mat-paginator>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="customer-container">
+      <table mat-table [dataSource]="dataSource" class="table-wrapper">
+        <ng-container matColumnDef="company">
+          <th mat-header-cell *matHeaderCellDef style="width: 12%;"> Company Name </th>
+          <td mat-cell *matCellDef="let element" style="width: 15%;"> <label class="show_in_resp">Company</label>
+            {{element.company_name}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="ownerName">
+          <th mat-header-cell *matHeaderCellDef style="width: 13%;"> Account Owner Name </th>
+          <td mat-cell *matCellDef="let element" style="width: 13%;">
+            <label class="show_in_resp">Owner Name</label>
+            {{element.account_owner_name}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="ownerEmail">
+          <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Account Owner Email </th>
+          <td mat-cell *matCellDef="let element" style="width: 15%;">
+            <label class="show_in_resp">Owner Email</label>
+            {{element.email}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="ownerPhone">
+          <th mat-header-cell *matHeaderCellDef style="width: 12%;"> Contact No. </th>
+          <td mat-cell *matCellDef="let element" style="width: 12%;">
+            <label class="show_in_resp"> Contact No.</label>
+            {{element.phone_number | phoneNumber }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="signedOn">
+          <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Date Signed On </th>
+          <td mat-cell *matCellDef="let element" style="width: 15%;">
+            <label class="show_in_resp">Signed On</label>
+            {{element.signed_on | date: 'MMM d, y, h:mm a'}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="askQ">
+          <th mat-header-cell *matHeaderCellDef style="width: 5%;"> AskQ Module</th>
+          <td mat-cell *matCellDef="let element" class="azalio-play" style="width: 5%;">
+            <label class="show_in_resp">AskQ </label>
+            <span> 
+              <app-confirm-popup [status]="element.is_askq ? 'danger' : 'primary'" [type]="element.is_askq ? 'Disable' : 'Enable'" [title]="'AskQ Module'" (proceedDelete)="updateAskQ(element)"
+              [textToDisplay]="'This action will '+ (element.is_askq ? 'disable' : 'enable') +' AskQ module.' + (element.is_askq ? '' : ' All web users will be redirected to this page on login.') +  ' Are you sure?'">
+              <i class="fas fa-check-circle " [ngClass]="{'permissions-granted': element.is_askq, 'permissions-revoked': !element.is_askq}"></i>
+            </app-confirm-popup>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="tasksDashboard">
+          <th mat-header-cell *matHeaderCellDef style="width: 7%;"> Mobile Dashboard</th>
+          <td mat-cell *matCellDef="let element" class="azalio-play" style="width: 7%;">
+            <label class="show_in_resp">Mobile Dashboard </label>
+            <span> 
+              <app-confirm-popup [status]="element.is_dashboard ? 'danger' : 'primary'" [type]="element.is_dashboard ? 'Disable' : 'Enable'" [title]="'Mobile App Dashboard'" (proceedDelete)="updateDashboardFlag(element)"
+              [textToDisplay]="'This action will '+ (element.is_dashboard ? 'disable' : 'enable') +' tasks related dashboard page on the mobile app.' + (element.is_dashboard ? ' Users will see Timesheet module as their home page.' : '') +  ' Are you sure?'">
+              <i class="fas fa-check-circle " [ngClass]="{'permissions-granted': element.is_dashboard, 'permissions-revoked': !element.is_dashboard}"></i>
+            </app-confirm-popup>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="aiSurvey">
+          <th mat-header-cell *matHeaderCellDef style="width: 7%;"> Interactive Comm.</th>
+          <td mat-cell *matCellDef="let element" class="azalio-play" style="width: 7%;">
+            <label class="show_in_resp">AI Comm. </label>
+            <span> 
+              <app-confirm-popup [status]="element.is_ai_survey ? 'danger' : 'primary'" [type]="element.is_ai_survey ? 'Disable' : 'Enable'" [title]="'Interactive Communication'" (proceedDelete)="updateAISurveyFlag(element)"
+              [textToDisplay]="'This action will '+ (element.is_ai_survey ? 'disable' : 'enable') +' AI Survey module on the web. Are you sure?'">
+              <i class="fas fa-check-circle " [ngClass]="{'permissions-granted': element.is_ai_survey, 'permissions-revoked': !element.is_ai_survey}"></i>
+            </app-confirm-popup>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="smsFlag">
+          <th mat-header-cell *matHeaderCellDef style="width: 6%;"> SMS checkbox</th>
+          <td mat-cell *matCellDef="let element" class="azalio-play" style="width: 6%;">
+            <label class="show_in_resp">SMS checkbox</label>
+            <span> 
+              <app-confirm-popup [status]="element.is_sms_checkbox ? 'danger' : 'primary'" [type]="element.is_sms_checkbox ? 'Disable' : 'Enable'" [title]="'SMS checkbox on Add User'" (proceedDelete)="updateSMSFlag(element)"
+              [textToDisplay]="'This action will '+ (element.is_sms_checkbox ? 'disable' : 'enable') +' an option to show the SMS checkbox while adding user. Are you sure?'">
+              <i class="fas fa-check-circle " [ngClass]="{'permissions-granted': element.is_sms_checkbox, 'permissions-revoked': !element.is_sms_checkbox}"></i>
+            </app-confirm-popup>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="boringPlay">
+          <th mat-header-cell *matHeaderCellDef style="width: 6%;"> Boring Play</th>
+          <td mat-cell *matCellDef="let element" class="azalio-play" style="width: 6%;">
+            <label class="show_in_resp">Boring Play</label>
+            <span> 
+              <app-confirm-popup [status]="element.boring2Fun ? 'danger' : 'primary'" [type]="element.boring2Fun ? 'Revoke' : 'Enable'" [title]="'Points System'" (proceedDelete)="updateBoring2Fun(element)"
+              [textToDisplay]="'This action will '+ (element.boring2Fun ? 'disable' : 'enable') +' points system on the mobile app. Are you sure?'">
+              <i class="fas fa-check-circle " [ngClass]="{'permissions-granted': element.boring2Fun, 'permissions-revoked': !element.boring2Fun}"></i>
+            </app-confirm-popup>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="play">
+          <th mat-header-cell *matHeaderCellDef style="width: 9%;"> Azalio Play</th>
+          <td mat-cell *matCellDef="let element" class="azalio-play" style="width: 9%;">
+            <label class="show_in_resp">Play</label>
+            <span style="">
+              <app-confirm-popup [type]="'Revoke'" [title]="'Azalio Play'" (proceedDelete)="revokePlay(element)"
+                [textToDisplay]="'This action will delete all azalio play related data for this company. Are you sure?'">
+                <i *ngIf="element.is_azalio_play" class='fas fa-check-circle permissions-granted'></i>
+              </app-confirm-popup>
+              <i *ngIf="!element.is_azalio_play" (click)="openModal(element)"
+                class='fas fa-check-circle permissions-revoked'></i>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="pinLength">
+          <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Pin Length </th>
+          <td mat-cell *matCellDef="let element" style="width: 15%;">
+            <label class="show_in_resp">Pin Length</label>
+            <span *ngIf="element.is_azalio_play">{{element.azalio_play_user_pin_length}}-digit
+              <span *ngIf="element.azalio_play_user_pin_autogenerate" class="auto-generated"> Auto-generated </span>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="importTasks">
+          <th mat-header-cell *matHeaderCellDef style="width: 8%;"> Import Tasks</th>
+          <td mat-cell *matCellDef="let element" style="width: 8%;">
+            <label class="show_in_resp">Import</label>
+            <span class="import-tasks mr_10" *ngIf="element.is_azalio_play" nbTooltipAdjustment="noop"
+              nbTooltip="Import tasks" (click)="showImport(element)">
+              <i class="fas fa-file-import" aria-hidden="true"></i>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="export">
+          <th mat-header-cell *matHeaderCellDef style="width: 8%;"> Export User Pins</th>
+          <td mat-cell *matCellDef="let element" style="width: 15%;">
+            <label class="show_in_resp">Export</label>
+            <span class="import-tasks mr_10" *ngIf="element.is_azalio_play" nbTooltipAdjustment="noop"
+              nbTooltip="Export pins" (click)="exportPins(element)">
+              <i class="fas fa-download" aria-hidden="true"></i>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef style="width: 40%;"> Action </th>
+          <td mat-cell *matCellDef="let element" style="width: 40%;">
+            <span class="resp-container">
+              <label class="show_in_resp">Action</label>
+              <span class="action-items">
+                <span class="integrate-action"  *ngIf="element.merge !== null">
+                  <button  *ngIf="element.merge == 0" nbSpinnerStatus="primary" [nbSpinner]="selectedLinkId == element.company_id ? true : false" type="button" nbbutton="" status="primary" (click)="linkCompany(element)"
+                  class="integrate-btn appearance-filled size-medium shape-rectangle status-primary"
+                  aria-disabled="false" tabindex="0"> Integrate
+                  <img src="assets/merge-logo.png"  style="margin-left: 7px;">
+                </button>
+                <span class="integrated" *ngIf="element.merge == 1">
+                  Integrated
+                  <img src="assets/merge-logo.png"  style="margin-left: 7px;">
+                </span>
+                </span>
+                <span class="edit-icon" nbTooltip="View company users & change password"
+                  (click)="viewCompanyUsers(element)"> View users</span>
+                <span (click)="viewCustomer(element)" class="view-icon" nbTooltip="View customer dashboard"> View as
+                  customer</span>
+              </span>
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <app-no-records [display]="emptyResults" [animation]="'timesheet'" [textMessage]="'No customers.'">
+      </app-no-records>
+      <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+    </div>
+  </div>
+</nb-layout-column>

@@ -1,0 +1,32 @@
+<div class="modal_wrapper import-users">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <label> <b class="title">Import Tasks</b> </label>
+            <nb-icon icon="close" (click)="close()" class="cross_icon hidden"></nb-icon>
+        </nb-card-header>
+        <nb-card-body [nbSpinner]="loading">
+            <form #ngForm="ngForm" id="form" [formGroup]="UploadFileForm" (ngSubmit)="submit(ngForm)">
+                <div class="upload_file cetner">
+                    <b class="">Select a file to import<br>
+                    </b> <br>
+
+                    <button class="excel-btn" size="medium" type="button" (click)="clickSelectFile()" id="filebutton" outline nbButton
+                        status="primary">  <i class="fas fa-2x fa-file-excel" aria-hidden="true"></i> Choose File</button> <br>
+                    <input type="file" aria-label="choose file button" accept=".xlsx" #fileUpload (change)="handleFileInput($event)" hidden /> <br>
+                    {{fileName}}
+                </div>
+                <br>
+                <app-error-message [key]="'file'" [form]="UploadFileForm" [isSubmitted]="ngForm.submitted">
+                </app-error-message>
+                <ng-container *ngIf="!UploadFileForm.controls.file.errors">
+                    <div *ngIf="ngForm.submitted && UploadFileForm.errors?.invalidFileType" class="red"
+                        style="font-size: 13px;">Invalid file type.</div>
+                </ng-container>
+                <div class="footer_button" style="justify-content: flex-end; margin-top:15px !important">
+                    <app-button (onClick)="close()">Cancel</app-button>
+                    <button size="medium" type="submit" nbButton status="primary">Upload</button>
+                </div>
+            </form>
+        </nb-card-body>
+    </nb-card>
+</div>

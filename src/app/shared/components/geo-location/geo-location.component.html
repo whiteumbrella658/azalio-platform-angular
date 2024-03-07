@@ -1,0 +1,66 @@
+<!-- <div id="pac-container">
+    <input nbInput id="pac-input" aria-label="add new region" [appAutoFocus]="true" placeholder="Search place">
+</div>
+ -->
+
+<form [formGroup]="form">
+
+    <div class="flex vertical_center context-row relative">
+        <div class="col1" nbTooltipPlacement="top" nbTooltip="Location">
+            <i class="fas fa-map-marker-alt icon-color" style="padding-left: 5px;font-size: 16px;"><span
+                    class="mandatory"> *</span></i>
+        </div>
+        <div class="col2" id="pac-container">
+            <input nbInput [formControlName]="'address'" autocomplete="off" id="pac-input" aria-label="add new region"
+                placeholder="Search location" (focusout)="setInput()">
+            <!-- <app-text-input [placeholder]="'Search location'"  autocomplete="off" (focusout)="setInput()" id="pac-input" [controlName]="'address'"
+                [form]="form"> </app-text-input> -->
+
+        </div>
+        <div class="col3"></div>
+
+    </div>
+    <div style="padding-left: 47px;">
+        <app-error-message [key]="'address'" [form]="form" [isSubmitted]="ngForm.submitted">
+        </app-error-message>
+    </div>
+    <span style="position: relative;">
+        <div id="map"></div>
+        <div class="flex" style="position: inherit;">
+            <div class="vertical_center fence-radius">
+                <span class="first-child">
+                    <div class="fence-label">
+                        Fence Radius
+                    </div>
+                    <div class="fence-input">
+                        <input id="input-radius-slider" type="range" min="{{minValue}}" max="{{maxValue}}"
+                            placeholder="Radius" [class]="isRadius?'slider':'disable-slider'"
+                            [formControlName]="'radius_slider'"
+                            [ngStyle]="{'background-image': getBackgroundImageURL()}" (change)="onChangeSlider()" />
+
+                    </div>
+                    <div class="info-icon">
+
+                    </div>
+                </span>
+                <span class="second-child">
+
+                    <div class="radius-input">
+                        <input nbInput [formControlName]="'radius'" autocomplete="off" id="pac-input-radius" type="text"
+                            placeholder="Radius" (change)="setRadius()" />
+
+                    </div>
+                    <div class="radius-label">
+                        meters
+                    </div>
+
+                </span>
+
+
+
+            </div>
+        </div>
+
+    </span>
+
+</form>

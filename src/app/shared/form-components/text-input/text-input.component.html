@@ -1,0 +1,15 @@
+<ng-container *ngIf="form">
+    <form [formGroup]="form" autocomplete="off" class="task-form">
+        <span>
+            <input (focus)="onfocus()" (focusout)="onfocusout()" [id]="id" [maxlength]="maxlength" autocomplete="off" [type]="type" aria-label="text input field" [appAutoFocus]="autofocus" nbInput
+                fullWidth [fieldSize]="fieldSize"
+                [formControlName]="controlName" [placeholder]="placeholder" [attr.readonly]="disabled">
+            <!-- A<ng-content></ng-content> -->
+        </span>
+      <span class="points-options"><ng-content></ng-content>
+      </span>  
+      <!-- <span class="shifts-options"><ng-content></ng-content>
+      </span>   -->
+    </form>
+</ng-container>
+

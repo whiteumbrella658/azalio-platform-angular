@@ -1,0 +1,17 @@
+<form [formGroup]="form">
+  <nb-select nbselect filled status="" class="size-medium status-basic shape-rectangle nb-transition country_drpdown"
+    [(selected)]="selectedCountry" [formControlName]="controlName">
+    <nb-select-label>
+      <span class="vertical_center code-details">
+        <img [src]="selectedCountry.img" alt="" style="height: 15px;" class="mr_10" />
+        {{selectedCountry.code}}
+      </span>
+    </nb-select-label>
+    <nb-option *ngFor="let country of countries" [value]="country" class="country_drpdown-option">
+      <span class="vertical_center">
+        <img [src]="country.img" alt="" style="height: 29px;" class="mr_10" />
+        {{country.code}}
+      </span>
+    </nb-option>
+  </nb-select>
+</form>

@@ -1,0 +1,88 @@
+<app-loader [loading]="loading || actionLoading"></app-loader>
+<div class="header-container">
+    <div class="header">
+        <span class="heading">
+            Gift Card Requests
+        </span>
+    </div>
+</div>
+
+<div class="sub-heading" *ngIf="!loading && !emptyResults">
+    <i class="fa fa-exclamation-triangle ng-tns-c472-4" style="margin-right: 10px; color: #fe7e21;"></i>
+    To review how users earned points, <a [routerLink]="['/tasks/report']"> click here</a>.
+</div>
+
+<div id="tasks-wrapper" class="tasks-wrapper">
+    <app-no-records [display]="emptyResults" [animation]="'timeoff'" [textMessage]="'No history'"></app-no-records>
+    <div class="mt-25"></div>
+    <div class="request-details" *ngFor="let item of requests" [class]="item.is_expired == 1 ? 'disabled-row' : ''">
+        <span class="row1">
+            <span class="user-details">
+                <app-user-avatar size="medium" [name]="item.user_name" [color]="item.user_color + opacity"
+                    [initialColor]="item.color" [title]="''" class="scheduler_user" nbTooltipPlacement="top"
+                    [nbTooltip]="item.user_name">
+                </app-user-avatar>
+                <span class="approve-tag" *ngIf="item.is_approved">
+                    <i class="fa fa-check" style="margin-right:2px;"></i>
+                    Approved
+                </span>
+            </span>
+            <span class="right-info">
+                <span class="markdone-container" *ngIf="!item.is_approved">
+                    <span class="task-done">
+                        <span class="task-done">
+                            <app-confirm-popup [isComment]="true" [type]="'Reject'" [title]="'Gift Card Request'"
+                                [textToDisplay]="rejectText" (proceedDelete)="respondToGiftRequest($event, item.id)"
+                                (proceedCancel)="selectedRow = null;"
+                                (proceedWithComment)="rejectWithComment($event, item.id)">
+                                <span nbTooltip="Reject" nbTooltipPlacement="top" (click)="setRejectText(item)"
+                                    class="circle-btn"><i aria-hidden="true" class="fa-solid fa-xmark"
+                                        style="color: #e91e63;"></i></span>
+                                <button (click)="setRejectText(item)" nbButton type="button" class="reject-btn"
+                                    status="primary">Reject</button>
+                            </app-confirm-popup>
+                        </span>
+                    </span>
+
+                    <span class="task-done approve">
+                        <app-confirm-popup [type]="'Approve'" [title]="'Gift Card Request'" [status]="'primary'"
+                            [textToDisplay]="approveText" (proceedDelete)="respondToGiftRequest(true, item.id)"
+                            (proceedCancel)="selectedRow = null;">
+                            <span nbTooltip="Approve" nbTooltipPlacement="top" (click)="setApproveText(item)"
+                                class="circle-btn"><i aria-hidden="true" class="fa-solid fa-check"></i></span>
+                            <button (click)="setApproveText(item)" nbButton type="button" class="approve-btn"
+                                status="primary">Approve</button>
+                        </app-confirm-popup>
+                    </span>
+                </span>
+                <span class="markdone-container deliver" *ngIf="storageService?.companyId && item.is_approved">
+                     <span class="task-done">
+                        <app-confirm-popup [isComment]="true" [type]="'Delivered'" [title]="'Gift Card'" [status]="'primary'"
+                        [textToDisplay]="markAsText" (proceedDelete)="markAsDelivered(item.id)" (proceedWithComment)="deliverWithComment($event, item.id)"
+                        (proceedCancel)="selectedRow = null;">
+                        <span nbTooltip="Mark as delivered" nbTooltipPlacement="top" (click)="setText(item)"
+                            class="circle-btn"><i aria-hidden="true" class="fa-solid fa-share"></i></span>
+                        <button (click)="setText(item)" nbButton type="button" class="deliver-btn" status="primary">Mark as delivered</button>
+                    </app-confirm-popup>
+                    </span>
+                </span>
+            </span>
+        </span>
+
+
+
+
+        <span class="row2">
+            has requested a <span class="spacing"> ${{item.cost}} {{item.card_title}} Gift Card </span> in exchange for
+            <span class="pts">{{item.points}} points.</span>
+        </span>
+
+
+        <span class="requested_on">
+            <ng-container *ngIf="item.is_approved">Approved on: {{item.approved_on | date: 'MMM d, h:mm a' }}
+            </ng-container>
+            <span class="created"> Requested on: {{item.requested_on | date: 'MMM d, h:mm a' }}</span>
+        </span>
+
+    </div>
+</div>

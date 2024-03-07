@@ -1,0 +1,153 @@
+<style>
+  .loader_wrapper {
+    background: #fff;
+    position: fixed;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .loader_wrapper span {
+    position: absolute;
+    top: 57%;
+    left: 51%;
+    font-size: 16px;
+    width: 100px;
+    color: #000;
+    line-height: 13px;
+    text-align: center;
+    margin-left: -50px;
+  }
+
+  .clock {
+    border-radius: 70px;
+    background-image: linear-gradient(white, #e6e2fe);
+
+    background-image: url(/assets/loader.svg);
+    position: absolute;
+    background-position: 15px 11px;
+    background-size: 71px;
+    background-repeat: no-repeat;
+
+    position: absolute;
+    top: 46%;
+    left: 51%;
+    margin-left: -50px;
+    margin-top: -50px;
+    box-shadow: 0 3px 0px rgb(0 0 0 / 0%), 0 1px 35px rgb(0 0 0 / 6%) !important;
+    display: block;
+    width: 100px;
+    height: 100px;
+  }
+
+  .clock:after {
+    content: '';
+    position: absolute;
+    background-color: #000000;
+    top: 13px;
+    left: 48%;
+    height: 40px;
+    width: 3px;
+    border-radius: 5px;
+    -webkit-transform-origin: 50% 97%;
+    transform-origin: 50% 97%;
+    -webkit-animation: grdAiguille 2s linear infinite;
+    animation: grdAiguille 2s linear infinite;
+  }
+
+  @-webkit-keyframes grdAiguille {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes grdAiguille {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .clock:before {
+    content: '';
+    position: absolute;
+    background-color: #000000;
+    top: 24px;
+    left: 48%;
+    height: 30px;
+    width: 3px;
+    border-radius: 5px;
+    -webkit-transform-origin: 50% 94%;
+    transform-origin: 50% 94%;
+    -webkit-animation: ptAiguille 12s linear infinite;
+    animation: ptAiguille 12s linear infinite;
+  }
+
+  @-webkit-keyframes ptAiguille {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes ptAiguille {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+<nb-layout>
+  <nb-layout-header *ngIf="showHeader" fixed [ngClass]="{'custom-layout-header': showCustomHeader && logo}">
+    <app-online-status [message]="message" [onlineStatus]="connectionStatus">
+    </app-online-status>
+    <div *ngIf="showCustomHeader && logo" class="custom-banner">
+      <div class="image-container">
+        <img [src]="logo">
+      </div></div>
+    <app-header [pathChanged]="pathChanged" class="header" [ngClass]="{'custom-header': showCustomHeader && logo}"></app-header>
+  </nb-layout-header>
+  <nb-layout-column class="no_pad" [ngClass]="{'custom-layout': showCustomHeader && logo}">
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+  <nb-layout-footer *ngIf="isCommunicationEnabled && showHeader && showFooter">
+    <app-footer class="footer"></app-footer>
+  </nb-layout-footer>
+</nb-layout>
+
+<ng-container *ngIf="showLoaderAnimation">
+<div class="loader_wrapper">
+  <!-- <div class="clock"></div> -->
+  <div class="lottie-animation">
+    <ng-lottie [options]="options" (animationCreated)="onAnimate($event)"></ng-lottie>
+  </div>
+</div>
+</ng-container>
+
+<div class="app-error" style="display: none;" *ngIf="error">
+  <span class="error-text">
+    <i class="fa fa-warning"></i>Unable to load Azalio. Please try again later.</span>
+  <button type="button" size="medium" class="error-button">
+    <!-- <div class="spinner"></div> -->
+    <nb-icon (click)="reloadPage()" icon="refresh" style="font-size: 32px;"></nb-icon>
+  </button>
+</div>
+
+<div class="backdrop"></div>

@@ -1,0 +1,247 @@
+<app-loader [loading]="loading"></app-loader>
+<span class="filters-wrapper" *ngIf="gs?.isRespMode">
+  <span class="sorting-in-resp">
+    <app-filter-popup [label]="'Roles'" [isFiltered]="isFiltered?.role" (onClose)="closeFilter('role')" (onApply)="applyFilterMulti('role')" (onClear)="removeFilter('role')" (onOpen)="defaultOpen=!defaultOpen">
+      <app-dropdown-multi [label]="'roles'" [defaultOpen]="defaultOpen" [selected]="filters?.role" [key]="'role_title'" [optionId]="'role_id'" [Data]="roles" [placeholder]="'Select one or more roles'" [controlName]="'role'"
+      [form]="form" [show]="false">
+    </app-dropdown-multi>
+  </app-filter-popup>
+  </span>
+  <span class="sorting-in-resp">
+    <app-sort class="sort" [label]="'Name'" [isSelected]="filters['name_sort'] !== 0 ? true : false" (onSort)="onSort($event, 'name_sort')"></app-sort>
+    <app-sort class="sort" [order]="filters?.checkin_sort" [iconType]="'number'" [label]="'First C/I'" [isSelected]="filters['checkin_sort'] !== 0 ? true : false" (onSort)="onSort($event, 'checkin_sort')"></app-sort>
+  </span>
+  <span class="sorting-in-resp">
+    <app-sort class="sort" [iconType]="'number'" [label]="'Last C/O'" [isSelected]="filters['checkout_sort'] !== 0 ? true : false" (onSort)="onSort($event, 'checkout_sort')"></app-sort>
+    <app-sort class="sort" [iconType]="'number'" [label]="'Actual Hrs'" [isSelected]="filters['actual_hours_sort'] !== 0 ? true : false" (onSort)="onSort($event, 'actual_hours_sort')"></app-sort>
+  </span>
+</span>
+<ng-container>
+  <app-sidebar [showSideBar]="showSideBarDetails" [tag]="'detail'" (closeDetails)="closeDetails()">
+    <app-timesheet-details [selectedData]="selectedRowData" (addClick)="onAddClick()" (editClick)="onEditClick($event)"
+      (refreshData)="getData()"></app-timesheet-details>
+  </app-sidebar>
+  <ng-container>
+
+    <span class="timesheet_page_pagination">
+      <mat-paginator *ngIf="paginator" [length]="paginator.total_records" [pageIndex]="paginator.page_no - 1"
+        [pageSize]="paginator.page_size" [pageSizeOptions]="pageSizes" (page)="pageEvent = $event; getData()"
+        showFirstLastButtons>
+      </mat-paginator>
+    </span>
+
+    <div class="mat-elevation-z8 relative timesheet_table daily_view" style="top: 3px"
+      *ngIf="dataSource && dataSource.data">
+      <!-- <span class="floating test">
+      </span> -->
+      <table mat-table [dataSource]="dataSource.data" [ngClass]="{ 'class-name': true }">
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef style="width: 150px">Name
+            <app-sort *ngIf="!gs?.isRespMode" class="sort" [isSelected]="filters['name_sort'] !== 0 ? true : false"
+            [iconType]="'alpha'" (onSort)="onSort($event, 'name_sort')"></app-sort>
+            <app-filter-popup *ngIf="!gs?.isRespMode" [label]="'roles'" [isFiltered]="isFiltered?.role" (onClose)="closeFilter('role')" (onApply)="applyFilterMulti('role')" (onClear)="removeFilter('role')" (onOpen)="defaultOpen=!defaultOpen">
+              <app-dropdown-multi [label]="'roles'" [defaultOpen]="defaultOpen" [selected]="filters?.role" [key]="'role_title'" [optionId]="'role_id'" [Data]="roles" [placeholder]="'Select one or more roles'" [controlName]="'role'"
+              [form]="form" [show]="false">
+            </app-dropdown-multi>
+          </app-filter-popup>
+          </th>
+          <td mat-cell *matCellDef="let element; let i = index" (click)="selectRow(element)">
+            <label class="show_in_resp">Name</label>
+            <app-user-avatar size="medium" [name]="element.user_name" [title]="element.role_title"
+              [color]="element.user_color + opacity" [initialColor]="element.user_color" class="link_name"
+              nbTooltipAdjustment="noop" [nbTooltip]="element.user_name">
+            </app-user-avatar>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="firstclockin">
+          <th mat-header-cell *matHeaderCellDef>First {{ nameConfig?.start }}
+            <app-sort *ngIf="!gs?.isRespMode" class="sort" [order]="filters?.checkin_sort" [isSelected]="filters['checkin_sort'] !== 0 ? true : false"
+            [iconType]="'number'" (onSort)="onSort($event, 'checkin_sort')"></app-sort>
+          </th>
+          <td mat-cell *matCellDef="let element" class="showhim">
+            <ng-container *ngIf="!element.is_empty">
+              <app-text-popup [image]="element.first_start_photo" *ngIf="element.first_start_photo" class="relative">
+                <span *ngIf="!element.first_start_photo?.includes('id=null')"><i class="fa fa-search-plus showme"
+                    alt="search icon" aria-hidden="true"></i>
+                </span>
+              </app-text-popup>
+              <span class="flex align-center">
+                <label class="show_in_resp">First {{ nameConfig?.start }}</label>
+                <app-user-avatar *ngIf="element.first_start_photo"
+                  [picture]="element.first_start_photo | imageAuth | async" size="medium" [showInitials]="false"
+                  onlyPicture>
+                </app-user-avatar>
+                {{ element.first_start_time_format_time }}
+                <ng-container *ngIf="isLocationEnabled">
+                  <ng-container *ngIf="element.first_start_time_location">
+                    <span class="truncate"
+                      [nbTooltip]="element.formatted_address_clockin ? element.formatted_address_clockin : 'Loading...'">
+
+                      <!-- <img src="../../../../../assets/loc-icon.svg"
+                        style="width:11px;margin-left: 0px; margin-right: 1px"> -->
+
+                      <span>
+                        <i class="fas fa-map-marker-alt"
+                          [ngClass]="element.is_outof_radius_start?'outof-fence':'within-fence'"
+                          (mouseenter)="getAddress(element, element.first_start_time_location, 'formatted_address_clockin')"></i></span>
+
+                    </span>
+                  </ng-container>
+                  <ng-container *ngIf="!element.first_start_time_location">
+                    <span class="truncate">
+                      <i class="fas fa-map-marker-alt" style="margin-right: 5px;color: darkgrey;"
+                        nbTooltip="No location."></i>
+                      <!-- <img alt="no location" src="../../../assets/no-loc.svg"
+                        style="width: 11px; margin-left: 3px; margin-right: 1px" nbTooltip="No Location" /> -->
+                    </span>
+                  </ng-container>
+                </ng-container>
+              </span>
+
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastclockout">
+          <th mat-header-cell *matHeaderCellDef>Last {{ nameConfig?.end }}
+            <app-sort *ngIf="!gs?.isRespMode" class="sort" [isSelected]="filters['checkout_sort'] !== 0 ? true : false" 
+            [iconType]="'number'" (onSort)="onSort($event, 'checkout_sort')"></app-sort>
+          </th>
+          <td mat-cell *matCellDef="let element" class="showhim">
+            <app-text-popup [image]="element.last_end_photo" *ngIf="element.last_end_photo" class="relative">
+              <span *ngIf="!element.last_end_photo?.includes('id=null')"><i class="fa fa-search-plus showme"
+                  aria-hidden="true"></i> </span>
+            </app-text-popup>
+            <ng-container *ngIf="!element.is_empty">
+              <span class="flex align-center">
+                <label class="show_in_resp">Last {{ nameConfig?.end }}</label>
+                <app-user-avatar *ngIf="element.last_end_photo" [picture]="element.last_end_photo | imageAuth | async"
+                  size="medium" [showInitials]="false" onlyPicture>
+                </app-user-avatar>
+                {{ element.last_end_time_format_time }}
+                <span *ngIf="element.is_third_shift">
+                  <img alt="graveyard icon" class="graveyard" src="../../../../../assets/graveyard.svg"
+                    nbTooltipAdjustment="noop"
+                    [nbTooltip]="'Graveyard shift ' + element.last_end_time_format_date + ' ' + element.last_end_time_format_time" />
+                  <!-- <i class="fa fa-info-circle" ></i> -->
+                </span>
+                <ng-container *ngIf="isLocationEnabled">
+                  <ng-container *ngIf="element.last_end_time_location">
+                    <span class="truncate"
+                      [nbTooltip]="element.formatted_address_clockout ? element.formatted_address_clockout : 'Loading...'">
+
+                      <i class="fas fa-map-marker-alt"
+                        [ngClass]="element.is_outof_radius_end?'outof-fence':'within-fence'"
+                        (mouseover)="getAddress(element, element.last_end_time_location, 'formatted_address_clockout')"></i>
+
+
+                      <!-- <i alt="map marker icon" class="fa fa-map-marker"
+                        style="font-size: 16px; margin-left: 3px; margin-right: 1px"
+                        (mouseover)="getAddress(element, element.last_end_time_location, 'formatted_address_clockout')"></i> -->
+                      <!-- <img src="../../../../../assets/loc-icon.svg"
+                        style="width:11px;font-size: 16px; margin-left: 3px; margin-right: 1px"
+                        (mouseover)="getAddress(element, element.last_end_time_location, 'formatted_address_clockout')"> -->
+                    </span>
+                    <!-- <i  [nbTooltip]="element.formatted_address_clockout ? element.formatted_address_clockout : 'Loading...'" class="fa fa-map-marker" style="position: absolute; font-size:15px; margin-left: 0px;" (mouseover)="getAddress(element, element.last_end_time_location, 'formatted_address_clockout')"></i> -->
+                  </ng-container>
+                  <ng-container *ngIf="element.last_end_time && !element.last_end_time_location">
+                    <span class="truncate">
+                      <i class="fas fa-map-marker-alt" style="margin-right: 5px; color: darkgrey;"
+                        nbTooltip="No location."></i>
+                      <!-- <img alt="no location icon" src="../../../assets/no-loc.svg"
+                        style="width: 11px; margin-left: 3px; margin-right: 1px" nbTooltip="No Location" /> -->
+                    </span>
+                  </ng-container>
+                </ng-container>
+              </span>
+            </ng-container>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="region_title">
+          <th mat-header-cell *matHeaderCellDef style="min-width: 80px" [hidden]="sharedRegion>0">Store</th>
+          <td mat-cell *matCellDef="let element" [hidden]="sharedRegion>0" class="store-col">
+            <label class="show_in_resp">Store</label>
+            <span style="color:#4E4E4E;" nbTooltipAdjustment="noop"
+              [nbTooltip]="element.region_title?element.region_title:''">{{element.region_title?element.region_title:''}}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="worktime">
+          <th mat-header-cell *matHeaderCellDef style="min-width: 90px">Logged Hours
+            <app-sort *ngIf="!gs?.isRespMode" class="sort" [iconType]="'number'" [isSelected]="filters['logged_hours_sort'] !== 0 ? true : false" 
+            (onSort)="onSort($event, 'logged_hours_sort')"></app-sort>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <label class="show_in_resp">Logged Hours</label>
+            <span class="">{{ element.work_hour_format | time }}</span>
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="breaktime">
+          <th mat-header-cell *matHeaderCellDef style="min-width: 70px;">Break Hours
+            <app-sort *ngIf="!gs?.isRespMode" class="sort" [iconType]="'number'" [isSelected]="filters['break_hours_sort'] !== 0 ? true : false" 
+            (onSort)="onSort($event, 'break_hours_sort')"></app-sort>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <label class="show_in_resp">Break Hours</label>
+            <span class="">{{ element.break_hour_format | time }}</span>
+
+          </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="totaltime">
+          <th mat-header-cell *matHeaderCellDef style="min-width: 80px">Actual Hours</th>
+          <td mat-cell *matCellDef="let element">
+            <label class="show_in_resp">Actual Hours</label>
+            <span class="right_border_lastco">{{ element.total_hour_format | time }}</span>
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="totaltime">
+          <th mat-header-cell *matHeaderCellDef style="min-width: 70px;padding-right: 15px;">Actual Hours
+            <app-sort *ngIf="!gs?.isRespMode" class="sort" [iconType]="'number'" [isSelected]="filters['actual_hours_sort'] !== 0 ? true : false" 
+            (onSort)="onSort($event, 'actual_hours_sort')"></app-sort>
+          </th>
+          <!-- [ngClass]="{'clockin_progress': false}" -->
+          <td mat-cell *matCellDef="let element" [ngClass]="{ 
+            overtime: element.is_max_hours_exceed,
+            out_of_schedule: element.is_out_of_schedule,
+            double_flags: element.is_out_of_schedule && element.is_max_hours_exceed
+          }">
+            <label class="show_in_resp">Actual Hours</label>
+            <span class="">{{ element.total_hour_format | time }}</span>
+            <!-- {{element.total_hour_format | time }} -->
+            <i alt="out of schedule icon" *ngIf="element.is_max_hours_exceed && !element.is_out_of_schedule"
+              class="fa fa-flag" nbTooltipAdjustment="noop" [nbTooltip]="'Overtime'"></i>
+            <i alt="flag icon" *ngIf="element.is_out_of_schedule && !element.is_max_hours_exceed" class="fa fa-flag"
+              nbTooltipAdjustment="noop" [nbTooltip]="'Out of schedule'"></i>
+            <img alt="out of schedule and overtime flag"
+              *ngIf="element.is_out_of_schedule && element.is_max_hours_exceed" src="../../../assets/flags.svg"
+              nbTooltipAdjustment="noop" [nbTooltip]="'Out of schedule & overtime'" />
+
+          </td>
+        </ng-container>
+        <!-- <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <label class="show_in_resp">Add New Entry</label>
+             <img
+              src="../../../../../assets/add.svg"
+              alt="add timesheet icon"
+              width="26px"
+              nbTooltip="Add Timesheet Entry"
+              nbTooltipPlacement="top"
+              (click)="initAddEntry(element)" />
+          </td>
+        </ng-container> -->
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ disable_row: row.is_empty }"></tr>
+      </table>
+      <app-no-records [display]="emptyResults" [animation]="'timesheet'"></app-no-records>
+      <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+    </div>
+  </ng-container>
+</ng-container>

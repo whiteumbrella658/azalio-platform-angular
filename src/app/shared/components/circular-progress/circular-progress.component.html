@@ -1,0 +1,20 @@
+<div class="flex-container">
+    <div *ngIf="legend" class="legends" [ngStyle]="{'color': color}">
+        <div class="chart-labels">
+            <ul>
+                <li>
+                    <div class="legend-dot" [ngStyle]="{'background': color}"></div> Success Rate
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="circular-chart">
+        <svg viewBox="0 0 50 36" class="angular-circle">
+            <path class="stroke-circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="background-circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path *ngIf="percentage > 0" class="highlighted-circle" [ngStyle]="{'stroke': color}" [attr.stroke-dasharray]="percentage + ', 100'" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <text class="label-text" x="-7" y="18.35" [ngStyle]="{'fill': '#101828'}">{{active}}</text>
+            <text class="label-text-sub" x="16" y="25.35" [ngStyle]="{'fill': '#101828'}">{{textInsideCircle}}</text>
+        </svg>
+    </div>
+</div>

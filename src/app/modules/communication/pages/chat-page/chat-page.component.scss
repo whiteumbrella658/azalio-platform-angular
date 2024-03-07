@@ -1,0 +1,115 @@
+.chat_rigt_section {
+  flex-grow: 5 !important;
+  border-left: 1px solid #efefef;
+}
+
+.chat_left_section {
+  flex-grow: 1;
+  max-width: 320px;
+  height: 100vh;
+  height: 88vh;
+}
+
+.chat_left_header {
+  padding: 0px 13px 10px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & .pointer.white_button {
+    line-height: 14px;
+  }
+}
+
+.no_user_selected {
+  width: 100%;
+  height: calc(100% - 40px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chats_page_wrapper {
+  padding: 21px;
+  background: #fff;
+  border-top: 1px solid #efefef;
+  padding-bottom: 0;
+  height: 93vh;
+}
+
+nb-chat.size-small.ng-star-inserted {
+  box-shadow: none !important;
+}
+
+.chat_list_body {
+  padding-top: 10px;
+  padding-right: 10px;
+  height: calc(100% - 37px);
+}
+
+.back {
+  display: none;
+}
+
+.current_message {
+  width: 200px;
+  position: fixed;
+  height: 500px;
+}
+@media only screen and (max-width: 614px) {
+  .chats_page_wrapper {
+    flex-direction: column;
+    .chat_left_section {
+      max-width: 100% !important;
+      margin-bottom: 10% !important;
+      overflow: auto !important;
+    }
+    .chat_rigt_section {
+      overflow: auto !important;
+    }
+    .temp {
+      display: none;
+    }
+    .back {
+      display: block;
+      .fa {
+        font-size: 16px;
+        z-index: 1;
+        position: absolute;
+        top: 74px;
+        background: #fff;
+        padding: 3px;
+        border-radius: 3px;
+        left: 22px;
+      }
+    }
+  }
+}
+.chat_list {
+  background-color: #efefef;
+}
+.new_message_button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.chats-dock {
+  .chats-container {
+    display: flex;
+    margin-top: 11px;
+    margin-left: 10px;
+    margin-right: 15px;
+    justify-content: space-between;
+  }
+  .chats-wrapper {
+    display: flex;
+    align-items: center;
+    width: 220px;
+    cursor: pointer;
+  }
+  .chats-text {
+    color: #6e689b;
+    font-size: 14px;
+    font-weight: 700;
+  }
+}

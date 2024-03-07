@@ -1,0 +1,181 @@
+<div class="modal_wrapper ts-entry">
+  <nb-card>
+    <nb-card-header class="card_header" style="position: relative;"
+      [class]="isEditMode || !isNewAddEntry ?'add-ts-entries':''">
+
+      <label *ngIf="isNewAddEntry">
+        <b class="title">New Timesheet Entry</b>
+      </label>
+      <span *ngIf="!isNewAddEntry">
+        <span class="title" style="
+        font-size: 18px;
+        font-weight: 400;
+        margin-top: 5px;"> {{userName}} </span> <br> <span class="role-title">
+          {{userRole}}
+        </span>
+        <br>
+      </span>
+      <nb-icon icon="close" (click)="close()" class="cross_icon hidden"></nb-icon>
+      <!-- <div class="title">
+
+        <span style="    position: absolute;
+          left: 12px;
+          top: 16px;" *ngIf="!isNewAddEntry">
+          <app-user-avatar id="timesheetAvatar" [name]="userName" [title]="userRole" [color]="'white'"
+            [initialColor]="initialColor" [nbTooltip]="userName" nbTooltipPlacement="top"> </app-user-avatar>
+        </span>
+      </div> -->
+    </nb-card-header>
+
+    <nb-card-body [nbSpinner]="loading" class="timesheets-card-body">
+      <div class="add_timesheets">
+        <form #ngForm="ngForm" id="form" [formGroup]="AddTimesheetEntry" (ngSubmit)=submit(ngForm)>
+
+          <div class="modal_body_wrapper">
+            <div class="wrappper">
+              <div class="flex space_between vertical_center ts-details mb_30 relative"
+                *ngIf="isNewAddEntry || isEditMode">
+                <div style="width: 7%; padding-right: 5px;">
+                  <i class="fas fa-store icon-color" nbTooltipPlacement="top" nbTooltip="Store"><span
+                      class="mandatory"> *</span></i>
+                      <!-- <img src="../../../../../assets/store-modal.svg" style="width: 17px; margin-left: -2px;"  nbTooltipPlacement="top" nbTooltip="Store"><span class="mandatory"> *</span> -->
+                </div>
+
+
+                <div style="width: 90%; padding-right: 5px;" class="name_resp">
+                  <span style="position: relative;">
+                    <app-region-dropdown [controlName]="'region_id'" [form]="AddTimesheetEntry"
+                      [placeholder]="'Select ' + nameConfig?.region" (regionChange)="regionChange($event)"
+                      [reloadData]="reloadRegionData" [isEditMode]="isEditMode" [isNewEntry]="isNewAddEntry"
+                      [userId]="userId?userId:0" [regionId]="regionId" [selectedRegionId]="selectedRegionId"
+                      [selectedRegionTitle]="selectedRegionTitle">
+                    </app-region-dropdown>
+                    <app-error-message [key]="'region_id'" [form]="AddTimesheetEntry" [isSubmitted]="ngForm.submitted">
+                    </app-error-message>
+                  </span>
+                  <div style="position: absolute; width: 100%">
+                    <app-error-message [key]="'regionTeams'" [form]="AddTimesheetEntry"
+                      [isSubmitted]="ngForm.submitted">
+                    </app-error-message>
+                  </div>
+                </div>
+                <div style="width: 3%; padding-right: 5px;">
+                </div>
+              </div>
+              <div class="flex space_between vertical_center ts-details mb_30 relative" *ngIf="isNewAddEntry">
+                <div style="width: 7%; padding-right: 5px;">
+                  <i class="fa fa-user icon-color" nbTooltipPlacement="top" nbTooltip="Name"><span class="mandatory">
+                      *</span></i>
+                </div>
+
+
+                <div style="width: 90%; padding-right: 5px;position: relative;" class="name_resp">
+                  <app-user-autocomplete-input   [region]="regionId" (selectedUser)="onSelectedUser($event)" [isOwnAddEdit]="isOwnAddEditEntry">
+                  </app-user-autocomplete-input>
+                  <app-error-message *ngIf="!userId" [key]="'user_id'" [form]="AddTimesheetEntry"
+                    [isSubmitted]="ngForm.submitted"></app-error-message>
+                </div>
+                <div style="width: 3%; padding-right: 5px;">
+                </div>
+              </div>
+
+              <div class="flex space_between vertical_center ts-details mb_30 relative">
+                <div style="width: 7%; padding-right: 5px;" nbTooltipPlacement="top" nbTooltip="Time Zone">
+                  <i class="fa fa-globe fa-stack icon-color"><span class="mandatory"> *</span></i>
+                </div>
+
+
+                <div style="width: 90%; padding-right: 5px;" class="name_resp">
+                  <app-timezone-dropdown [controlName]="'timezone'" [form]="AddTimesheetEntry"
+                    [placeholder]="'Select time zone'"></app-timezone-dropdown>
+                  <app-error-message [key]="'timezone'" [form]="AddTimesheetEntry" [isSubmitted]="ngForm.submitted">
+                  </app-error-message>
+                </div>
+                <div style="width: 3%; padding-right: 5px;">
+                </div>
+              </div>
+
+              <div class="flex space_between vertical_center ts-details mb_30 relative">
+                <div style="width: 7%; padding-right: 5px;" nbTooltipPlacement="top" nbTooltip="ClockIn/ ClockOut">
+                  <i class="fas fa-clock icon-color"><span class="mandatory"> *</span></i>
+                </div>
+
+
+                <div style="width: 42%; padding-right: 5px;" class="name_resp">
+                  <app-timer-input [controlName]="'clockIn'" [form]="AddTimesheetEntry"
+                    [placeholder]="'Enter ' + (nameConfig?.start | lowercase) + ' time'"></app-timer-input>
+                  <app-error-message [key]="'clockIn'" [form]="AddTimesheetEntry" [isSubmitted]="ngForm.submitted">
+                  </app-error-message>
+                </div>
+                <div style="width: 7%; padding-right: 5px;padding-left: 5px;">
+                  <i class="fa fa-arrow-right icon-color"></i>
+                </div>
+
+
+                <div style="width: 42%; padding-right: 5px;position: relative;" class="name_resp">
+                  <app-timer-input [controlName]="'clockOut'" [form]="AddTimesheetEntry"
+                    [placeholder]="'Enter ' + (nameConfig?.end | lowercase) + ' time'"></app-timer-input>
+                  <app-error-message [key]="'clockOut'" [form]="AddTimesheetEntry" [isSubmitted]="ngForm.submitted">
+                  </app-error-message>
+                  <ng-container *ngIf="!AddTimesheetEntry.controls.clockOut.errors">
+                    <div *ngIf="ngForm.touched && AddTimesheetEntry.errors?.invalidTime" class="red"
+                      style="font-size: 11px; position: absolute;margin-top: 3px;">{{nameConfig?.end}} must be greater than {{nameConfig?.start}}</div>
+                    <div *ngIf="ngForm.touched && AddTimesheetEntry.errors?.invalidThirdShift" class="red"
+                      style="font-size: 11px;position: absolute;margin-top: 3px;">Graveyard shift is not allowed</div>
+                    <div *ngIf="ngForm.touched && AddTimesheetEntry.errors?.invalidSlot" class="red"
+                      style="font-size: 11px;position: absolute;margin-top: 3px;">A minimum of 10 minute slot is required</div>
+                    <div *ngIf="ngForm.touched && AddTimesheetEntry.errors?.invalidMaxSlot" class="red"
+                      style="font-size: 11px;position: absolute; margin-top: 3px;">Maximum allowed shift time is {{maxAllowedSlotTime/60}} Hours</div>
+                  </ng-container>
+                </div>
+                <div style="width: 3%; padding-right: 5px;">
+                </div>
+              </div>
+
+              <div class="flex space_between vertical_center ts-details mb_30 relative">
+                <div style="width: 7%; padding-right: 5px;" nbTooltipPlacement="top" nbTooltip="Reason">
+                  <i class="fa fa-comment icon-color"></i>
+                </div>
+
+
+                <div style="width: 90%; padding-right: 5px;" class="name_resp">
+                  <textarea aria-label="reason note field" style="resize: vertical;" nbInput fullWidth
+                    placeholder="Add note" [formControlName]="'note'"></textarea>
+                  <app-error-message [key]="'note'" [form]="AddTimesheetEntry" [isSubmitted]="ngForm.submitted">
+                  </app-error-message>
+                </div>
+                <div style="width: 3%; padding-right: 5px;">
+                  <img src="../../../../../assets/info-icon.svg" class="label-info-icon" alt="reason icon"
+                    nbTooltipPlacement="right"
+                    nbTooltip="This reason note will only appear in reports. It will not be visible to the user on the mobile app." />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer_button modified"
+            style="padding-left: 10px; padding-right: 25px;margin-top: 0px;padding-bottom: 10px;">
+            <span class="footer-details">
+              <span *ngIf="timesheetData && timesheetData.entry?.created_by" class="modifiedby">Added by: <span
+                  nbTooltip="{{timesheetData.entry.created_by + ' - '}}{{timesheetData.entry.created_by_role}}"
+                  nbTooltipPlacement="top">{{timesheetData.entry.created_by}}</span> on
+                {{timesheetData.entry.creation_date | date: 'MM/dd/yyyy'}} </span>
+              <span *ngIf="timesheetData && timesheetData.entry?.modified_by" class="modifiedby last-modified"> Last modified by: <span
+                  nbTooltip="{{timesheetData.entry.modified_by +  ' - '}}{{timesheetData.entry.modified_by_role}}"
+                  nbTooltipPlacement="top">{{timesheetData.entry.modified_by}}</span> on
+                {{timesheetData.entry.modification_date | date: 'MM/dd/yyyy'}} </span>
+            </span>
+            <span class="flex footer-btns-row">
+              <app-button (onClick)="close()">Cancel</app-button>
+              <app-submit-button [form]="AddTimesheetEntry" [label]="buttonLabel"></app-submit-button>
+            </span>
+          </div>
+        </form>
+
+
+
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+</div>

@@ -1,0 +1,448 @@
+<app-loader [loading]="loading"></app-loader>
+
+
+
+<!-- <app-tasks-table-head></app-tasks-table-head> -->
+<app-sidebar class="comment-sidebar" [showSideBar]="showComments" (closeDetails)="closeDetails()">
+  <app-task-comments [selectedTask]="selectedRowData" (onCommentAdd)="getData()">
+  </app-task-comments>
+</app-sidebar>
+<div class="flex">
+  <nb-layout-column class="colored-column-info timesheets_wrapper tasks-module">
+
+    <ng-container *ngIf="!pageLoading && isStore">
+      <div class="wrapper_header" [ngClass]="{'azalio-play':  shiftsFilterArr?.length > 0, 'default': !shiftsFilterArr}"
+        *ngIf="permissions?.Tasks?.add">
+        <!-- 'input-tasks': !isAzalioPlay && !isBoringPlay -->
+        <span class="add-input"
+          [ngClass]="{'edit-task': selectedRowDataEdit?.id !== null && !isAddEditTagsOnly}">
+          <app-text-input [id]="'task-input'" [maxlength]="255"
+          [ngClass]="{'tasks-input-play': isAzalioPlay || isBoringPlay, 'tasks-input-boring': !isAzalioPlay && !isBoringPlay}" 
+            (keydown.enter)="addTask()" [placeholder]="'Add a task here for your store and press enter.'"
+            [controlName]="'taskName'" [form]="form">
+            <span class="add-options">
+              <span (click)="$event.stopPropagation(); shiftPopup = !shiftPopup;" class="shifts-options">
+                <span class="shifts-count"
+                  nbTooltipPlacement="top">
+                  <ng-container *ngIf="shiftsFilterArr?.length > 0 && allShifts">All shifts</ng-container>
+                  <ng-container *ngIf="allDay">All day</ng-container>
+                  <ng-container *ngIf="!allDay && !allShifts" >{{getSelectedShiftCount()}}</ng-container>
+                </span>
+                <i class="fas fa-angle-down" style="margin-left:-3px;cursor:pointer;"></i></span>
+              <span  *ngIf="isAzalioPlay || isBoringPlay" (click)="$event.stopPropagation(); coinPopup = !coinPopup;" class="pts-options">
+                <img src="assets/coin.png">
+                <span nbTooltip="{{selectedCoins + ' points'}}" class="assign-pts">
+                  {{selectedCoins ? selectedCoins : 0}}
+                </span><i class="fas fa-angle-down" style="margin-left:0px;cursor:pointer;"></i></span>
+            </span>
+          </app-text-input>
+        </span>
+        <span class="points-popup shift-task" *ngIf="shiftPopup">
+          <span class="context-menu">
+            <ul class="filter-options">
+              <li class="top-row-dropdown">
+                <span class="shift-info heading-text">
+                  Shifts
+                </span>
+                <span class="select-shift">
+
+                </span>
+                <span class="occurences-input heading-text">
+                  <i class="fa fa-clock"></i> Repeats
+                </span>
+              </li>
+              <li (click)="$event.stopPropagation();selectAllDay()" [ngClass]="{'selected-shift-row': allDay, 'disabled': allShifts}">
+                <span class="shift-info" [ngClass]="{'highlighted-shift': allDay}">
+                  <img src="assets/all-day.png" class="default-icon"> Default (All day)
+                </span>
+                <span class="select-shift">
+                  <i *ngIf="allDay" class="fas fa-check add-point"></i>
+                </span>
+                <span class="occurences-input" (click)="$event.stopPropagation();" [formGroup]="form">
+                  <input formControlName="allDayRepeats" [readonly]="!allDay"
+                    [ngClass]="{'disabled-field': !allDay}" type="text" value="1" maxlength="1"
+                    class="add-task-occurences" aria-label="text input field" nbInput>
+                </span>
+              </li>
+              <li *ngIf="shiftsArr?.length > 0" (click)="$event.stopPropagation();selectAllShifts()" [ngClass]="{'selected-shift-row': allShifts, 'disabled': allDay}">
+                <span class="shift-info" [ngClass]="{'highlighted-shift': allShifts}">
+                  <img src="assets/shifts-comment.png" class="default-icon"> 
+                  All shifts
+                </span>
+                <span class="select-shift">
+                  <i *ngIf="allShifts" class="fas fa-check add-point"></i>
+                </span>
+                <span class="occurences-input" (click)="$event.stopPropagation();" [formGroup]="form">
+                  <input formControlName="allShiftRepeats" [readonly]="!allShifts"
+                    [ngClass]="{'disabled-field': !allShifts}" type="text" value="1" maxlength="1"
+                    class="add-task-occurences" aria-label="text input field" nbInput>
+                </span>
+              </li>
+              <li *ngFor="let shift of shiftsArr; let i = index;"
+                [ngClass]="{'disabled': allShifts || allDay, 'selected-shift-row': !allShifts && shift.selected}"
+                (click)="$event.stopPropagation();selectShift(shift)">
+                <span class="shift-info">
+                  <i [class]="shift.icon"></i>
+                  <span class="trim-shiftname" [nbTooltip]="shift.shift_name"
+                    [ngClass]="{'highlighted-shift': shift.selected}">
+                    {{shift.shift_name}}
+                  </span>
+                </span>
+                <span class="select-shift">
+                  <i *ngIf="shift.selected && !allShifts" class="fas fa-check add-point"></i>
+                </span>
+                <span class="occurences-input" (click)="$event.stopPropagation();"
+                  [formGroup]="taskRepeats.controls[i]">
+                  <input (focusout)="onFocusOut(taskRepeats.controls[i])" type="text" value="1" formControlName="count"
+                    maxlength="1" [readonly]="(allShifts || !shift.selected) ? true : false" class="add-task-occurences"
+                    [ngClass]="{'disabled-field': (allShifts || !shift.selected) ? true : false}"
+                    aria-label="text input field" nbInput>
+                </span>
+              </li>
+            </ul>
+          </span>
+        </span>
+        <span class="points-popup" *ngIf="coinPopup">
+          <span class="context-menu">
+            <ul class="filter-options" [formGroup]="form">
+              <li *ngFor="let coin of coins" (click)="selectCoins($event, coin)"
+                [ngClass]="{'selected': selectedCoins == coin}">
+                <img src="assets/coin.png"> {{coin}} points
+              </li>
+              <li>
+                <span (click)="$event.stopPropagation();" class="custom-points">
+                  <img src="assets/coin.png">
+                  <input type="text" maxlength="2" autocomplete="off" aria-label="text input field" nbInput
+                    formControlName="points" placeholder="Enter points"
+                    (keydown.enter)="selectCoins($event, form.controls.points.value)">
+                </span>
+                <i (click)="selectCoins($event, form.controls.points.value)" class="fas fa-check-circle add-point"></i>
+
+              </li>
+            </ul>
+
+          </span>
+
+        </span>
+        <span [hidden]="!permissions?.Tasks?.add"
+          [ngClass]="{'edit-task': selectedRowDataEdit?.id !== null && !isAddEditTagsOnly}">
+          <button nbButton [status]="selectedRowDataEdit && !isAddEditTagsOnly ? 'danger' : 'primary'" type="submit"
+            (click)="addTask()" class="mr_10 update-task">
+            {{selectedRowDataEdit && !isAddEditTagsOnly ? 'Save' : 'Add Task'}}
+          </button>
+        </span>
+        <span [hidden]="!permissions?.Tasks?.update || (!selectedRowDataEdit)">
+          <button nbButton outline status="primary" shape="round" type="submit" (click)="cancelEdit()"
+            class="mr_10 cancel-task">
+            Cancel
+          </button>
+        </span>
+      </div>
+      <span class="assign-task"
+        [ngClass]="{'assign-task-play': isAzalioPlay, 'default': !isAzalioPlay, 'play-edit': selectedRowDataEdit && !isAddEditTagsOnly }">
+        <span class="left-items">
+          <ng-container
+            *ngIf="isAzalioPlay || isBoringPlay && (!selectedRowDataEdit && permissions?.Tasks?.add && permissions?.Tasks?.add_bulk)">
+            Add task to:
+            <nb-radio-group class="add-task-option" [(ngModel)]="isAllStores">
+              <nb-radio value="1" class="option-txt">All stores</nb-radio>
+              <nb-radio value="0" class="option-txt">Current store</nb-radio>
+            </nb-radio-group>
+          </ng-container>
+        </span>
+
+        <span class="right-actions pointer"
+          [ngClass]="{'disabled': !selectedRowDataEdit && form.controls.taskName.value?.length < 5}" (click)="openAddTaskPopup()">
+          <img
+            [src]="!selectedRowDataEdit && form.controls.taskName.value?.length < 5 ? 'assets/grey-tasks.png' : 'assets/add-more-details.png'"
+            style="margin-right:3px;">
+          {{selectedRowDataEdit && !isAddEditTagsOnly ? 'Edit Advanced Options' : 'Add Advanced Options'}}
+        </span>
+
+      </span>
+      <div class="reports-row" [ngClass]="{'azalio-play': shiftsFilterArr?.length > 0, 'default-row': !shiftsFilterArr}">
+
+        <span style="display: flex;" class="shift-cards" *ngIf="shiftsFilterArr?.length > 0">
+          <span class="shift-details " *ngFor="let shift of shiftsFilterArr | slice:startIndex:endIndex;"
+            (click)="setShiftFilter(shift)" [ngClass]="{'selected-shift': selectedShift?.id == shift.id}">
+            <div class="container-cards">
+              <span class="shift-icon" [nbTooltip]="shift.shift_name">
+                <i class="{{shift.icon}}"></i>
+                {{shift.shift_name}}
+              </span>
+              <span *ngIf="selectedShift?.id == shift.id" (click)="$event.stopPropagation();setShiftFilter(null)"
+                class="clear-filter"> <i class="fas fa-times-circle" nbTooltip="Clear filter"></i></span>
+            </div>
+            <span class="tasks-info">
+              <span style="display:flex; align-items:center;" nbTooltip="Total tasks">
+                <i aria-hidden="true" class="fas fa-tasks"></i>
+                <span class="desp-label">{{shift.tasks_count}}</span>
+              </span>
+              <span *ngIf="isBoringPlay || isAzalioPlay" style="display:flex; align-items:center;" nbTooltip="Total points">
+                <img src="assets/coin.png">
+                <span class="desp-label">{{shift.points_count}}</span>
+              </span>
+            </span>
+          </span>
+          <i *ngIf="shiftsFilterArr?.length > 3" class="fa-solid fa-circle-chevron-right swipe-next"
+            nbTooltipPlacement="right" nbTooltip="Click to view more shifts" (click)="setSliceIndex()"></i>
+
+        </span>
+
+
+        <span class="flex input-row" *ngIf="!pageLoading && isStore && !emptyResults">
+
+          <app-search-input class="search-task" [placeholder]="'Search by task name'"
+            [showHelperButton]="showHelperButton" (searchEvent)="onSearch($event)" (searchAll)="onSearchAll($event)"
+            (click)="addSearchAnalytics()">
+          </app-search-input>
+          <span class="sort" style="position: relative;" [ngClass]="{'no-shifts':  shiftsFilterArr == null}">
+            <span class="filters-wrapper" *ngIf="gs?.isRespMode">
+              <span class="roles-filter">
+                <app-filter-popup [label]="'Tags'" [isFiltered]="isFiltered?.tag" (onClose)="closeFilter('tag')" (onApply)="applyFilterMulti('tag')" (onClear)="removeFilter('tag')" (onOpen)="defaultOpen=!defaultOpen">
+                  <app-dropdown-multi [type]="'tag'" [optionClass]="'dot-tag'" [label]="'tags'" [defaultOpen]="defaultOpen" [selected]="filter?.tag" [key]="'tag'" [key2]="'color'" [optionId]="'id'" [Data]="tags" [placeholder]="'Select one or more tags'" [controlName]="'tag'"
+                  [form]="form" [show]="false">
+                </app-dropdown-multi>
+              </app-filter-popup>
+              </span>
+            </span>
+            <span nbTooltip="Click to change sort order" style="cursor:pointer; width: 132px;"
+              (click)="$event.stopPropagation(); sortPopup = !sortPopup;">
+              {{selectedFilterItem?.display_title}}
+              <i class="fas fa-long-arrow-alt-up" style="margin-left: 4px; cursor: pointer;"></i>
+            </span>
+            <span class="filter-popup" *ngIf="sortPopup">
+              <span class="context-menu">
+                <ul class="filter-options">
+                  <li style="cursor:pointer;" class="options" *ngFor="let item of filters" (click)="setFilter(item)">
+                    {{item.display_title}}
+                  </li>
+                </ul>
+              </span>
+            </span>
+          </span>
+          <mat-paginator *ngIf="paginator" [length]="paginator.total_records" [pageIndex]="paginator.page_no - 1"
+            [pageSize]="paginator.page_size" [pageSizeOptions]="pageSizes" (page)="pageEvent = $event; getData()"
+            showFirstLastButtons>
+          </mat-paginator>
+        </span>
+      </div>
+    </ng-container>
+    <div class="float-container" (click)="navigateToReports()" *ngIf="isAzalioPlay || isBoringPlay">
+      <a class="icon one">View Report</a>
+    </div>
+    <div class="mat-elevation-z8 relative" *ngIf="dataSource && dataSource.data" class="tasks"
+      [ngClass]="{'azalio-play-tasks': isAzalioPlay && !pageLoading, 'default': !isAzalioPlay}"
+      [ngClass]="{'scroll-none': selectedForAssignment != null, 'select-store': sharedRegion == 0}">
+      <div class="small-devices-container" [ngClass]="{'display': gs?.touchEnabledDevices}"
+        [nbPopover]="templateRefAssign" nbPopoverTrigger="noop" nbPopoverPlacement="left" id="divPopup">
+      </div>
+      <table mat-table [dataSource]="dataSource.data" class="tasks-table azalioplay"
+        *ngIf="!pageLoading && isStore">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef style="width: 53%;">Task
+            <app-filter-popup *ngIf="!gs?.isRespMode" [label]="'tags'" [isFiltered]="isFiltered?.tag" (onClose)="closeFilter('tag')" (onApply)="applyFilterMulti('tag')" (onClear)="removeFilter('tag')" (onOpen)="defaultOpen=!defaultOpen">
+              <app-dropdown-multi [type]="'tag'" [label]="'tags'" [optionClass]="'dot-tag'" [defaultOpen]="defaultOpen" [selected]="filter?.tag" [key]="'tag'" [key2]="'color'" [optionId]="'id'" [Data]="tags" [placeholder]="'Select one or more tags'" [controlName]="'tag'"
+              [form]="form" [show]="false">
+            </app-dropdown-multi>
+          </app-filter-popup>
+          </th>
+          <td mat-cell *matCellDef="let element" style="width: 53%;">
+
+            <span class="taskname">
+              <label class="show_in_resp task-txt">Task name</label>
+              <i [nbTooltip]="element.priority === 'NORMAL' ? 'Mark as important' : 'Important task'"
+                (click)="updatePriority(element)" class="fa fa-angle-double-up priority"
+                [ngClass]="{'enable-priority': element.priority === 'HIGH'}"></i>
+              <span style="display: grid;" [nbTooltip]="element.description" [nbTooltipDisabled]="!element.description">
+                <span (click)="openTaskComments(element)" class="name-field">{{element.name}}
+                  <span class="sch-task" *ngIf="element.custom?.repeatType > 0">
+                    <i class="fa fa-clock"></i> Scheduled Task
+                  </span>
+                </span>
+                <span class="all-stores" *ngIf="element.all_store">
+                  All stores
+                </span>
+                <div *ngIf="!element.tags || element.tags?.length < 1" 
+                  (click)="$event.stopPropagation(); isAddEditTagsOnly=true; toggleEditMode(element)" class="task-label">
+                  <i class="fa-solid fa-user-tag user-tag"></i>Add label</div>
+                <span class="categories" (click)="isAddEditTagsOnly=true; toggleEditMode(element)">
+                  <span class="mr_05 tag-container" *ngFor="let item of element.tags; let i = index;"><i class="fa-solid fa-circle" [style.color]="item.color"></i> <span class="category-name">{{item.tag}}<ng-container *ngIf="i !== element.tags.length -1">, </ng-container> </span>
+                </span>
+                </span>
+              </span>
+              <!-- <span *ngIf="!isAzalioPlay && !isBoringPlay && selectedRowDataEdit?.id === element.id" style="width: 100%;"
+                class="name-field">
+                <app-text-input [maxlength]="255" [autofocus]="true" (keydown.enter)="editTask()"
+                  (focusout)="toggleEditMode(null)" [placeholder]="'Edit task here and press enter.'"
+                  [controlName]="'taskName'" [form]="editForm">
+                </app-text-input>
+              </span> -->
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="last_known_status">
+          <th mat-header-cell *matHeaderCellDef style="width: 15%;">Status</th>
+          <td mat-cell *matCellDef="let element" style="width: 15%;" (click)="openTaskComments(element)"
+            class="comment-field">
+            <ng-container *ngIf="!element.modification.includes('Created')">
+              <span class="align-col">
+                <label class="show_in_resp label-txt">Status</label>
+                <app-user-avatar [class]="getStatusClass(element)" onlyPicture size="small" [name]="element.modified_by"
+                  [color]="element.user_color + opacity" [initialColor]="element.user_color" nbTooltipPlacement="top"
+                  [nbTooltip]="element.modified_by">
+                </app-user-avatar>
+
+                <span style="margin-left: -5px;" class="text pointer">
+                  <!-- <span [class]="element.modification.includes('done')?'task-done':'comment-txt'">
+                    {{element.modification}}</span> -->
+                  <span class="ml-4" style="font-weight: 800;">
+                    {{element.modified_on | date: 'MMM d hh:mm aa'}}</span>
+                </span>
+              </span>
+            </ng-container>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="shifts">
+          <th mat-header-cell *matHeaderCellDef style="width: 10%;padding-left: 31px !important;">Shifts</th>
+          <td mat-cell *matCellDef="let element" style="width: 10%;">
+            <label class="show_in_resp">Shifts</label>
+            <span *ngIf="element.shifts?.length > 1" class="task-shift"
+              nbTooltip="{{service?.getShiftNames(element.shifts)}}">
+              <img [style.visibility]="service?.isMultiTask(element.shifts) == true ? 'visible': 'hidden'"
+                src="assets/task-occurrence.png">
+              {{element.shifts.length + ' shifts'}}
+            </span>
+            <span *ngIf="element.shifts?.length === 1" nbTooltip="{{service?.getShiftNames(element.shifts)}}"
+              class="task-shift">
+              <img [style.visibility]="service?.isMultiTask(element.shifts) == true ? 'visible': 'hidden'"
+                src="assets/task-occurrence.png">
+              {{element.shifts[0].name}}
+            </span>
+            <span *ngIf="!element.shifts" nbTooltip="{{'All day (' + element.task_repetition + ')' }}" class="task-shift">
+            <img [style.visibility]="element.task_repetition > 1 ? 'visible': 'hidden'" src="assets/task-occurrence.png">
+            All day
+           </span>
+            <!-- <span *ngIf="element.shifts">
+              <span *ngFor="let shift of element?.shifts" class="task-occurences">
+                <i [nbTooltip]="'2 times in ' + shift.name" class="{{shift.shift_icon}}"></i>
+                <span>{{shift.name}}</span>
+              </span>
+            </span> -->
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="points">
+          <th mat-header-cell *matHeaderCellDef style="width: 7%;">Points</th>
+          <td mat-cell *matCellDef="let element" style="width: 7%;">
+            <label class="show_in_resp">Points</label>
+            <span class="points" *ngIf="element.points !== null">
+              <img src="assets/coin.png">
+              <span>
+                {{element.points}}
+              </span>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="assignment">
+          <th mat-header-cell *matHeaderCellDef style="width: 10%;">Assignment</th>
+          <td mat-cell *matCellDef="let element" class="user-assign" style="width: 17%;">
+            <label class="show_in_resp assignment-txt">Assignment</label>
+            <span class="assign-azalio-play" *ngIf="element?.shifts">
+              <span *ngIf="element.shifts">
+                <span *ngFor="let shift of element?.shifts">
+                  <span class="shift-assignment" *ngIf="shift.assigned_to_user_name">
+                    <span [nbPopover]="gs?.touchEnabledDevices ? null : templateRefAssign"
+                      (click)="openAssignUserModal(element, shift)" class="assignment-details">
+                      <i [nbTooltip]="shift.name" class="{{shift.shift_icon}}"></i>
+                      {{shift.assigned_to_user_name}}
+                    </span>
+                  </span>
+                </span>
+              </span>
+              <span (click)="openAssignUserModal(element)" nbTooltip="Assign user" class="assignment"
+                *ngIf="showButton(element.shifts)">
+                <i [nbPopover]="gs?.touchEnabledDevices ? null : templateRefAssign" nbPopoverPlacement="left"
+                  nbPopoverAdjustment="vertical" class="fa fa-user-plus pointer assign-user"></i>
+              </span>
+            </span>
+            <span *ngIf="!element.shifts" [ngClass]="{
+              'assigned-user': element.assigned_to_user_name !== null, 
+              'assignment': element.assigned_to_user_name == null }">
+              <span (click)="openAssignUserModal(element)" class="user-assigned">
+                <span nbTooltip="Assign user">
+                  <i [nbPopover]="gs?.touchEnabledDevices ? null : templateRefAssign" nbPopoverPlacement="left"
+                    *ngIf="element.assigned_to_user_name == null" class="fa fa-user-plus pointer assign-user"></i>
+                </span>
+                <span nbTooltip="Change assignment">
+                  <span [nbPopover]="gs?.touchEnabledDevices ? null : templateRefAssign" nbPopoverPlacement="left"
+                    style="cursor:pointer">{{element.assigned_to_user_name ?
+                    element?.assigned_to_user_name : ''}}</span>
+                </span>
+              </span>
+            </span>
+          </td>
+
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element" style="width: 5%;">
+            <label class="show_in_resp">Actions</label>
+            <span style="display: inline-flex;" class="action">
+              <i (click)="isAddEditTagsOnly=false; toggleEditMode(element)" class="fas fa-pen pointer edit-task" nbTooltip="Edit task"
+                style=""></i>
+              <app-confirm-popup [title]="'Task'" [textToDisplay]="deleteText" (proceedDelete)="deleteTask(element.id)">
+                <i class="fas fa-trash pointer delete-task" nbTooltip="Delete task" (click)="addDeleteAnalytics()"></i>
+              </app-confirm-popup>
+            </span>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"
+          [ngClass]="{ assign_row: selectedForAssignment == row.id, disable_row: row.is_empty, edit_row: selectedRowDataEdit?.id == row.id && !isAddEditTagsOnly, selected: selectedRowData?.id == row.id  }">
+        </tr>
+      </table>
+      <ng-template #templateRefAssign>
+        <nb-card class="popover-card task-assignment-popup"
+          [ngClass]="{'assignment-small-devices': gs?.touchEnabledDevices}">
+          <span class="points-popup shift-resp" *ngIf="shiftPopupUser">
+            <span class="context-menu">
+              <ul class="filter-options">
+                <li *ngFor="let shift of selectedElem?.shifts"
+                  (click)="$event.stopPropagation();selectShiftUser(shift)">
+                  <i [class]="shift.shift_icon"></i>
+                  <span class="trim-shiftname" [nbTooltip]="shift.name">
+                    {{shift.name}}
+                  </span>
+                  <i *ngIf="shift.selected" class="fas fa-check add-point"></i>
+                </li>
+              </ul>
+            </span>
+          </span>
+          <nb-card-body>
+            <i *ngIf="gs?.touchEnabledDevices" class="fas fa-times-circle close-popup" (click)="closePopup()"></i>
+            <span *ngIf="selectedElem?.shifts" (click)="openPopup($event)" class="shifts-options">
+              <img *ngIf="!selectedUser" src="assets/shifts-comment.png" class="shifts-icon">
+              <i *ngIf="selectedUser" class="{{selectedUser.shift_icon}}"></i>
+              <span class="shift-name">{{ selectedUser ? selectedUser.name : getSelectedShiftUser(selectedElem)
+                }}</span>
+              <i *ngIf="!selectedUser" class="fas fa-angle-down" style="margin-left:10px;cursor:pointer;"></i>
+            </span>
+            <app-user-autocomplete-input [disableInput]="disableInput(selectedElem)" [autofocus]="true"
+              [className]="'assign-user-options'"
+              [loaderClass]="selectedElem.shifts ? (selectedUser ? 'assignment azalioplay-spinner' : 'assignment azalioplay-spinner-more') : 'assignment'"
+              [data]="[{name: selectedElem.shifts ? selectedUser?.assigned_to_user_name : selectedElem.assigned_to_user_name}]"
+              [url]="'tasks/getAssignableUsers?task_id='+selectedElem.id"
+              (selectedUser)="onSelectedUser($event, selectedElem)">
+            </app-user-autocomplete-input>
+          </nb-card-body>
+
+        </nb-card>
+      </ng-template>
+      <app-no-records class="selecttask" [display]="sharedRegion == 0 && !singleRegion" [isScheduler]="true"
+        [animation]="'selectStoreForTask'" [animation2]="'arrowTop'"></app-no-records>
+      <app-no-records class="tasksanimation" [display]="emptyResults" [animation]="'tasks'" [animation2]="animation2"
+        [textMessage]="textMessage"></app-no-records>
+      <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+    </div>
+  </nb-layout-column>
+</div>

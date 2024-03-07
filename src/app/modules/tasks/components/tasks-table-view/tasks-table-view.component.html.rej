@@ -1,0 +1,24 @@
+diff a/src/app/modules/tasks/components/tasks-table-view/tasks-table-view.component.html b/src/app/modules/tasks/components/tasks-table-view/tasks-table-view.component.html	(rejected hunks)
+@@ -269,15 +269,16 @@
+             <label class="show_in_resp assignment-txt">Assignment</label>
+             <span (click)="openAssignUserModal(element)" [ngClass]="{
+               'assigned-user': !isAzalioPlay && element.assigned_to_user_name !== null, 
+-              'assignment': element.assigned_to_user_name == null }">
++              'assignment': !isAzalioPlay && element.assigned_to_user_name == null , 
++              'azalio-play-asignment': isAzalioPlay}">
+               <ng-container *ngIf="isAzalioPlay && element.shifts">
+                 <ng-container *ngFor="let user of element.shifts">
+-                  <span class="shift-assignment" *ngIf="user.assigned_to_user_name">
+-                    <span [nbPopover]="templateRefAssign" (click)="openAssignUserModal(user, element.id)" class="assignment-details">
+-                      <i [nbTooltip]="user.name" class="{{user.shift_icon}}"></i>
+-                      {{user.assigned_to_user_name}}
++                    <span class="shift-assignment" *ngIf="user.assigned_to_user_name">
++                      <span [nbPopover]="templateRefAssign" (click)="openAssignUserModal(user, element.id)" class="assignment-details">
++                        <i [nbTooltip]="user.name" class="{{user.shift_icon}}"></i>
++                        {{user.assigned_to_user_name}}
++                      </span>
+                     </span>
+-                  </span>
+                 </ng-container>
+               </ng-container>
+               <span nbTooltip="Assign user">

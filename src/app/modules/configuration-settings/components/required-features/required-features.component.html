@@ -1,0 +1,333 @@
+<app-loader [loading]="loading"></app-loader>
+<nb-card [nbSpinner]="loadingSpinner" class="for_spinner" style="height: 100vh;top:0px">
+  <div class="req-features-wrapper"  *ngIf="requiredFeatureForm">
+    <form #ngForm="ngForm" id="form" [formGroup]="requiredFeatureForm" (ngSubmit)="submit(ngForm)">
+      <div class="req-features-header">
+        <span class="title">
+
+          <span style="color: #6e689b;">
+            Required Features
+            <!-- <img src="../../../../../assets/info-icon.svg" class="heading-info-icon"
+            alt="picture configuration information" nbTooltipPlacement="right" nbTooltipPlacement="right" nbTooltip="Switch on the features that are required in your organization. On changing Location or
+          Picture settings, it will only affect the future Timesheets, and will have no impact on the existing entries
+          (if any)." /> -->
+
+            <!-- <i class="fa fa-info-circle primary_color pointer info-heading-icon" alt="picture configuration information"
+          nbTooltip="Switch on the features that are required in your organization. On changing Location or
+          Picture settings, it will only affect the future Timesheets, and will have no impact on the existing entries
+          (if any)."></i> -->
+
+          </span>
+          <span class="sub-title">Switch on the features that are required in your organization. On changing location or
+            picture settings, it will only affect the future timesheets, and will have no impact on the existing entries
+            (if any).</span>
+        </span>
+        <span class="req-features-btns">
+          <!-- <span class="unsaved-changes">*You have few unsaved changes.</span> -->
+          <button size="medium" type="submit" nbButton status="primary"
+            [disabled]="requiredFeatureForm.invalid ||disable">Save</button>
+        </span>
+      </div>
+      <div class="req-features-details" *ngIf="showInput">
+        <span class="features-parent" style="display: flex;justify-content: space-between;">
+          <span class="heading">
+            <i class="fas fa-clock settings-icon" style="color: #83C8FF"></i> Timesheets
+            <span *ngIf="landing !== 1" class="default-mod" (click)="setDefaultModule(1)"> Make as default</span>
+            <span *ngIf="landing == 1" class="new" nbTooltipPlacement="right" nbTooltip="Default landing module for mobile"> Default</span>          
+          </span>
+        </span>
+        <div class="features-child">
+          <div class="child-container">
+
+            <div class="feature-text">
+              <span class="feature-name">
+                Location
+                <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                  alt="location configuration information" nbTooltipPlacement="right"
+                  nbTooltip="This location will be captured at the time of clock in or clock out from the mobile app." />
+
+                <!-- <i class="fa fa-info-circle primary_color pointer info-icon" alt="location configuration information"
+                nbTooltip="This location will be captured at the time of clock in or clock out from the mobile app."></i> -->
+                <br />
+                <span class="feature-helper-text"> Do you want to capture location of each timesheet entry? </span>
+              </span>
+            </div>
+            <span class="right-items">
+              <nb-toggle class="feature-toggle" [formControlName]="'is_location'" labelPosition="end"> </nb-toggle>
+            </span>
+          </div>
+          <div class="child-container">
+
+            <div class="feature-text">
+              <span class="feature-name">
+                Picture
+                <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                  alt="picture configuration information" nbTooltipPlacement="right"
+                  nbTooltip="This photo will be captured at the time of clock in or clock out from the mobile app." />
+
+                <!-- 
+              <i class="fa fa-info-circle primary_color pointer info-icon" alt="picture configuration information"
+                nbTooltip="This photo will be captured at the time of clock in or clock out from the mobile app."></i> -->
+                <br />
+                <span class="feature-helper-text"> Do you want to capture photo of employees with each timesheet entry?
+                </span>
+              </span>
+            </div>
+            <span class="right-items">
+              <nb-toggle class="feature-toggle" [formControlName]="'is_camera'" labelPosition="end"> </nb-toggle>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="req-features-details mt-27" *ngIf="showInput">
+        <span class="features-parent" style="display: flex;justify-content: space-between;">
+
+          <span class="heading">
+            <i class="fas fa-calendar-alt settings-icon" style="color: #ff9c7b;"></i> Scheduler
+            <span *ngIf="landing !== 2 && form?.is_scheduler?.value" class="default-mod" (click)="setDefaultModule(2)"> Make as default</span>
+            <span *ngIf="landing == 2" class="new"nbTooltipPlacement="right" nbTooltip="Default landing module for mobile"> Default</span>
+
+            <!-- <i class="fa fa-info-circle primary_color pointer info-icon" alt="scheduling configuration information"
+            nbTooltip="Enable this feature to view and assign tasks to employees on a calendar view."></i> -->
+          </span>
+          <span>
+            <nb-toggle class="feature-toggle" [formControlName]="'is_scheduler'" labelPosition="end"
+              (change)="onChange('is_scheduler');" (checkedChange)="resetDefault($event, 2)">
+            </nb-toggle>
+          </span>
+
+        </span> 
+        <div class="features-child" [class]="is_scheduler?'features-child':'hide'">
+          <div class="child-container assignment-child-toggle">
+            <span class="assignment-toggle">
+              <div class="feature-text">
+                <span class="feature-name">
+                  Time Offs
+                  <br />
+                  <span class="feature-helper-text">
+                    Allow employees to request for time off using the mobile app.
+                  </span>
+                </span>
+              </div>
+            </span>
+            <span class="right-items">
+              <nb-toggle class="feature-toggle" aria-label="assignment-toggle" role="switch"
+                [formControlName]="'is_timeoff'" labelPosition="end">
+              </nb-toggle>
+            </span>
+          </div>
+          <div class="child-container assignment-child-toggle">
+            <span class="assignment-toggle">
+
+              <div class="feature-text">
+                <span class="feature-name">
+                  Notification
+                  <img src="../../../../../assets/info-icon.svg" class="label-info-icon"
+                    alt="notification configuration information" nbTooltipPlacement="right"
+                    nbTooltip="Employees will receive a notification on their devices to view their updated schedule." />
+
+                  <!-- <i class="fa fa-info-circle primary_color pointer info-icon info-icon"
+                  alt="notification configuration information"
+                  nbTooltip="Employees will receive a notification on their devices to view their updated schedule."></i> -->
+                  <br />
+                  <span class="feature-helper-text"> Notify your employees of their upcoming schedules. </span>
+                </span>
+              </div>
+            </span>
+            <span class="right-items">
+              <nb-toggle class="feature-toggle" aria-label="assignment-toggle" role="switch"
+                [formControlName]="'is_scheduler_notification'" labelPosition="end"
+                (change)="onChange('is_scheduler_notification')">
+              </nb-toggle>
+            </span>
+            <!-- 
+          <span style="margin-right: 15px">
+            <i class="fa fa-angle-up" style="font-size: 15px; margin: 10px 10px 10px 10px"></i>
+          </span> -->
+          </div>
+          <span [class]="is_scheduler_notification===false?'hide':''">
+            <div class="child-container assignment-child-toggle">
+
+              <span class="assignment-toggle">
+
+                <div class="feature-text">
+                  <img src="../../../../../assets/notification.svg" alt="notification" style="margin-right: 5px" />
+                  <span class="feature-name">
+                    Notification Time
+                    <br />
+                    <span class="feature-helper-text"> Specify the time before which your employees should be notified.
+                    </span>
+                  </span>
+                </div>
+              </span>
+              <span class="right-items">
+                <nb-toggle class="feature-toggle" labelPosition="end" style="visibility: hidden">
+                </nb-toggle>
+              </span>
+              <span>
+                <span class="input-notify-time">
+                  <app-text-input [maxlength]="2" [placeholder]="'e.g., 10'"
+                    [controlName]="'scheduling_notification_time'" [form]="requiredFeatureForm">
+                  </app-text-input>
+                  <span style="margin: 8px 8px 8px 8px"> mins </span>
+                </span>
+                <app-error-message [key]="'scheduling_notification_time'" [form]="requiredFeatureForm"
+                  [isSubmitted]="true" class="error-input">
+                </app-error-message>
+              </span>
+              <!-- <app-error-message [key]="'job_notification_time'" [form]="requiredFeatureForm"
+            [isSubmitted]="ngForm.submitted">
+          </app-error-message> -->
+            </div>
+          </span>
+          <div class="child-container assignment-child-toggle">
+            <span class="assignment-toggle">
+              <div class="feature-text">
+                <span class="feature-name">
+                  Swap Shift
+                  <br />
+                  <span class="feature-helper-text">
+                    Allow employees to request swapping of shifts with other employees within a store.
+                  </span>
+                </span>
+              </div>
+            </span>
+            <span class="right-items">
+              <nb-toggle class="feature-toggle" aria-label="assignment-toggle" role="switch"
+                [formControlName]="'is_swap_shift'" labelPosition="end">
+              </nb-toggle>
+            </span>
+          </div>
+          <span [class]="requiredFeatureForm?.controls?.is_swap_shift.value == true?'':'hide'">
+            <div class="child-container assignment-child-toggle">
+
+              <span class="assignment-toggle">
+
+                <div class="feature-text">
+                  <img src="../../../../../assets/sms-notification.svg" alt="notification" style="margin-right: 5px" />
+                  <span class="feature-name">
+                    SMS Notification 
+                    <br />
+                    <span class="feature-helper-text"> 
+                       Allow permission to send SMS to employees related to swap shifts.
+                    </span>
+                  </span>
+                </div>
+              </span>
+              <span class="right-items">
+                <nb-toggle [formControlName]="'is_swap_shift_sms'" class="feature-toggle" labelPosition="end"></nb-toggle>
+              </span>
+            </div>
+          </span>
+          <span [class]="requiredFeatureForm?.controls?.is_swap_shift.value == true?'':'hide'">
+            <div class="child-container assignment-child-toggle">
+
+              <span class="assignment-toggle">
+
+                <div class="feature-text">
+                  <img src="assets/manager-approval.svg" alt="notification" style="margin-right: 5px" />
+                  <span class="feature-name">
+                    <span class="container">
+                      Manager Approval
+                      <span class="new">New</span>
+                  </span>
+                    <!-- <br /> -->
+                    <span class="feature-helper-text"> 
+                      Allow web user with scheduler access to approve/reject swap shift requests.
+                    </span>
+                  </span>
+                </div>
+              </span>
+              <span class="right-items">
+                <nb-toggle [formControlName]="'swap_is_manager_approval'" class="feature-toggle" labelPosition="end"></nb-toggle>
+              </span>
+            </div>
+          </span>
+        </div>
+      </div>
+
+      
+      <div class="req-features-details mt-27" *ngIf="showInput">
+        <span class="features-parent" style="display: flex;justify-content: space-between;">
+
+          <span class="heading">
+            <i class="fas fa-tasks settings-icon" style="color: #59bf9a;"></i> Tasks
+            <img src="../../../../../assets/info-icon.svg" class="label-info-icon" nbTooltipPlacement="right"
+              nbTooltip="Enable this feature to manage the tasks in your stores and let your employees better manage their work hours." />
+            <!-- <i class="fa fa-info-circle primary_color pointer info-icon" alt="scheduling configuration information"
+            nbTooltip="Enable this feature to view and assign tasks to employees on a calendar view."></i> -->
+            <span *ngIf="landing !== 3 && form?.is_tasks?.value"  class="default-mod" (click)="setDefaultModule(3)"> Make as default</span>
+            <span *ngIf="landing == 3" class="new" nbTooltipPlacement="right"  nbTooltip="Default landing module for mobile"> Default</span>          
+          </span>
+          <span>
+            <nb-toggle class="feature-toggle" (checkedChange)="resetDefault($event, 3)" [formControlName]="'is_tasks'" labelPosition="end">
+            </nb-toggle>
+          </span>
+        </span>
+      </div>
+      <div class="req-features-details mt-27" *ngIf="showInput">
+        <span class="features-parent" style="display: flex;justify-content: space-between;">
+
+
+          <span class="heading"> <i class="fas fa-trophy settings-icon" style="color: #ffbb31;"></i> Recognition
+            <img src="../../../../../assets/info-icon.svg" class="label-info-icon" nbTooltipPlacement="right"
+              nbTooltip="Enable this feature to appreciate your employees on doing a good job." />
+              <span *ngIf="landing !== 4 && isBoringPlay && form?.is_rewards?.value" class="default-mod" (click)="setDefaultModule(4)"> Make as default</span>
+              <span *ngIf="landing == 4" class="new" nbTooltipPlacement="right" nbTooltip="Default landing module for mobile"> Default</span>          
+          </span>
+          <span>
+            <nb-toggle class="feature-toggle" (checkedChange)="resetDefault($event, 4)" [formControlName]="'is_rewards'" labelPosition="end"></nb-toggle>
+          </span>
+        </span>
+      </div>
+      <div class="req-features-details mt-27" *ngIf="showInput">
+        <span class="features-parent" style="display: flex;justify-content: space-between;">
+
+          <span class="heading"><i class="fas fa-comment settings-icon" style="color: #eb97fb;"></i> Messaging
+
+            <img src="../../../../../assets/info-icon.svg" class="label-info-icon" alt="chats configuration information"
+              nbTooltipPlacement="right"
+              nbTooltip="Enable this feature to communicate with your employees through the Azalio app." />
+              <span *ngIf="landing !== 5 && form?.is_communication?.value" class="default-mod" (click)="setDefaultModule(5)"> Make as default</span>
+              <span *ngIf="landing == 5" class="new"nbTooltipPlacement="right" nbTooltip="Default landing module for mobile"> Default</span>            <!--     
+          <i class="fa fa-info-circle primary_color pointer info-icon" alt="chats configuration information"
+            nbTooltip="Enable this feature to communicate with your employees through the Azalio app."></i> -->
+          </span>
+          <span>
+            <nb-toggle class="feature-toggle" [formControlName]="'is_communication'" labelPosition="end"
+              (change)="onChange('is_communication');" (checkedChange)="resetDefault($event, 5)">
+            </nb-toggle>
+          </span>
+        </span>
+        <div class="features-child" [class]="is_communication?'features-child':'hide'">
+          <div class="child-container">
+            <div class="feature-text">
+              <span class="feature-name">
+                Notification <br />
+                <span class="feature-helper-text"> Notify your employees when they receive a message. </span>
+              </span>
+            </div>
+            <span class="right-items">
+              <nb-toggle class="feature-toggle" [formControlName]="'is_chat_notification'" labelPosition="end">
+              </nb-toggle>
+            </span>
+          </div>
+          <div class="child-container">
+            <div class="feature-text">
+              <span class="feature-name">
+                Receipt <br />
+                <span class="feature-helper-text">
+                  If you turn this setting on, mobile users will be able to see if the message has been read or not.
+                </span>
+              </span>
+            </div>
+            <span class="right-items">
+              <nb-toggle class="feature-toggle" [formControlName]="'is_read_receipt'" labelPosition="end"></nb-toggle>
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</nb-card>

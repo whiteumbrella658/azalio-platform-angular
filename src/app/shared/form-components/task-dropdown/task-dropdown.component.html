@@ -1,0 +1,21 @@
+<!-- <nb-card size="small"> -->
+<!-- <nb-card-body> -->
+<form [formGroup]="form">
+  <nb-select *ngIf="tasks?.length > 0; else emptydrop" [placeholder]="placeholder" [formControlName]="controlName"
+    [disabled]="disabled">
+    <nb-option [value]="null">{{placeholder}}</nb-option>
+    <nb-option *ngFor="let task of tasks" [value]="task" [id]="task.task_id">
+      {{ task.title }}
+    </nb-option>
+  </nb-select>
+</form>
+
+<ng-template #emptydrop>
+  <form [formGroup]="form">
+    <nb-select disabled placeholder="No item to select" [formControlName]="controlName">
+
+    </nb-select>
+  </form>
+</ng-template>
+<!-- </nb-card-body> -->
+<!-- </nb-card> -->

@@ -1,0 +1,80 @@
+<app-loader [loading]="pageLoading || actionLoading"></app-loader>
+<div class="modal_wrapper header-container scheduled-sms">
+    <!-- <nb-card>
+        <nb-card-header class="card_header"> -->
+            <div class="sch-sms-header" >
+                <label class="first-row">
+                    <b class="heading"> Scheduled SMS</b>
+                    <span><i class="fa-thin fa-circle-xmark cross-icon" (click)="close(null)"></i></span>
+                </label>
+                <div class="subtxt">Here are the messages that were scheduled.</div>
+            </div>
+        <!-- </nb-card-header>
+        <nb-card-body> -->
+                <app-no-records [display]="emptyResults" [textMessage]="'No scheduled SMS'" [animation]="'timeoff'"></app-no-records>
+                <div class="sch-body-container">
+                <div class="sms-history-wrapper" *ngFor="let item of history;">
+                    <div class="row1">
+                        <span class="left-items-sms" nbTooltipPlacement="bottom">
+                            <span class="sch-info">Scheduled on </span>
+                            <ng-container *ngFor="let row of item.schedule_dates">
+                                <!-- <span style="cursor: pointer;" [class]="row.sent ? 'old-sch' : 'upcoming-sch'" [nbTooltip]="row.sent == 1 ? 'SMS Sent' : 'Scheduled SMS' "
+                                > {{ row.schedule_date | date: 'MMM dd' : 'UTC'}} </span> -->
+                                <span style="cursor: pointer;"  class="schd-dates"> {{ row.schedule_date | date: 'MMM dd' : 'UTC'}} </span>
+                            </ng-container>
+                        </span>
+                        <span class="right-items-sms">
+                            <!-- <button nbButton type="button" class="manage-btn" status="primary">View</button> -->
+                            <app-confirm-popup [className]="'askq-popup'" [isComment]="false" [type]="'Stop'" [title]="'Scheduled SMS'" [textToDisplay]="cancelText"
+                                (proceedDelete)="cancelScheduledSurvey(item.message_id)" (proceedCancel)="selectedRow = null;">
+                                <span nbTooltip="Cancel" nbTooltipPlacement="top" (click)="setText(item)" class="circle-btn">
+                                    <i aria-hidden="true" class="fa-solid fa-xmark" style="color: #e91e63;"></i>
+                                </span>
+                                <button (click)="setText(item)" nbButton type="button" class="stop-btn" status="primary">Stop</button>
+                            </app-confirm-popup>
+                        </span>
+                    </div>
+                
+                   <div class="row2">
+                        {{item.question}}
+                     
+                    </div>
+                    <div class="question-type"
+                        [class]="item.question_type == 'Yes/No' ? 'binary' : item.question_type">
+                        {{parent?.displayQuestionType(item.question_type)}}
+                    </div>
+                
+                    <div class="row3" *ngIf="item.stores">
+                        <i class="fa-thin fa-store store-icon"></i>
+                        <b class="storelbl">Store: </b><span class="sname">{{item.send_to_all_stores ? 'All stores' : item.stores}}</span>
+                    </div>
+                
+                    <div class="row4" *ngIf="item.roles">
+                        <i class="fa-light fa-user store-icon"></i>
+                        <b>Role: </b><span> {{item.roles.join(', ')}}</span>
+                    </div>
+                
+                    <div class="row5"  [ngClass]="{'createdOn-only' : !item.users}"> 
+                        <span class="" *ngIf="item.users"> <i class="fa-regular fa-user-check store-icon"></i> <b>User:</b><span> {{item.users.join(', ')}}</span></span>
+                        <span class="createdtxt">Created on {{item.created_on | date: 'MMM dd'}}</span>
+                    </div>
+                </div>  
+                </div>
+    <!-- </nb-card-body>
+    </nb-card> -->
+</div>
+
+
+<!-- <div class="header-container scheduled-sms">
+    <div class="header">
+        <span class="heading">
+            Scheduled SMS
+        </span>
+        <span class="subtxt">
+            Here are the messages that were scheduled.
+        </span>
+    </div>
+</div> -->
+<!-- <nb-card-body> -->
+
+<!-- </nb-card-body> -->

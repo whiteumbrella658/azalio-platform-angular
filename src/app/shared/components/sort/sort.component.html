@@ -1,0 +1,8 @@
+<span *ngIf="!isBtnStyle" class="sort-icon" [class]="isSelected ? 'sort-selected' : ''" (click)="toggleSort()">
+    {{label}} <i nbTooltip="Sort" [class]="isAscending ? ascendingClass : descendingClass" 
+    aria-hidden="true" style="margin-right: 4px;"></i>
+</span>
+<span *ngIf="isBtnStyle">
+    <button size="medium" type="button" nbButton status="secondary" (click)="toggleSort()">
+    <i class="fa-regular fa-arrow-down-arrow-up" style="margin-right: 10px;"></i>Sort</button>
+</span>

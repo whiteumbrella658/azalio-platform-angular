@@ -1,0 +1,406 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.badge {
+  margin-top: 5px;
+  margin-left: -15px;
+  cursor: pointer;
+}
+
+.badgeactive_badge {
+  padding-top: 10px;
+  margin-bottom: -10px;
+}
+
+.rewards {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+
+  .item1 {
+    flex: 3;
+    display: flex;
+    justify-content: left;
+    padding-left: 3%;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .reward_txt {
+    padding-left: 10px;
+  }
+}
+
+@media only screen and (max-width: 724px) {
+  table.mat-table {
+    margin-top: 5px;
+  }
+}
+
+.rewards_table_resp td {
+  width: 23%;
+  border-bottom: 0px solid #ffffff !important;
+}
+
+::ng-deep body .cdk-overlay-container {
+  .mat-tooltip-panel {
+    bottom: 77.5% !important;
+  }
+}
+
+@media (max-width: 930px) {
+  .show_in_resp {
+    display: inline-block !important;
+  }
+
+  .trophy {
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
+    padding-right: 5px;
+  }
+
+  .resp-container {
+    display: flex;
+    margin-top: 10px;
+  }
+
+  .highest-rank,
+  .points,
+  .store-name {
+    margin-left: 8px;
+  }
+
+  th.mat-header-cell:first-of-type,
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type {
+    padding-top: 10px !important;
+  }
+}
+
+@media (max-width: 699px) {
+  .badge {
+    margin-left: 0px;
+  }
+
+  .rewards_table_resp {
+    width: 100%;
+  }
+}
+
+// @media (max-width: 609px) {
+//   .rewards_pagination {
+//     position: absolute;
+//     bottom: -1%;
+//     padding-bottom: 0px;
+//     right: 0%;
+//     width: 100%;
+//     padding-top: 0px;
+//     background: #f9faff;
+//     z-index: 10;
+//   }
+// }
+@media (max-width: 391px) {
+  .rewards_pagination {
+    font-size: 11px;
+  }
+
+  .mat-icon-button {
+    width: 10px !important;
+    height: 10px !important;
+    line-height: 10px !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .rewards_table_resp nb-progress-bar {
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 930px) {
+
+  .rewards_table_resp th.mat-header-cell:last-of-type,
+  td.mat-cell:last-of-type,
+  td.mat-footer-cell:last-of-type {
+    padding-right: 24px;
+    border-bottom: 4px solid #f7f7f7 !important;
+    padding-bottom: 10px;
+  }
+
+  .pagination-wrapper {
+    align-items: initial !important;
+    flex-direction: column;
+  }
+
+  .right-section {
+    justify-content: flex-end;
+    // margin-top: 5px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 930px) and (min-width: 698px) {
+  .badge {
+    margin-left: 0px;
+  }
+}
+
+.pagination-wrapper {
+  // align-items: center;
+  // padding: 0px 10px;
+  padding: 10px 10px;
+  // justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+.azal-site {
+  justify-content: flex-end !important;
+}
+
+.trophy {
+  cursor: pointer;
+}
+
+.trophy img:hover {
+  background: url('../../../../../assets/filled-trophy.png');
+}
+
+.user-points-table {
+  min-height: 10vh;
+  max-height: 70vh;
+  overflow: auto;
+  padding-bottom: 20px;
+}
+
+.badge-images {
+  margin-right: 10px;
+  cursor: pointer;
+  display: inline-flex;
+}
+
+.badge-image img {
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+}
+
+.rewards_table_resp .badges {
+  width: 60%;
+  cursor: pointer;
+}
+
+.rewards_table_resp {
+  tr:hover td {
+    background: white;
+    cursor: auto;
+  }
+}
+
+.points-column {
+  display: flex;
+  align-items: center;
+}
+
+.rank {
+  display: flex;
+
+  img {
+    width: 19px;
+    height: 16px;
+  }
+}
+
+.points {
+  display: flex;
+  font-size: 14px;
+  align-items: flex-end;
+
+  img {
+    width: 17px;
+    height: 17px;
+  }
+}
+
+.highest-rank {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.bkg-circle {
+  background: #ffffff;
+  padding: 7px 9px;
+  border-radius: 10px;
+  color: #7b68ee !important;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 2px;
+  min-width: 30px;
+  border-radius: 52%;
+  width: 32px;
+  height: 32px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+}
+
+.actions {
+  margin-left: 7px;
+}
+
+.back-btn {
+  color: #7b68ee !important;
+  background-color: white !important;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px !important;
+}
+
+.date {
+  color: #63689b !important;
+  font-weight: 700;
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+.txt-label {
+  font-size: 14px;
+}
+
+.announcement {
+  font-size: 15px;
+  margin-top: 1px;
+  margin-left: -1px;
+}
+
+.row-wrapper {
+  padding: 20px 5px;
+  padding-bottom: 21px;
+  position: relative;
+  align-items: center;
+  display: flex;
+}
+
+.right-elements {
+  position: absolute;
+  right: 0px;
+}
+
+.left-elements {
+  position: absolute;
+  left: 9px;
+  background: #f9faffed;
+  padding: 12px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding-left: 11px;
+  padding-right: 20px;
+  margin-top: 0px;
+}
+
+.right-section {
+  position: absolute;
+  right: 0px;
+  top:5px;
+}
+
+@media (max-width: 580px) {
+  .row-wrapper {
+    padding-bottom: 0px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: initial;
+  }
+
+  .left-elements {
+    position: initial;
+    display: contents;
+  }
+
+  .right-elements {
+    position: initial;
+    right: 0px;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 10px;
+  }
+
+  .pagination-wrapper {
+    padding-bottom: 0px;
+  }
+
+  .bkg-circle {
+    margin-top: 8px;
+    margin-bottom: 5px;
+  }
+
+  .azal-site {
+    .rewards_pagination {
+      margin-top: 10px;
+    }
+  }
+
+  .date {
+    margin-left: 0px;
+  }
+}
+
+.show-badges-warning {
+  color: #7b68ee;
+  cursor: pointer;
+}
+
+@media (min-width: 500px) {
+  .desktop-btn {
+    display: flex;
+  }
+
+  .resp-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .desktop-btn {
+    display: none;
+  }
+
+  .resp-btn {
+    display: flex;
+    min-width: 20px !important;
+    width: 32px;
+    height: 32px;
+    margin-right: 14px;
+
+    img {
+      margin-right: 0px !important;
+    }
+  }
+}
+
+.search-download {
+  display: flex;
+  align-items: center;
+}
+
+
+.azal-site {
+  .user-points-table {
+    max-height: 80vh;
+    padding-bottom: 50px;
+  }
+}
+
+.boring-toplay {
+  .user-points-table {
+    max-height: 70vh;
+  }
+}
+
+@media(max-width:1200px) and (min-width:932px) {
+  .boring-toplay {
+    .user-points-table {
+      max-height: calc(65vh - 30px);
+      padding-bottom: 10px;
+    }
+  }
+}

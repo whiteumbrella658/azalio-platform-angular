@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "azalchatdemo": {
+      "hosting": {
+        "Azal-FE": [
+          "azalchatdemo"
+        ]
+      }
+    }
+  }
+}

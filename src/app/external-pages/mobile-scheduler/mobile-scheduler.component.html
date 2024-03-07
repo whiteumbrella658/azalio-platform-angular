@@ -1,0 +1,128 @@
+<app-loader [loading]="loading || pageLoading"></app-loader>
+<div *ngIf="!pageLoading" class="mobile-sch">
+    <nb-layout-column class="colored-column-warning calendar_flex">
+        <mbsc-eventcalendar #myEventCalendar (onPageLoading)="onPageLoading($event)" [data]="myEvents"
+            [options]="calendarOptions" [resources]="myResources" [eventTemplate]="eventTemplate" dataTimezone="utc"
+            displayTimezone="local" [exclusiveEndDates]="false" [headerTemplate]="myHeaderTemplate" [min]="minDate"
+            [max]="maxDate" dateFormatLong="DDDD" [noEventsText]="!loading && noEvents ? 'No schedules.' : ''"
+            [timeFormat]="'hh:mm A'" [timezonePlugin]="momentPlugin" [eventOrder]="orderMyEvents">
+            <!-- [eventTemplate]="eventTemplate" -->
+            <!-- [eventContentTemplate]="contentTemplate" -->
+            <ng-template #myHeaderTemplate>
+                <span class="mbsc-calendar-title">{{rangeText}}</span>
+
+                <mbsc-calendar-today class="md-header-filter-today"></mbsc-calendar-today>
+                <mbsc-calendar-prev class="md-header-filter-prev"></mbsc-calendar-prev>
+                <mbsc-calendar-next class="md-header-filter-next"></mbsc-calendar-next>
+                <div class="nosch-wrapper"
+                    *ngIf="!loading && !isLoggedInUserSchExist && !noEvents && !this.isLoggedInUserOnleave">
+                    <span class="nosch">
+                        <img src="../../../assets/star-sch.svg">
+                        <b>My Schedules</b>
+                    </span>
+                    <span style="margin-right: 10px;">None</span>
+                </div>
+            </ng-template>
+            <!-- <ng-template #eventTemplate let-event>
+                <span> {{event.start}} - {{event.end}} </span>
+            </ng-template> -->
+            <!-- <ng-template #contentTemplate let-data>
+                <ng-container *ngFor="let res of data.resource">
+                    <div class="md-custom-event-cont" [ngClass]="{'mySchColor': res === mobSch.loggedInUserId, 'otherSchColor': res !== mobSch.loggedInUserId}">
+                        <app-user-avatar size="medium"
+                            [name]="getResourceDetails(res)?.name"
+                            [onlyPicture]="res === mobSch.loggedInUserId ? true : false"
+                            [customText]="res === mobSch.loggedInUserId ? 'My Schedule' : ''"
+                            [color]="getResourceDetails(res)?.user_color + opacity"
+                            [initialColor]="getResourceDetails(res)?.user_color"
+                            [title]="res === mobSch.loggedInUserId ? '' : getResourceDetails(res)?.role_title">
+                        </app-user-avatar>
+                    </div>
+                </ng-container>
+            </ng-template> -->
+
+            <ng-template #eventTemplate let-data>
+                <!-- <ng-container *ngFor="let res of data.resource"> -->
+                <div *ngIf="!loading" class="md-full-event sch-row" [ngClass]="{'mySchColor': data.resource[0] === mobSch.loggedInUserId && !isLoggedInUserOnleave,
+                                'myLeaveColor': data.resource[0] === mobSch.loggedInUserId && isLoggedInUserOnleave,
+                                'otherSchColor': data.resource[0] !== mobSch.loggedInUserId,
+                                'otherleaveSchColor': data.original.isLeave}">
+                    <span *ngIf="data.resource[0] === mobSch.loggedInUserId" class="mesch">
+                        <img src="../../../assets/star-sch.svg">
+                        <b>My Schedules</b>
+                    </span>
+                    <ng-container *ngIf="!data.original.isLeave">
+                        <span>
+                            <app-user-avatar *ngIf="data.resource[0] !== mobSch.loggedInUserId" size="medium"
+                                [showBadge]="getResourceDetails(data.resource[0])?.is_external == 1 ? true : false"
+                                [picture]="getResourceDetails(data.resource[0])?.is_external == 1 ? 'assets/external-user.svg' : ''"
+                                [showInitials]="getResourceDetails(data.resource[0])?.is_external == 1 ? false : true"
+                                [name]="getResourceDetails(data.resource[0])?.name"
+                                [color]="getResourceDetails(data.resource[0])?.user_color + opacity"
+                                [initialColor]="getResourceDetails(data.resource[0])?.user_color"
+                                [title]="getResourceDetails(data.resource[0])?.role_title">
+                            </app-user-avatar>
+                            <span class="ext-phone-number" *ngIf="getResourceDetails(data.resource[0])?.is_external == 1">
+                                <span class="">{{getResourceDetails(data.resource[0])?.phone_number|
+                                    phoneNumber}}</span>
+                            </span>
+                        </span>
+
+                        <!-- <img class="md-full-event-img" src="" /> -->
+                        <div class="md-full-event-details">
+                            <!-- <div class="md-full-event-title">{{data.id}}</div> -->
+                            <div>
+                                <div class="md-full-event-time flex">
+                                    <!-- <div class="md-full-event-label">Time</div> -->
+
+
+                                    <span class="relative">
+                                        <div class="flex">
+                                            <span style="position: relative;">
+                                                {{data.start ? data.start : data.startDate | date: 'shortTime'}}
+                                                <div class="gray-text" *ngIf="!data.start">
+                                                    {{data.startDate | date: 'MM/dd'}}
+                                                    <!-- ({{data.startDate | date: 'MMM d'}}) -->
+                                                </div>
+                                            </span>
+                                            &nbsp; - &nbsp;
+                                            <span>
+                                                {{data.end ? data.end : data.endDate | date: 'shortTime' }}
+                                                <div class="gray-text" *ngIf="!data.end">
+                                                    {{data.endDate | date: 'MM/dd'}}
+                                                    <!-- ({{data.endDate | date: 'MMM d'}}) -->
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </span>
+
+                                    <span [style.color]="data.color" class="dot">
+                                        •
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="data.original.isLeave">
+                        <app-user-avatar *ngIf="data.resource[0] !== mobSch.loggedInUserId" size="medium"
+                            [name]="getResourceDetails(data.resource[0])?.name"
+                            [color]="getResourceDetails(data.resource[0])?.user_color + opacity"
+                            [initialColor]="getResourceDetails(data.resource[0])?.user_color"
+                            [title]="getResourceDetails(data.resource[0])?.role_title">
+                        </app-user-avatar>
+                        <div class="md-full-event-details">
+                            {{data.original.title}}
+                        </div>
+                    </ng-container>
+                </div>
+                <!-- </ng-container> -->
+            </ng-template>
+
+
+        </mbsc-eventcalendar>
+
+    </nb-layout-column>
+
+</div>

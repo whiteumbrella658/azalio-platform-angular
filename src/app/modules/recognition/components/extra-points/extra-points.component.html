@@ -1,0 +1,43 @@
+<div class="modal_wrapper">
+    <nb-card>
+
+        <nb-card-header class="card_style">
+            <span>
+                <label class="extra_reward_name">Congratulate {{user?.name | titlecase}}</label>
+                <nb-icon icon="close" (click)="close(null)" class="cross_icon"></nb-icon>
+            </span>
+        </nb-card-header>
+
+        <nb-card-body [nbSpinner]="loading">
+            <div class="center">
+                <span><img src="../../../assets/points_send.svg" alt=""></span>
+                <span class="point_txt" style="">
+                    +{{manualPoints}} </span>
+                <span class="resp_point" style="">points</span>
+
+
+            </div>
+            <br>
+            <div class="">
+                <span>
+                    <label>Message </label>
+                </span>
+            </div>
+            <div class="message_txt">
+                <span class="">
+                    <label style=" padding-left: 3%; padding-top: 3%;"> {{webUserName | titlecase}} has recognized you
+                        for your extraordinary efforts.
+                    </label>
+                </span>
+            </div>
+            <br>
+            <div class="btn_send">
+                <span>
+                    <button (click)="sendReward()" nbbutton=""
+                        class="appearance-filled size-medium shape-rectangle status-primary nb-transition">Send</button>
+                </span>
+            </div>
+        </nb-card-body>
+    </nb-card>
+
+</div>

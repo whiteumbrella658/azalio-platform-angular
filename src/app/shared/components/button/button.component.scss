@@ -1,0 +1,18 @@
+.cancel {
+    color: var(--button-ghost-primary-text-color);
+    text-transform: capitalize !important;
+    font-weight: normal !important;
+    font-size: 14px !important;
+    background: none !important;
+    border: none !important;    
+    // margin-top: 2px;
+  }
+  .large-font {
+    font-size: 16px !important;
+  }
+  .cancel:hover {
+    color: var(--button-ghost-primary-text-color);
+    font-weight: bold !important;
+    background: none !important
+  }
+  

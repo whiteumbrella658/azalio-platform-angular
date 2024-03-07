@@ -1,0 +1,67 @@
+<div class="chats-dock">
+    <span (click)="onOpenChatList()">
+        <span class="chats-container">
+            <span class="chats-wrapper">
+                <i class="fas fa-comment" [style.color]="'#f3b2ff'" alt="user-avatar-img" aria-hidden="true"
+                    style="font-size: 18px;margin-right: 10px;"></i>
+                <span class="chats-text">Messaging</span>
+            </span>
+            <span class="pointer new_message_button" (click)="currentChat = null; newMessage = true; openNewMessage()">
+                <img style="width:12px;" src="../../../../../assets/new-message.svg" nbTooltipPlacement="top"
+                    nbTooltip="New message" alt="new message">
+            </span>
+        </span>
+    </span>
+    <div>
+        <ng-template #titleTemplate>
+            <span class="chat_left_header">
+                <span style="display: flex;">
+                    <!-- <b class="title" style="margin: 0">Messaging ({{ countChatList }})</b> -->
+                    <i class="fas fa-comment" [style.color]="'#f3b2ff'" alt="user-avatar-img" aria-hidden="true"
+                        style="font-size: 18px;margin-right:32px;"></i>
+                    <label class="title" style="margin: 0">Messaging</label>
+                </span>
+                <span class="pointer white_button" (click)="currentChat = null; newMessage = true; openNewMessage()">
+                    <img style="width:12px;" alt="compose message" src="../../../../../assets/new-message.svg"
+                        nbTooltipPlacement="top" nbTooltip="New message">
+                </span>
+                <span class="pointer maximize-btn" (click)="navigateToChats()">
+                    <img style="width:12px;" src="../../../../../assets/expand.svg" alt="maximize window"
+                        nbTooltipPlacement="top" nbTooltip="Full screen">
+                </span>
+                <span class="pointer close-btn" (click)="closePopup();">
+                    <img src="../../../../../assets/minimize.svg" nbTooltipPlacement="top" nbTooltip="Minimize tab"
+                        alt="minimize window" style="width:12px;">
+                </span>
+            </span>
+        </ng-template>
+    </div>
+    <div>
+        <ng-template #contentTemplate>
+            <span class="chat_list_body">
+                <app-messages-list [userId]="userId" [preselect]="togglePreselect"
+                    (currentChatSelected)="onCurrentChatSelected($event);" [currentChat]="currentChat"
+                    [isHideActive]="hideActive" [is_chat_popup]="is_chat_popup" (totalChats)="getTotalChats($event)"
+                    (isChatNotification)="isChatNotification($event)">
+                </app-messages-list>
+            </span>
+        </ng-template>
+    </div>
+    <ng-template #newMessageTemplate>
+        <app-new-message [isPopup]="true" [is_chat_notification]="is_chat_notification"
+            (newMessageSend)="onNewMessageSend($event)"></app-new-message>
+    </ng-template>
+    <ng-template #currentMessageTemplate>
+        <app-chat-list [is_chat_notification]="is_chat_notification" [chatUser]="currentChat" *ngIf="currentChat">
+        </app-chat-list>
+    </ng-template>
+    <ng-template #curretntMessageTitleTemplate>
+        <app-user-avatar id="chatOpenedAvatar" size="large" name="{{currentChat?.user?.name}}"
+            title="{{currentChat?.user?.role_title}}" [color]="(currentChat?.user?.user_color + opacity)"
+            [initialColor]="(currentChat?.user?.user_color)">
+        </app-user-avatar>
+    </ng-template>
+    <ng-template #newMessageTitleTemplate>
+        <label style="margin-bottom: 6px">Send message to <span class="mandatory">*</span> </label>
+    </ng-template>
+</div>

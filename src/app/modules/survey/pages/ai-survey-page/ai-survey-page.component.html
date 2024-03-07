@@ -1,0 +1,84 @@
+<app-loader [loading]="loading || pageLoading"></app-loader>
+<app-sidebar class="comment-sidebar" [showSideBar]="showSideBar" (closeDetails)="closeDetails()">
+    <app-schedule-history [parent]="this" [show]="showSideBar"></app-schedule-history>
+</app-sidebar>
+<div class="flex">
+    <nb-layout-column class="colored-column-info timesheets_wrapper survey-communication">
+
+        <div class="page-wrapper">
+            <div class="wrapper_header heading">
+                Initiate automation within seconds.
+            </div>
+            <div class="sub-heading">
+                Discover numerous popular recipes that you can send with just a few clicks.
+            </div>
+            <span class="add-input">
+                <app-text-input (keydown.enter)="initiateFlow()" maxlength="255" class="input-padding-right"
+                    [placeholder]="'What do you want to learn about your team? (i.e. are they happy? how is their new manager, etc?) '"
+                    [controlName]="'question'" [form]="form">
+                    <button *ngIf="!pageLoading" ghost nbButton type="submit" [disabled]="form.controls.question.valid ? false : true">
+                        <i class="fa-brands fa-telegram enter-btn" (click)="initiateFlow()"></i>
+                    </button>
+                </app-text-input>
+            </span>
+        </div>
+        <div class="categories-container" *ngIf="categories">
+            <div class="actions-row">
+                <span class="heading">Categories ({{categories?.length}})</span>
+                <span class="right-actions">
+                    <app-search-input (searchEvent)="onSearch($event)" (searchAll)="onSearchAll($event)" class="search" [placeholder]="'Search question'">
+                    </app-search-input>
+                
+                    <span>
+                        <span class="responses-btn" (click)="showSideBar=true;">
+                            <button size="medium" type="button" nbButton status="secondary">Schedules</button>
+                        </span>
+    
+                        <span class="responses-btn" (click)="goToResponses()">
+                            <button size="medium" type="button" nbButton status="primary">View Responses</button>
+                        </span>
+                    </span>
+                  
+                </span>
+            </div>
+
+            <div class="category-cards">
+                <ng-container *ngFor="let category of categories">
+                    <div class="category-details grow" [ngClass]="{'selected-category': category.id == selectedCategory.id}" (click)="selectCategory(category)">
+                        <div class="category-name">
+                            <span class="name">
+                                {{category.title}}
+                            </span>
+                        </div>
+                        <div class="desc">
+                            <span class="questions-count"><i class="fa-solid fa-bolt-lightning"
+                                    style="color: rgb(113, 219, 219);"></i> {{category.questions?.length}} automated
+                                tasks</span>
+                        </div>
+                        <!-- <span class="clear-filter"><i nbtooltip="Clear filter" class="fas fa-times-circle"></i></span> -->
+                    </div>
+                </ng-container>
+            </div>
+
+
+            <div *ngIf="selectedCategory" class="populate-questions">
+                <div class="questions-list" *ngFor="let question of selectedCategory.questions" (click)="openAddModal(question)">
+                    <span>
+                        <img [src]="question.img_url">
+                    </span>
+                    <span class="question-txt">
+                        <span class="question-helptext">
+                            {{question.title}}
+                            <span class="question-type"
+                                [class]="question.type == 'Yes/No' ? 'binary' : question.type">{{displayQuestionType(question.type)}}</span>
+                        </span>
+                        <span class="question-info">
+                            {{question.description}}
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <app-no-search-records [display]="emptySearchResults"></app-no-search-records>
+    </nb-layout-column>
+</div>

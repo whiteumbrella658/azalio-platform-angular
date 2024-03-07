@@ -1,0 +1,113 @@
+<div class="settings-container">
+        <div style="border-top: 0.2px solid #efefef; border-right: 1px solid #efefef">
+                <div class="settings-list">
+                        <!-- <span style="font-size: 18px; font-weight: bold; margin-left: 12px">Settings</span> -->
+                        <span
+                                style="font-size: 18px; font-weight: bold; margin-left: 12px; display: none;">Settings</span>
+
+                        <span class="flex all_reg" class="all_reg" [routerLink]="[baseUrl + 'required-features']"
+                                [routerLinkActive]="'active'" queryParamsHandling="merge" (click)="onChangeMenu(true, 'required_features')">
+                                <span class="reg_name" aria-hidden="true"> Required Features </span>
+                        </span>
+                        <span class="flex all_reg" class="all_reg" [routerLink]="[baseUrl + 'roles-permissions']"
+                                [routerLinkActive]="'active'" queryParamsHandling="merge" (click)="onChangeMenu(true, 'roles_permissions')">
+                                <span class="reg_name" aria-hidden="true"> Roles & Permissions </span>
+                        </span>
+                        <span class="flex all_reg" class="all_reg" [routerLink]="[baseUrl + 'rules']"
+                                [routerLinkActive]="'active'" queryParamsHandling="merge" (click)="onChangeMenu(true, 'rules')">
+                                <span class="reg_name" aria-hidden="true"> Rules </span>
+                        </span>
+                        <span class="flex all_reg" class="all_reg" [routerLink]="[baseUrl + 'stores-details']"
+                                [routerLinkActive]="'active'" queryParamsHandling="merge" (click)="onChangeMenu(false, 'stores_details')">
+                                <span class="reg_name" aria-hidden="true"> Stores </span>
+                        </span>
+                        <span *ngIf="isSchedulerEnabled" class="flex all_reg" class="all_reg" [routerLink]="[baseUrl + 'advanced-settings']"
+                                [routerLinkActive]="'active'" queryParamsHandling="merge" (click)="onChangeMenu(true, 'advanced_settings')">
+                                <span class="reg_name" aria-hidden="true"> Advanced Settings 
+                                     
+                                </span>
+                        </span>
+
+                        <!-- <span class="flex all_reg" class="all_reg" [routerLink]="[baseUrl + 'customize-labels']"
+                                [routerLinkActive]="'active'" queryParamsHandling="merge">
+                                <span class="reg_name" aria-hidden="true"> Labels Customization </span>
+                        </span> -->
+
+                        <!-- <span style="font-size: 18px;
+                        font-weight: bold;
+                        /* margin-right: 10px; */
+                        margin-left: 40px;">Configuration</span>
+                        <ul class="child">
+
+                                <li class="configurations-list"><span class="res-menu"> General</span></li>
+                                <li class="configurations-list active" [routerLink]="[baseUrl+'required-features']"
+                                        [routerLinkActive]="'active'" queryParamsHandling="merge"><span> Required
+                                                Features</span></li>
+                                <li class="configurations-list" [routerLink]="[baseUrl+'roles-permissions']"
+                                        [routerLinkActive]="'active'" queryParamsHandling="merge"><span> User Roles &
+                                                Permissions</span></li>
+                                <li class="configurations-list" [routerLink]="[baseUrl+'work-shifts']"
+                                        [routerLinkActive]="'active'" queryParamsHandling="merge"><span> Work
+                                                Shifts</span>
+                                </li>
+                                <li class="configurations-list" [routerLink]="[baseUrl+'customize-labels']" [routerLinkActive]="'active'" queryParamsHandling="merge"><span> Labels Customization</span></li>
+        
+                            </ul> -->
+                </div>
+        </div>
+        <div *ngIf="desktopView">
+                <div class="banner-wrapper">
+                        <span class="banner" [style.visibility]="(!showBanner)?'hidden':''" *ngIf="noRegions !== null">
+                                <span class="banner-details" *ngIf="isAccountOwner && noRegions">
+                                        <span>
+                                                After reviewing settings, <a (click)="navigateToManageStore()"
+                                                        [style.font-size]="'15px'"> click here </a> to add your first
+                                                store to begin Azalio.
+                                        </span>
+                                </span>
+                                <span class="banner-details" *ngIf="!isAccountOwner || !noRegions">
+                                        <span *ngIf="!isAccountOwner || !noRegions ">
+                                                These settings will apply across all your stores.
+                                        </span>
+                                </span>
+                        </span>
+                </div>
+                <router-outlet></router-outlet>
+        </div>
+</div>
+
+<div class="resp">
+        <div class="navbar-resp">
+                <div class="dropdown">
+                        <button class="dropbtn">
+                                Settings
+                                <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+
+                                <a [routerLink]="[baseUrl + 'required-features']" [routerLinkActive]="'active'"
+                                        queryParamsHandling="merge">Required Features</a>
+                                <a [routerLink]="[baseUrl + 'roles-permissions']" [routerLinkActive]="'active'"
+                                        queryParamsHandling="merge">User Roles & Permissions</a>
+                                <a [routerLink]="[baseUrl + 'rules']" [routerLinkActive]="'active'"
+                                        queryParamsHandling="merge">Rules</a>
+                                <a [routerLink]="[baseUrl + 'stores-details']" [routerLinkActive]="'active'"
+                                        queryParamsHandling="merge">Stores</a>
+                                <a [routerLink]="[baseUrl + 'advanced-settings']" [routerLinkActive]="'active'"
+                                        queryParamsHandling="merge">Advanced Features</a>
+                                <!-- <a [routerLink]="[baseUrl + 'customize-labels']" [routerLinkActive]="'active'"
+                                        queryParamsHandling="merge">Labels Customization</a> -->
+                        </div>
+                </div>
+        </div>
+
+        <div *ngIf="responsivenessView">
+                <div class="link-store" [style.visibility]="(!showBanner)?'hidden':''" *ngIf="noRegions !== null">
+                        <span *ngIf="isAccountOwner && noRegions">Get started by adding stores from <a
+                                        (click)="navigateToManageStore()">here</a>.
+                        </span>
+                </div>
+                <router-outlet></router-outlet>
+        </div>
+
+</div>

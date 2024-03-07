@@ -1,0 +1,85 @@
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  border-bottom: 1px solid #eeeeee;
+  height: 4.2rem;
+  align-items: center;
+  position: sticky;
+  top: 0px;
+  z-index: 3;
+}
+.logo {
+  padding-left: 25px;
+  margin-top: 3px;
+}
+
+.logo-img {
+  width: 145px;
+  margin: 0 auto;
+}
+
+.system-admin {
+  padding-right: 30px;
+  font-size: 14px;
+  color: #646464;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  //   img {
+  //     // width: 45px;
+  //     margin-left: 10px;
+  //   }
+  i {
+    font-size: 17px;
+    margin-right: 4px;
+    color:#a298eb;
+  }
+}
+
+.name {
+  font-size: 18px !important;
+  color: #6e689b !important;
+  margin-left: 5px;
+}
+.email-txt {
+  margin-left: 5px;
+  font-size: 13px;
+}
+.menu {
+  min-width: 200px;
+}
+.sub-li {
+  border-top: 1px solid #efefef;
+  padding-top: 13px;
+  margin-top: 7px;
+}
+nb-icon {
+  font-size: 18px;
+  align-items: center;
+  margin-right: 10px;
+  position: relative;
+  top: 3px;
+  left: 4px;
+  color: #7f84ea;
+}
+.admin-container
+{
+    display: flex;
+    align-items: center;
+}
+
+@media(max-width:550px)
+{
+    .email-resp
+    {
+        display: none;
+    }
+}
+
+// .email-address
+// {
+//   display: flex;
+//     align-items: center;
+// }

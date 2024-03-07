@@ -1,0 +1,27 @@
+<div class="header-wrapper">
+    <div class="relative logo">
+        <img src="assets/logo-azalio.png" alt="logo" class="logo-img">
+    </div>
+    <div class="system-admin" >
+        <span [nbPopover]="templateRef" class="admin-container" *ngIf="adminInfo?.email">
+                <i class="fas fa-user-cog"></i>
+                <span class="email-resp">
+                    {{adminInfo?.email}}
+                </span>  
+        </span>        
+    </div>
+    <ng-template #templateRef>
+        <ul class="menu" *ngIf="adminInfo">
+            <li class="name" *ngIf="adminInfo.name">
+                {{adminInfo.name}}
+            </li>
+            <li class="email-txt">
+                {{adminInfo.email}}
+            </li>
+            <li class="pointer sub-li desktop-list" (click)="logout()">
+                <nb-icon icon="log-out-outline"></nb-icon>
+                Log Out
+            </li>
+        </ul>
+    </ng-template>
+</div>

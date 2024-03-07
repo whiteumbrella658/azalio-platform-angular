@@ -1,0 +1,95 @@
+.timesheets_wrapper .wrapper_header {
+  padding: 20px 0px;
+  padding-bottom: 13px;
+  background: #f9faff;
+}
+
+.container {
+  width: 100%;
+  justify-content: space-between;
+}
+.right-actions {
+  // display: inline-flex;
+  display: flex;
+  align-items: center;
+  .search {
+    margin-right: 15px;
+  }
+}
+.survey-container {
+  margin-top: 10px;
+  padding-bottom: 10px;
+  min-height: fit-content;
+  max-height: 70vh;
+  overflow: scroll;
+}
+
+.table-wrapper thead {
+  top: 0px !important;
+}
+.page-wrapper {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.download-icon {
+  font-size: 18px;
+  color: #ddd5d5;
+  cursor: pointer;
+  // box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+}
+.download-icon:hover {
+  color: #7b68ee;
+}
+.survey-container {
+  tr:hover td {
+    background: white;
+    cursor: auto;
+  }
+}
+
+.back-btn {
+  color: #7b68ee !important;
+  background-color: white !important;
+}
+@media (max-width: 930px) {
+  .container {
+    flex-direction: column;
+    width: 93%;
+  }
+  .right-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  .page-wrapper {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  //   .survey-container {
+  //     padding-top: 53px;
+  //   }
+
+  .resp-container {
+    display: flex;
+  }
+  .download-icon {
+    color: #7b68ee;
+}
+}
+
+@media(max-width:930px) and (min-width:500px)
+{
+    .timesheets_wrapper .wrapper_header {
+        padding: 8px 0px;
+        padding-bottom: 20px;
+      }
+}
+
+@media(max-width:500px) and (min-width:320px)
+{
+.timesheets_wrapper .wrapper_header {
+    padding: 36px 0px;
+    padding-bottom: 50px;
+  }
+}

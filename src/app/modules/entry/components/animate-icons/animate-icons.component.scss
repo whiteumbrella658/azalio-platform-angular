@@ -1,0 +1,86 @@
+.animate-icons {
+  display: flex;
+  align-items: flex-start;
+  height: 200px;
+  justify-content: space-between;
+  width: 33%;
+  position: absolute;
+  bottom: 250px;
+}
+.animate-icons > *:first-child {
+  // align-self: stretch;
+  // width: 100%;
+  // display: flex;
+  // justify-content: flex-end;
+  align-self: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.animate-icons .r2 {
+  // align-self: center;
+  // width: 100%;
+  // margin: 0 auto;
+  // display: flex;
+  // justify-content: center;
+
+  align-self: stretch;
+  width: 35%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+.top-images {
+  margin-bottom: 218px;
+  height: 4.8em;
+  width: 4.8em;
+}
+.r3 {
+  width: 100%;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}
+.r4 {
+  width: 100%;
+}
+.timesheet {
+  color: #83c8ff;
+  animation: zoom-in-zoom-out 1s ease infinite;
+}
+.scheduler {
+  color: #ffac90;
+  animation: zoom-in-zoom-out 1s ease infinite;
+}
+.organization {
+  color: #c1e950;
+  animation: zoom-in-zoom-out 1s ease infinite;
+}
+.message {
+  color: #f3b2ff;
+  animation: zoom-in-zoom-out 1s ease infinite;
+}
+.settings {
+  color: #b3aced;
+  animation: zoom-in-zoom-out 1s ease infinite;
+}
+.tasks {
+  color: #90e0c3;
+  animation: zoom-in-zoom-out 1s ease infinite;
+}
+.recognition {
+  color: #ffd276;
+  animation: zoom-in-zoom-out 1s ease infinite;
+}
+@keyframes zoom-in-zoom-out {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.02, 1.02);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}

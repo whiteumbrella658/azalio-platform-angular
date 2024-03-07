@@ -1,0 +1,38 @@
+<div class="animate-icons">
+    <div class="r1" style="position:relative">
+        <i [@fade]="toogle" (@fade.done)="onFade($event)" [class]="iconsArray[count%iconsArray.length]"
+            style="font-size: 35px ;"></i>
+    </div>
+
+    <div class="r2">
+        <!-- <img [@fade4]="toogle4" (@fade4.done)="onFade4($event)" [src]="imageArray4[count4 % imageArray4.length]" class="top-images"> -->
+        <!-- [class]="iconsArray2Class[count2%iconsArray2Class.length]"  -->
+
+        <span>
+            <i [@fade2]="toogle2" (@fade2.done)="onFade2($event)" [class]="iconsArray2[count2%iconsArray2.length]"
+                style="font-size: 35px ;"></i>
+        </span>
+        <span>
+            <i [@fade5]="toogle5" (@fade5.done)="onFade5($event)" [class]="iconsArray5[count5%iconsArray5.length]"
+                style="font-size: 35px ;"></i>
+        </span>
+
+    </div>
+    <!-- <div class="r3">
+
+
+    </div> -->
+
+    <div class="r3">
+        <i [@fade3]="toogle3" (@fade3.done)="onFade3($event)" [class]="iconsArray3[count3%iconsArray3.length]"
+            style="font-size: 35px ;"></i>
+    </div>
+    <!-- <div class="r4">
+
+    </div> -->
+</div>
+
+
+<div>
+
+</div>

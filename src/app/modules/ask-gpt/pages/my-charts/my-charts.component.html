@@ -1,0 +1,20 @@
+<app-side-menu [customClass]="'large-width'"></app-side-menu>
+<app-loader [loading]="loading"></app-loader>
+<div class="charts-mainwrapper">
+    <div class="header-row">
+        <!-- <img class="ds-img" src="assets/dashboard.png"> -->
+        <span class="heading-row">
+            My Graphs
+        </span>
+    </div>
+    <div class="body-container-flex" *ngIf="graphs?.length > 0">
+        <ng-container>
+            <div class="flex-item" *ngFor="let graph of graphs">
+                <app-graph [options]="graph.options" (onUnsave)="removeGraph()" [id]="graph.id" [showUnsaveBtn]="true" [title]="graph.graph_title" 
+                [data]="graph.graph_body" [chartType]="graph.graph_type"></app-graph>
+            </div>
+        </ng-container>
+    </div>
+    <app-no-records [display]="!loading && graphs?.length == 0" [animation]="'timesheet'" [textMessage]="'No saved graphs.'">
+    </app-no-records>
+</div>

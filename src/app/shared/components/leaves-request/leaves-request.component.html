@@ -1,0 +1,67 @@
+<app-loader [loading]="loading || leaveLoading"></app-loader>
+<div class="header-container">
+    <div class="header">
+        <span class="heading">
+            Time off Requests
+        </span>
+    </div>
+</div>
+<div id="tasks-wrapper" class="tasks-wrapper">
+    <div class="mt-25"></div>
+    <app-no-records [display]="emptyResults" [animation]="'timeoff'"></app-no-records>
+    <div class="task-details" *ngFor="let item of requests" [class]="item.is_expired == 1 ? 'disabled-row' : ''">
+        <span class="row1">
+            <span class="user-details">
+                <app-user-avatar size="medium" [name]="item.requested_by"
+                [color]="item.user_color + opacity" [initialColor]="item.user_color" [title]="''"
+                 class="scheduler_user" nbTooltipPlacement="top" [nbTooltip]="item.requested_by">
+                </app-user-avatar>            
+            </span>
+            <span class="right-info" *ngIf="!leaveLoading">
+                <span class="markdone-container">
+                    <span class="task-done">
+                        <app-confirm-popup [isComment]="true" [type]="'Reject'" [title]="'Leave Request'" [textToDisplay]="rejectText"
+                        (proceedDelete)="respondToLeave($event, item.id)" (proceedCancel)="selectedRow = null;"
+                        (proceedWithComment)="rejectLeaveWithComment($event, item.id)">
+                        <span nbTooltip="Reject" nbTooltipPlacement="top" (click)="setRejectText(item)" class="circle-btn"><i aria-hidden="true" class="fa-solid fa-xmark" style="color: #e91e63;"></i></span>
+                        <button [disabled]="item.is_expired == 1" (click)="setRejectText(item)" nbButton type="button" class="reject-btn" status="primary">Reject</button>
+                    </app-confirm-popup>
+                    </span>
+                    <span class="task-done approve">
+                        <app-confirm-popup [type]="'Approve'" [title]="'Leave Request'" [textToDisplay]="approveText"
+                        (proceedDelete)="proceed(item, false)" [status]="'primary'">
+                        <span (click)="setApproveText(item)" nbTooltip="Approve" nbTooltipPlacement="top" class="circle-btn"><i aria-hidden="true" class="fa-solid fa-check" ></i></span>
+                        <button [disabled]="item.is_expired == 1" (click)="setApproveText(item)" nbButton type="button" class="approve-btn" status="primary">Approve</button>
+                        </app-confirm-popup>
+                    </span>
+                    <span class="task-done">
+                        <app-confirm-popup [type]="'Approve & Publish'" [title]="'Leave Request'" [textToDisplay]="approveText"
+                        (proceedDelete)="proceed(item, true)" [status]="'primary'">
+                        <span (click)="setPublishText(item)" nbTooltip="Approve & Publish" nbTooltipPlacement="top" class="circle-btn">
+                            <i class="fa-solid fa-share-from-square" style="font-size: 12px;color: #4caf50;"></i></span>
+                        <button [disabled]="item.is_expired == 1"(click)="setPublishText(item)" nbButton type="button" class="approve-publish-btn" status="primary">Approve & Publish</button>
+                        </app-confirm-popup>
+                    </span>
+                </span>
+            </span>
+        </span>
+        <span class="row2">
+                <span class="date" *ngIf="item.start_date !== item.end_date">{{item.start_date | date : 'MMM dd' : 'UTC'}} - {{item.end_date | date : 'MMM dd' : 'UTC'}}</span> 
+                <span class="date" *ngIf="item.start_date == item.end_date">{{item.start_date | date : 'MMM dd' : 'UTC'}}</span> 
+                <span class="days-tag">{{item | days: item.start_date : item.end_date}}</span>
+        </span>
+        <span class="row3">
+            <span class="leave-type">
+                {{item.leave_type}}
+            </span>
+        </span>
+        <span class="row4">
+            <span class="comment">
+               {{item.comment}}
+            </span>
+        </span>
+        <span class="requested_on">
+            Requested on: {{item.requested_on | date: 'MMM d, h:mm a' }}
+        </span>
+    </div>
+</div>

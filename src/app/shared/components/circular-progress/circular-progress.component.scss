@@ -1,0 +1,55 @@
+.flex-container {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  
+  .circular-chart {
+    width: 200px;
+    // justify-content: space-around;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  
+  .angular-circle {
+    display: block;
+    // margin: 10px 0px 0px 40px;
+    margin: 10px 0px 0px 10px;
+    // max-width: 80%;
+    // max-height: 250px;
+  }
+  
+  .background-circle {
+    stroke: #EAECF0;
+    stroke-width: 4.2;
+    fill: #ffffff;
+  }
+  
+  .highlighted-circle {
+    fill: none;
+    stroke-width: 4.2;
+    stroke-linecap: round;
+  }
+  
+  .label-text {
+    font-family: sans-serif;
+    font-size: 6px;
+    text-anchor: middle;
+    transform: translate(25px, 1px);
+  }
+  .label-text-sub {
+    // font-size: 4px;
+    font-size: 3px;
+    fill: #747A82 !important;
+  }
+  
+  .stroke-circle {
+    stroke: #5a5656;
+    stroke-width: 3.8;
+  }
+  
+  .legends {
+    width: 30%;
+    position: relative;
+  }
+  

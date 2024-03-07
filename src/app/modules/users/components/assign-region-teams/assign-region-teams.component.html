@@ -1,0 +1,11 @@
+<div class="assing_second_drawer">
+    <b class="title">Assign {{nameConfig?.region_plural}} & {{nameConfig?.team_plural}}</b>
+    <app-search-input [showHelperButton]="false" (searchEvent)="onSearch($event)"></app-search-input>
+    <app-no-records [display]="emptyResults"></app-no-records>
+    <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records>
+    <div class="mt_10">
+
+        <app-nested-table [type]="'select'" [data]="treeData" (changeClick)="onAssignment($event)"></app-nested-table>
+
+    </div>
+</div>

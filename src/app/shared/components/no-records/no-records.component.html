@@ -1,0 +1,24 @@
+<ng-container *ngIf="display">
+
+  <div class="lottie-animation">
+    <span style="display: flex;" [ngClass]="{'adjust-animation2': animation2 != null}">
+      <ng-lottie [options]="option" (animationCreated)="onAnimate($event)"></ng-lottie>
+      <ng-lottie [class]="className[animation2]" [options]="option2" (animationCreated)="onAnimate($event)"></ng-lottie>
+    </span>
+    <b class="no-rec-heading">
+      {{displayText}}
+    </b>
+  </div>
+
+  <div class="empty-state" *ngIf="!animation">
+    <div class="empty-state__content">
+      <div [class]="showScheduler?'empty-state-store':'empty-state__icon'">
+        <img [src]="image" [alt]="altMsg">
+      </div>
+      <div [class]="showScheduler?'empty-state-storemsg':'empty-state__message'">{{message}}</div>
+      <div class="empty-state__help">{{help}} </div>
+    </div>
+  </div>
+
+
+</ng-container>

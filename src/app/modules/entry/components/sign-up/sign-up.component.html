@@ -1,0 +1,84 @@
+<app-signup-card *ngIf="showCard" (onCancel)="close(null)" (onButtonClick)="showCard=false;"></app-signup-card>
+
+<div class="modal_wrapper sign-up" *ngIf="!showCard">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <label class="text-setup">{{data && data.type === 'phone' ? 'Sign Up': 'Set up your primary company account'}}</label>
+        </nb-card-header>
+        <nb-card-body [nbSpinner]="loading">
+            <form #ngForm="ngForm" id="formSetUp" [formGroup]="form" (ngSubmit)="submit(ngForm)">
+                <div class="gray_text subheading signup-email mb_20" *ngIf="data && data.type === 'phone'">
+                    <!-- {{data && data.type === 'phone' ? 'You are signing up as' + data.email: ''}} -->
+                    <!-- {{data && data.type === 'phone' ? 'You are signing up as ' : ''}} -->
+                    <span> You are signing up as {{data.email}}</span>
+                </div>
+
+                <div class="mb_20" *ngIf="!data">
+                    <label>How did you hear about us? <span class="mandatory">*</span> </label>
+                    <app-dropdown [optionClass]="'large-font'" [Data]="heardFromList" [placeholder]="'Select an option'"
+                        [controlName]="'heardFrom'" [form]="form" [show]="true">
+                    </app-dropdown>
+                    <app-error-message [key]="'heardFrom'" [form]="form" [isSubmitted]="ngForm.submitted">
+                    </app-error-message>
+                </div>
+
+                <div class="mb_20">
+                    <label>Full name <span class="mandatory">*</span> </label>
+                    <input aria-label="Full name field" nbInput placeholder="Enter full name here"
+                        [formControlName]="'name'" />
+                    <app-error-message [key]="'name'" [form]="form" [isSubmitted]="ngForm.submitted">
+                    </app-error-message>
+                </div>
+
+                <div class="mb_20" *ngIf="data?.type !== 'phone'">
+                    <label>Email <span class="mandatory">*</span> </label>
+                    <input name="email" aria-label="email field" nbInput placeholder="Enter email here"
+                        [formControlName]="'email'" />
+                    <app-error-message [key]="'email'" [form]="form" [isSubmitted]="ngForm.submitted">
+                    </app-error-message>
+                </div>
+                <div class="mb_20" *ngIf="data?.type === 'phone'">
+                    <label>Country code <span class="mandatory"></span> </label>
+                    <app-country-code-dropdown [controlName]="'countrycode'" [form]="form"> </app-country-code-dropdown>
+                    <app-error-message [key]="'countrycode'" [form]="form" [isSubmitted]="ngForm.submitted">
+                    </app-error-message>
+                </div>
+                <div class="mb_20" *ngIf="data?.type === 'phone'">
+                    <label>Phone <span class="mandatory"></span> </label>
+                    <input name="phone" nbInput [formControlName]="'phone'" />
+                    <app-error-message [key]="'phone'" [form]="form" [isSubmitted]="ngForm.submitted">
+                    </app-error-message>
+                </div>
+                <div class="mb_20">
+                    <nb-form-field>
+                        <label>Password <span class="mandatory">*</span> </label>
+                        <input [type]="getInputType()" aria-label="password field" placeholder="Create a password here"
+                            [formControlName]="'password'" nbInput>
+                        <button type="button" class="show-pass" size="medium" aria-label="toggle show password" nbSuffix
+                            nbButton ghost (click)="toggleShowPassword()">
+                            <nb-icon [icon]="showPassword ? 'eye-off-2-outline' : 'eye-outline'" pack="eva"
+                                [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+                            </nb-icon>
+                        </button>
+                        <app-error-message [key]="'password'" [form]="form" [isSubmitted]="ngForm.submitted">
+                        </app-error-message>
+                    </nb-form-field>
+                </div>
+
+                <div class="footer_button" style="align-items:center;">
+                    <span style="font-size: 14px;">
+                        By signing up, you agree to Azalio's <a (click)="gs.newTab('/privacy-policy')">privacy
+                            policy</a>.
+                    </span>
+                    <span style="align-items:right;">
+                        <app-button (onClick)="close(null)" [classNext]="'large-font'">Cancel</app-button>
+                        <input type="submit" status="primary" nbButton value="Sign Up">
+                        <!-- <app-submit-button [form]="form" [label]="'Sign Up'"></app-submit-button> -->
+                    </span>
+
+                </div>
+
+            </form>
+        </nb-card-body>
+    </nb-card>
+</div>

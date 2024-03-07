@@ -1,0 +1,239 @@
+// .input-row {
+//   display: flex;
+// }
+// .field-wrapper {
+//   width: 100%;
+//   margin: 10px;
+//   display: block;
+// }
+
+.btns-row {
+  justify-content: flex-end;
+  margin: 10px;
+  margin-top: 25px;
+  margin-right: 0px;
+}
+
+.add-task-option {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.option-txt {
+  margin-right: 15px;
+}
+
+.left-btns {
+  display: flex;
+  align-items: center;
+}
+
+.right-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.add-date {
+  text-decoration: underline;
+  margin-right: 9px;
+  color: #7b68ee;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+
+  i {
+    // color: #b0c4de;
+    color: #7b68ee;
+    margin-right: 7px;
+    text-decoration: none;
+    font-size: 14px;
+  }
+}
+
+// ::ng-deep {
+//   .survey-txtarea {
+//     padding-top: 9px !important;
+//     padding-left: 10px !important;
+//   }
+// }
+.title {
+  display: contents;
+}
+
+// .footer-add-task {
+//   display: flex;
+//   justify-content: flex-end;
+//   margin-top: 5px;
+//   margin-bottom: 10px;
+// }
+.fields-wrapper {
+  display: flex !important;
+  width: 100% !important;
+  align-items: baseline;
+}
+
+.row-container {
+  margin-bottom: 10px;
+  padding-top: 17px;
+  width: 100%;
+  display: flex;
+  // align-items: center;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.row-container-date {
+  margin-bottom: 4px;
+  padding-top: 0px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.tasks-sch-container {
+  display: flex;
+  flex-direction: column;
+  // margin-bottom: 17px;
+  padding-top: 10px;
+  max-height: 15vh;
+  overflow: auto;
+  width: 100%;
+}
+
+.sname-label {
+  padding-left: 5px;
+  padding-right: 5px;
+  display: inline-flex;
+  margin-top: 10px;
+}
+
+.task-name {
+  width: 100%;
+  padding-right: 5px;
+}
+
+.shift-details {
+  width: 100%;
+  padding-right: 5px;
+}
+
+.assign-task {
+  padding-top: 10px !important;
+}
+
+.option-items {
+  display: flex;
+  align-items: center;
+  width: 98%;
+}
+
+.add-task-option {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.option-txt {
+  margin-right: 15px;
+  z-index: 40;
+}
+
+@media (max-width: 930px) {
+  .resp-container {
+    flex-direction: column;
+  }
+
+  .fields-wrapper {
+    display: flex !important;
+    width: 100% !important;
+    margin-bottom: 20px;
+  }
+
+  .shift-details {
+    width: 100% !important;
+  }
+
+  .next-icon {
+    width: 24px !important;
+  }
+}
+
+.pl-10 {
+  padding-left: 9px;
+}
+
+.pl-04 {
+  padding-left: 4px;
+}
+
+.daywise {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+::ng-deep {
+  .week-days {
+    margin-left: 15px;
+    margin-right: 9px;
+
+    nb-checkbox .text:not(:empty) {
+      padding-left: 2px !important;
+      font-size: 12.6px;
+      font-weight: 500;
+    }
+  }
+}
+
+.delete_icon {
+  position: absolute;
+  top: -1px;
+  right: 4px;
+}
+
+.delete_icon i {
+  font-size: 13px;
+  color: #ff3d71;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.task-custom {
+  align-items: flex-start;
+
+  .sname-label {
+    margin-top: 20px;
+  }
+}
+
+.disabled {
+  color: #b3b3b3 !important;
+  cursor: auto !important;
+
+  i {
+    color: #b3b3b3 !important;
+  }
+}
+
+@media (max-width: 606px) and (min-width: 320px) {
+  .daywise {
+    display: block !important;
+    line-height: 2 !important;
+  }
+}
+
+.tag-icon {
+  transform: rotate(95deg);
+  font-size: 18px;
+}
+
+@media(max-width:350px)
+{
+  .task-name
+  {
+    width: 89%;
+  }
+}

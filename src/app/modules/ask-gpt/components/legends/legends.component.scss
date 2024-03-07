@@ -1,0 +1,27 @@
+.details-textual {
+    background: #F9FAFB;
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.text-label{
+    color: #475467;
+    font-size: 13px;
+    font-weight: 500;
+  i{
+    margin-right: 10px;
+    font-size: 10px;
+  }
+}
+
+.score {
+  background: rgba(71, 84, 103, 0.08);
+  padding: 2px 8px 2px 8px;
+  border-radius: 6px;
+  gap: 10px;
+  color: #475467;
+}

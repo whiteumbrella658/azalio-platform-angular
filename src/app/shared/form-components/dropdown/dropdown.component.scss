@@ -1,0 +1,24 @@
+.large-font {
+    font-size: 16px !important;
+}
+
+.question-options {
+    font-size: 14px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.selected-question {
+    display: flex;
+    justify-content: space-between;
+
+    .question
+    {
+        width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-transform: none;
+        white-space: nowrap;
+    }
+}

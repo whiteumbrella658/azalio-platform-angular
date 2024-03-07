@@ -1,0 +1,90 @@
+<app-loader [loading]="loading"></app-loader>
+<div id="results-wrapper" class="results-wrapper" *ngIf="show">
+    <!-- <div class="question">
+        <img src="assets/question.png">
+        <span class="question-txt">Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum
+            is simply?</span>
+    </div>
+    <div class="main-wrapper">
+        <span class="heading">
+            Summary
+        </span>
+        <span class="summary">
+            <span class="description">
+                Talking about the graph in report for so that a business owner so they can report to other folks. Lorem
+                Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply
+                Talking about the graph in report for so that a business owner so they can report to other folks. Lorem
+                Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply
+            </span>
+            <span class="graph">
+                <app-graph class="analytics" [displayType]="'result'" [chartType]="'doughnut'"></app-graph>
+            </span>
+        </span>
+
+    </div> -->
+    <ng-container *ngFor="let item of history">
+        <div class="question">
+            <!-- <img src="assets/question.png"> -->
+            <app-user-avatar (click)="$event.stopPropagation(); hideShowPopup()" size="medium" style="cursor:pointer;"
+                onlyPicture [name]="ds?.getUserName()" [color]="'#0084FF66'" [initialColor]="'black'">
+               </app-user-avatar>
+            <div class="question-part">
+                <span class="your-txt">
+                  You
+                </span>
+                <span class="question-txt">{{item.question}}</span>
+            </div>
+        </div>
+        <div class="main-wrapper">
+            <!-- <span class="heading">
+                Summary
+            </span> -->
+            <div class="avatar-container">
+                <img src="assets/azalio-answers.png">
+                <span class="response-txt">Azalio</span>
+            </div>
+            <span *ngIf="item.isLoading">
+                <!-- Gif for loading data -->
+                <div class="animation-3dots">
+                    <app-no-records [display]="true" [animation]="'loadingDots'" [textMessage]="''"></app-no-records>    
+                    <span class="thinking-txt"> I am thinking...</span>
+                </div>
+                <div class="fun-fact">
+                    Fun fact: {{funfact}}
+                </div>
+            </span>
+            <!-- <div class="avatar-container">
+                <img src="assets/azalio-answers.png">
+                <span class="response-txt">Azalio</span>
+            </div> -->
+            <span class="description" [ngClass]="{'only-descview': !item.has_graph}">
+                {{item.answer}}
+            </span>
+            <!-- <span class="summary"> -->
+
+
+            <div class="graph" [ngClass]="{'one-chart': !item.graph_data?.length}" *ngIf="item.has_graph">
+
+                <ng-container *ngIf="item.graph_dagta?.length > 1">
+                    <app-graph *ngFor="let gp of item.graph_data" [id]="item.id" [showSaveBtn]="item.is_saved"
+                        class="analytics" [data]="gp.graph_body" [displayType]="'result'" [options]="gp.options"
+                        [chartType]="gp.graph_type"></app-graph>
+                </ng-container>
+
+                <ng-container *ngIf="!item.graph_data?.length">
+                    <app-graph [id]="item.id" [showSaveBtn]="item.is_saved" class="analytics"
+                        [data]="item.graph_data?.graph_body" [displayType]="'result'"
+                        [options]="item.graph_data?.options" [chartType]="item.graph_data?.graph_type"></app-graph>
+                </ng-container>
+
+            </div>
+            <div class="table" *ngIf="item.has_table">
+                <app-data-table [tableData]="item.table_data"></app-data-table>
+            </div>
+            <!-- </span> -->
+        </div>
+    </ng-container>
+    <app-no-records [display]="!loading && history?.length == 0" [animation]="'timesheet'"
+        [textMessage]="'No history.'">
+    </app-no-records>
+</div>

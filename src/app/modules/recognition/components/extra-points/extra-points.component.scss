@@ -1,0 +1,57 @@
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+  min-height: 90px;
+}
+.message_txt {
+  margin-top: 5px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  height: 45px;
+  border-radius: 5px;
+}
+.btn_send {
+  float: right;
+}
+.point_txt {
+  margin-top: 50px;
+  position: absolute;
+  /* vertical-align: sub; */
+  /* position: inherit; */
+  font-size: 29px;
+  font-weight: 700;
+}
+
+.card_style {
+  padding-bottom: 0px !important;
+}
+
+nb-card-header label {
+  font-size: 16px;
+  text-align: center;
+}
+
+.resp_point {
+  color: #727272;
+  position: absolute;
+  margin-top: 69px;
+  margin-left: 5px;
+}
+
+@media (max-width: 930px) {
+  .point_txt {
+    margin-top: 0px;
+  }
+  .resp_point {
+    margin-top: 0px !important;
+    margin-left: 83px !important;
+  }
+}
+
+// .extra_reward_name{
+//   max-width: 150px;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+// }

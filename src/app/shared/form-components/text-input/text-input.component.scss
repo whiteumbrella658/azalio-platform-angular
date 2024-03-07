@@ -1,0 +1,24 @@
+.task-form
+{
+    position: relative;
+}
+.points-options
+{
+    position: absolute;
+    right: 30px;
+    top: 15px;
+}
+
+.shifts-options
+{
+    position: absolute;
+    right: 80px;
+    top: 17px;
+}
+@media (max-width: 600px) {
+    .points-options {
+      right: 0px;
+      top: 54px;
+    }
+}
+

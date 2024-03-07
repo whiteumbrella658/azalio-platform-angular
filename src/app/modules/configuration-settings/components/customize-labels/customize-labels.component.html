@@ -1,0 +1,75 @@
+<app-loader [loading]="loading"></app-loader>
+<nb-card [nbSpinner]="loadingSpinner" class="for_spinner" style="height: 100vh">
+
+    <div class="work-shifts-wrapper">
+        <form #ngForm="ngForm" id="form" [formGroup]="customizeLabelsForm" (ngSubmit)="submit(ngForm)">
+            <div class="work-shifts-header">
+                <span class="title">
+                    <span>
+                        Labels Customization
+                        <!-- <img src="../../../../../assets/info-icon.svg" class="heading-info-icon"  nbTooltipPlacement="right" alt="picture configuration information" nbTooltipPlacement="right"   nbTooltipPlacement="right" nbTooltip="Assignment label is shown on web dashboard and the mobile application against which clock in/out are
+                    added. Rename it as shift, project, or anything your employees understand better. Organization
+                    level2 and level3 labels show on web dashboard only. Change it to location, site etc. if ‘store’
+                    does not fit best for your organization." />
+                     -->
+
+                        <!-- <i class="fa fa-info-circle primary_color pointer info-heading-icon" alt="picture configuration information"
+                    nbTooltip="  Assignment label is shown on web dashboard and the mobile application against which clock in/out are
+                    added. Rename it as shift, project, or anything your employees understand better. Organization
+                    level2 and level3 labels show on web dashboard only. Change it to location, site etc. if ‘store’
+                    does not fit best for your organization."></i> -->
+                    </span>
+                    <span class="sub-title">
+                        Assignment label is shown on web dashboard and the mobile application against which clock in/out
+                        are
+                        added. Rename it as shift, project, or anything your employees understand better. Organization
+                        level2 and level3 labels show on web dashboard only. Change it to location, site etc. if ‘store’
+                        does not fit best for your organization.
+                    </span>
+                </span>
+                <span class="work-shifts-btns">
+                    <button size="medium" type="submit" nbButton status="primary" [disabled]="disable">Save</button>
+                </span>
+
+            </div>
+
+            <div class="work-shifts-details" *ngIf="showInput">
+                <div class="flex space_between vertical_center work-shift-item mb-20 mt-20 relative">
+                    <div class="work-shift-input" style="padding-right: 25px">
+                        <label class="label-text"> Assignment Label <span class="mandatory">*</span></label>
+                        <app-text-input [placeholder]="'Assignment'"
+                            [controlName]="'job_custom_name'" [form]="customizeLabelsForm">
+                        </app-text-input>
+                        <span class="name_input_resp">
+                            <app-error-message class="name_input_resp error-input" [key]="'job_custom_name'"
+                                [form]="customizeLabelsForm" [isSubmitted]="ngForm.submitted"
+                                style="position: absolute; width: 100%">
+                            </app-error-message>
+                        </span>
+                    </div>
+                    <div class="work-shift-input">
+                        <label class="label-text"> Organization Level 2 Label <span class="mandatory">*</span></label>
+                        <app-text-input [placeholder]="'Enter Store Label'" [controlName]="'region_custom_name'"
+                            [form]="customizeLabelsForm">
+                        </app-text-input>
+                        <app-error-message [key]="'region_custom_name'" class="error-input" [form]="customizeLabelsForm"
+                            [isSubmitted]="ngForm.submitted">
+                        </app-error-message>
+                    </div>
+                </div>
+                <div class="flex space_between vertical_center work-shift-item mb-20 mt-20 relative">
+                    <div class="work-shift-input" style="padding-right: 25px">
+                        <label class="label-text"> Organization Level 3 Label <span class="mandatory">*</span></label>
+                        <app-text-input [placeholder]="'Enter Team Label'" [controlName]="'team_custom_name'"
+                            [form]="customizeLabelsForm">
+                        </app-text-input>
+                        <app-error-message [key]="'team_custom_name'" class="error-input" [form]="customizeLabelsForm"
+                            [isSubmitted]="ngForm.submitted">
+                        </app-error-message>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</nb-card>

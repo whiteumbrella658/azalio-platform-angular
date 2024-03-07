@@ -1,0 +1,45 @@
+<app-loader></app-loader>
+
+<div class="chats_page_wrapper">
+  <div class="row-header" *ngIf="!hideSurvey">
+    <button class="survey-btn" nbButton status="primary" (click)="goToSurvey()">Survey
+      <i class="fa fa-angle-right" aria-hidden="true" style="margin-left:7px;"></i></button>
+  </div>
+  
+  <div class="flex" *ngIf="storageService?.companyId === null;">
+    <div class="chat_left_section" [ngClass]="{'temp' : !showTempClass}">
+      <div class="chat_left_header">
+        <b class="title" style="margin: 0; visibility: hidden;">Messaging </b>
+        <button style="height: 29px;" nbButton status="primary" type="submit"
+          (click)="currentChat = null; newMessage = true; showTempClass=false" class="mr_10 newmsg">New Message</button>
+      </div>
+      <div class="chat_list_body">
+        <app-messages-list [userId]="userId" (currentChatSelected)="onCurrentChatSelected($event); showTempClass=false"
+          [currentChat]="currentChat" [preselect]="togglePreselect" (totalChats)="getTotalChats($event)"
+          (isChatNotification)="isChatNotification($event)"></app-messages-list>
+      </div>
+    </div>
+
+    <div class="chat_rigt_section" [ngClass]="{'temp' : showTempClass}">
+      <div class="no_user_selected" *ngIf="!currentChat && !newMessage">
+        <div class="no_msg lottie-animation">
+          <ng-lottie [options]="options" (animationCreated)="onAnimate($event)"></ng-lottie>
+          <b class="no-rec-heading"> {{textMessage}}</b> <br>
+        </div>
+      </div>
+      <span *ngIf="!showTempClass" class="back" (click)="enableClass = false; showTempClass=true">
+        <i class="fa fa-arrow-left pointer" style="font-size: 16px;" aria-hidden="true"></i>
+      </span>
+      <ng-container *ngIf="newMessage">
+        <app-new-message [is_chat_notification]="is_chat_notification" (newMessageSend)="onNewMessageSend($event)"
+          *ngIf="newMessage"></app-new-message>
+      </ng-container>
+      <ng-container *ngIf="currentChat">
+        <app-chat-list [is_chat_notification]="is_chat_notification" [chatUser]="currentChat"></app-chat-list>
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="storageService?.companyId;" class="messaging-access">
+    <span class="text-center"> You don't have permission to access messaging.</span>
+  </div>
+</div>

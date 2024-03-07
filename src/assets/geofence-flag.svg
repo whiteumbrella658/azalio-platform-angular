@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19" height="21" viewBox="0 0 19 21">
+  <defs>
+    <clipPath id="clip-path">
+      <rect x="4" y="3" width="19" height="21" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Scroll_Group_50" data-name="Scroll Group 50" transform="translate(-4 -3)" clip-path="url(#clip-path)" style="isolation: isolate">
+    <g id="Group_10536" data-name="Group 10536" transform="translate(-744 -205)">
+      <rect id="Rectangle_5638" data-name="Rectangle 5638" width="27" height="28" transform="translate(744 205)" fill="#fff"/>
+      <path id="Icon_awesome-street-view" data-name="Icon awesome-street-view" d="M12.742,11.421a2.215,2.215,0,0,1-.551.473v.795c2.3.323,3.879.972,3.879,1.72,0,1.071-3.225,1.94-7.2,1.94s-7.2-.868-7.2-1.94c0-.748,1.575-1.4,3.879-1.72v-.795a2.215,2.215,0,0,1-.551-.473C2.039,11.961,0,13.094,0,14.408c0,1.836,3.97,3.325,8.867,3.325s8.867-1.489,8.867-3.325C17.733,13.094,15.694,11.961,12.742,11.421Z" transform="translate(748.633 209.288)" fill="#ef0051"/>
+      <path id="Icon_material-location-on" data-name="Icon material-location-on" d="M12.257,3A4.754,4.754,0,0,0,7.5,7.757c0,3.568,4.757,8.835,4.757,8.835s4.757-5.267,4.757-8.835A4.754,4.754,0,0,0,12.257,3Zm0,6.456a1.7,1.7,0,1,1,1.7-1.7A1.7,1.7,0,0,1,12.257,9.456Z" transform="translate(745.243 205.865)" fill="#7b68ee"/>
+    </g>
+  </g>
+</svg>

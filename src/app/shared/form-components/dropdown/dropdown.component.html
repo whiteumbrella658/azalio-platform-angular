@@ -1,0 +1,23 @@
+<form [formGroup]="form">
+    <nb-select *ngIf="Data?.length > 0; else emptydrop" [placeholder]="placeholder" [formControlName]="controlName"
+        (selectedChange)="change($event)">
+        <nb-option (click)="$event.stopPropagation()" [class]="optionClass" *ngIf="show" [value]="null">{{placeholder}}</nb-option>
+        <nb-option (click)="$event.stopPropagation()" [disabled]="data.disabled" [class]="optionClass" *ngFor="let data of Data" [value]="data[key]" [id]="data[key]">
+            {{ data[display]}} <span *ngIf="display2 && data[key] !== -1">&nbsp; ({{data[display2]}})</span>
+            <span *ngIf="displayDate && data[key] !== -1">{{ data[displayDate] | date: 'MMM d' : 'UTC'}}</span>
+        </nb-option>
+        <nb-select-label *ngIf="selected">
+            <span class="selected-question">
+               <span class="question">{{ selected[display]}} </span> <span *ngIf="display2 && selected[key] !== -1">&nbsp; ({{selected[display2]}})</span>
+                <span *ngIf="displayDate && selected[key] !== -1">{{ selected[displayDate] | date: 'MMM d' : 'UTC'}}</span>
+            </span>
+          </nb-select-label>
+    </nb-select>
+</form>
+
+<ng-template #emptydrop>
+    <form [formGroup]="form">
+        <nb-select disabled placeholder="No item to select" [formControlName]="controlName">
+        </nb-select>
+    </form>
+</ng-template>

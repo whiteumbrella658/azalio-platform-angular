@@ -1,0 +1,48 @@
+<!-- <app-loader [loading]="true"></app-loader> -->
+<div class="flex rewards_region-sidebar">
+  <nb-layout-column class="colored-column-info timesheets_wrapper recognition">
+    <div class="">
+      <img class="trophy_wrapper" src="assets/bgtrophy.svg" alt="bg trophy icon">
+    </div>
+    <div class="reward-container">
+      <div class="flex-item1" [ngClass]="{'no-store': !isStore && !isAzalioPlay, 'all-store-setting': !showBadges }">
+        <div>
+          <app-user-points-table-view (onTabChange)="onTabChange($event)"></app-user-points-table-view>
+        </div>
+      </div>
+      <div class="flex-item1 point_cont" *ngIf="showBadges && (isAzalioPlay || isStore)" [ngClass]="{'is_store': isAzalioPlay || isStore}">
+        <app-loader [loading]="loading"></app-loader>
+        <div class="two-column total_points_column">
+          <!--  flex items-->
+          <span class="flex1">
+            Badges
+          </span>
+        </div>
+        <div class="right-panel">
+          <nb-card size="large" style="border: none !important;">
+            <nb-card-body class="badge-container">
+              <ul class="list" *ngIf="!loading">
+                <ng-container *ngFor="let goal of goals">
+                  <li class="flex">
+                    <span class="badge-image">
+                      <!-- <img [src]="(goal.image_url | imageAuth | async)"> -->
+                   <app-user-avatar [picture]="goal?.image_url | imageAuth | async" size="medium"
+                   [showInitials]="false" onlyPicture>
+               </app-user-avatar>
+                    </span>
+                    <span class="right_pannel_points">
+                      <span class="badge-name">
+                        {{goal.title}}
+                      </span>
+                    </span>
+                  </li>
+                  <br>
+                </ng-container>
+              </ul>
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
+    </div>
+  </nb-layout-column>
+</div>

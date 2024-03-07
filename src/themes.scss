@@ -1,0 +1,42 @@
+@import '~@nebular/theme/styles/theming';
+@import '~@nebular/theme/styles/themes/default';
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,400;0,500;0,700;1,200&display=swap');
+
+$nb-enable-css-custom-properties: true; // <-- enable css custom properties
+
+$nb-themes: nb-register-theme((
+  font-family-primary: unquote('Nunito, sans-serif'),
+  font-family-secondary: font-family-primary,
+
+), default, default);
+
+$nb-themes: nb-register-theme((
+
+  // add your variables here like:
+  color-primary-100: #7b68ee,
+  headingcolor-primary-100: #A495FF,
+  white-color: #fff,
+  background-color: #edf1f7,
+  // font-family-primary: proxima-nova,
+  font-family: 'Nunito',
+  layout-background-color :#F9F7FF,
+  input-basic-background-color: #fff,
+  select-filled-basic-background-color	: #fff,
+  select-outline-basic-background-color	: #fff,
+  button-filled-primary-background-color: #7b68ee,
+  button-filled-primary-border-color: #7b68ee,
+  tooltip-info-background-color: #7b68ee,
+  tooltip-info-border-color: #7b68ee,
+  color-primary-200: #7b68ee,
+  color-primary-300: #7b68ee,
+  color-primary-400: #7b68ee,
+  color-primary-500: #7b68ee,
+  color-primary-600: #7b68ee,
+  color-primary-700: #7b68ee,
+  color-primary-800: #7b68ee,
+  color-primary-900: #7b68ee,
+ 
+  header-height: 44px,
+
+), default, default);

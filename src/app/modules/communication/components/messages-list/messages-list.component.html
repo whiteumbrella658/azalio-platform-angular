@@ -1,0 +1,42 @@
+<div class="search-name">
+  <app-search-input [isAnimated]="false" (searchEvent)="onUserSearch($event)" placeholder="Search by name">
+  </app-search-input>
+</div>
+<ul class="chat-user-container" id="messagesList">
+  <ng-container *ngFor="let chatUser of userChatList | userSearch: search">
+    <ng-container *ngIf="chatUser === -1">
+    </ng-container>
+    <ng-container *ngIf="chatUser !== -1">
+      <li (click)="onCurrentChatSelected(chatUser)"
+        [ngClass]="{ active_chat: !hideActive && currentChat && currentChat.chatId === chatUser?.chatId, unread: chatUser?.unreadCount > 0 }">
+        <div class="flex" style="margin-left:10px;">
+          <div>
+            <app-user-avatar size="large" name="{{ chatUser?.user?.name }}"
+              [color]="(chatUser?.user?.user_color + opacity)" [initialColor]="(chatUser?.user?.user_color)"
+              onlyPicture>
+            </app-user-avatar>
+          </div>
+          <div>
+            <span class="chat_title" nbTooltip="{{chatUser?.user?.name}}" nbTooltipPlacement="left">
+              {{chatUser?.user?.name}}
+            </span> <br>
+            <span class="chat_message">
+              {{ chatUser?.lastMessage.message }}
+            </span>
+          </div>
+        </div>
+        <span class="gray_text date_time chat_date">
+          {{ chatUser?.lastMessage.createdAt?.toDate() | date: 'MM/dd/YYYY hh:mm aa' }}
+        </span>
+      </li>
+    </ng-container>
+  </ng-container>
+</ul>
+<span>
+</span>
+<ng-template #curretntMessageTitleTemplate>
+  <app-user-avatar id="chatOpenedAvatar" size="large" name="{{currentChat?.user?.name}}"
+    title="{{currentChat?.user?.role_title}}" [color]="(currentChat?.user?.user_color + opacity)"
+    [initialColor]="(currentChat?.user?.user_color)">
+  </app-user-avatar>
+</ng-template>

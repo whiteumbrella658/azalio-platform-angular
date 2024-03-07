@@ -1,0 +1,115 @@
+<app-loader [loading]="loading"></app-loader>
+<div class="flex">
+  <nb-layout-column class="colored-column-info timesheets_wrapper ts-module">
+
+    <div class="wrapper_header">
+      <div class="flex vertical_center toggle-btns">
+        <span class="toggle_buttons mr_10">
+          <nb-button-group>
+            <button (click)="setTab('daily')" shape="round"  nbButton value="daily" [status]="selectedTab === 'daily' ? 'primary' : ''"
+              class="button-custom-variable">
+              Daily
+            </button>
+            <button (click)="setTab('weekly')" nbButton [status]="selectedTab === 'weekly' ? 'primary' : ''"
+              value="weekly" size="medium">
+              Weekly
+            </button>
+          </nb-button-group>
+        </span>
+        <div class="flex vertical_center date-picker">
+          <span class="input_datepicker" *ngIf="selectedTab === 'daily'">
+            <span (click)="dateInput.click()" class="datepicker_span weekday_toggle">{{ selectedDate | date }} <i
+                class="fa fa-chevron-down arrow-down" aria-hidden="true"></i></span>
+            <nb-datepicker #dateTimePicker (dateChange)="setDate($event)"></nb-datepicker>
+            <input aria-label="date picker" #dateInput nbInput placeholder="Pick Date" [nbDatepicker]="dateTimePicker"
+              style="visibility: hidden;" />
+          </span>
+
+          <span class="input_datepicker" *ngIf="selectedTab === 'weekly'">
+            <span (click)="dateInput.click()" class="datepicker_span weekday_toggle">{{ selectedDateWeekly.start | date
+              }}
+              - {{ selectedDateWeekly.end | date }}<i class="fa fa-chevron-down arrow-down" aria-hidden="true"></i>
+            </span>
+            <nb-rangepicker #formpicker (rangeChange)="setDateWeekly($event)" [range]="selectedDateWeekly">
+            </nb-rangepicker>
+            <input #dateInput nbInput placeholder="Pick Date Range" [nbDatepicker]="formpicker"
+              style="visibility: hidden;" />
+          </span>
+        </div>
+        <div class="vertical_center left-actions">
+          <app-search-input style="margin-right: 10px;" [placeholder]="'Search by name or role'"
+            [showHelperButton]="showHelperButton" (searchEvent)="onSearch($event)" (searchAll)="onSearchAll($event)">
+          </app-search-input>
+
+          <span id="test" [nbPopover]="templateExport" nbPopoverPlacement="left" class="export_span desktopReport exportReport mr_10"><i
+              class="fa fa-download" aria-hidden="true" nbPopoverTrigger="noop"
+              nbTooltip="Download report"></i>
+          </span>
+          <span [nbPopover]="templateExport" nbPopoverTrigger="noop" class="resp_export exportReport mr_10 "> 
+            <i class="fa fa-download ml_10"
+              aria-hidden="true"></i>
+          </span>
+
+          <ng-template #templateExport>
+            <div class="body-popover">
+              <span class="export-header">Choose start and end date to download report</span> <br>
+              <span class="row-alignment" style="margin-bottom: 10px;" *ngIf="storeGroupList">
+                 <span class="label-ts">Store group:</span> <app-dropdown class="width-dd" [Data]="storeGroupList" [placeholder]="'Select group (optional)'" [display]="'title'" [key]="'group_id'"
+                [controlName]="'selectedStoreGroup'" [form]="exportForm" [show]="true">
+                 </app-dropdown>
+              </span>
+              <span class="row-alignment" *ngIf="roles">
+                <span class="label-ts">Role:</span><app-dropdown-multi class="width-dd" [label]="'roles'"  [selected]="exportForm?.controls?.selectedRole.value"
+                [key]="'role_title'" [key2]="'role_title'" [optionId]="'role_id'" [Data]="roles" [placeholder]="'Select role (optional)'"
+                [controlName]="'selectedRole'" [form]="exportForm" [show]="false">
+              </app-dropdown-multi>
+
+                <!-- <span class="label-ts">Role:</span><app-dropdown-multi class="width-dd" [Data]="roles" [placeholder]="'Select role (optional)'" [display]="'role_title'" [key]="'role_id'"
+                 [controlName]="'selectedRole'" [form]="exportForm" [show]="true">
+                  </app-dropdown-multi> -->
+              </span>
+              <nb-calendar-range style="display: flex; justify-content: center;padding-top: 10px;" [(range)]="exportRange"></nb-calendar-range>
+              <br>
+   
+              <!-- <b>Download Report</b> <br> -->
+              <div class="report_buttons">
+
+                <button nbButton status="primary" class="mr_10" (click)="exportSummaryReport()"
+                  [disabled]="!exportRange?.start || !exportRange?.end">
+                  Summary <i class="ml_10 fa fa-download"></i>
+                </button>
+
+                <button nbButton status="primary" class="mr_10" (click)="exportDetailedReport()"
+                  [disabled]="!exportRange?.start || !exportRange?.end">
+                  Detailed <i class="ml_10 fa fa-download"></i>
+                </button>
+              </div>
+            </div>
+
+
+          </ng-template>
+          <span>
+            <button size="medium" type="submit" nbButton status="primary"
+              (click)="initAddEntry()">Add Timesheet</button>
+          </span>
+      
+
+        </div>
+
+
+
+      </div>
+    </div>
+    <div class="timesheet_grid">
+
+      <app-timesheet-daily-view [searchText]="searchOn" [filterData]="filterOn" [showRegion]="showRegion" [buttonPressed]="isButtonPressed"
+        *ngIf="selectedTab === 'daily'">
+      </app-timesheet-daily-view>
+      <app-timesheet-weekly-view [searchText]="searchOn" [filterData]="filterOn" [totalRegion]="totalRegion" [buttonPressed]="isButtonPressed"
+        *ngIf="selectedTab === 'weekly'" (weekStartChanged)="setPickerDate($event.newDate, $event.newDay)">
+      </app-timesheet-weekly-view>
+    </div>
+  </nb-layout-column>
+</div>
+
+<div class="backdrop "></div>

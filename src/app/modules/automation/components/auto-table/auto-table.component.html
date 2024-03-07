@@ -1,0 +1,59 @@
+<app-loader [loading]="loading"></app-loader>
+<div class="user-points-table" *ngIf="dataSource">
+    <table mat-table [dataSource]="dataSource.data" class="auto-table">
+        <ng-container matColumnDef="automation">
+            <th mat-header-cell *matHeaderCellDef style="width: 90%; display:none;">Automation</th>
+            <td mat-cell *matCellDef="let element" style="width: 90%;" (click)="openDetailsModal(element)">
+                <span class="resp-container">
+                    <label class="show_in_resp">Automation</label>
+                 
+                    <span class="flex row-details">
+                        <span>
+                            <i class="fa fa-user-clock auto-type"></i>
+                            Send a message to <span class="txt-color"> {{ element.user ? element.user.name : 'All employees'}}</span> before all schedules 
+                            <span *ngIf="element.all_schedules !== 1" class="txt-color">that fall between 
+                                {{ element.schedule_start_time ? (changeTimezone(element.schedule_start_time) | date: 'hh:mm a') : '' }} to 
+                                {{ element.schedule_end_time ? (changeTimezone(element.schedule_end_time) | date: 'hh:mm a') : ''}}
+                                <span class="small-text" *ngIf="element.is_graveyard == 1">(Next day)</span> 
+                            </span>  
+                      
+                        </span>
+                       
+                        <span *ngIf="!element.is_expired" class="tags " [ngClass]="{'running': element.is_paused == 0, 'paused': element.is_paused == 1}">{{element.is_paused ? 'Paused' : 'Running'}}</span>
+                        <span class="tags expired" *ngIf="element.is_expired">Expired</span>
+                    </span>
+                </span>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef style="width: 5%;text-align: center; display:none;">Action</th>
+            <td mat-cell *matCellDef="let element" class="status_badge" style="width: 5%; text-align: center">
+                <span class="resp-container">
+                    <label class="show_in_resp">Action</label>
+                    <span class="actions" *ngIf="!element.is_expired">
+                        <app-confirm-popup [type]="'Start'" [title]="'Automation'" [textToDisplay]="'Are you sure you want to start this automation?'"
+                        (proceedDelete)="proceed(element, false)" [status]="'primary'">
+                        <i *ngIf="element.is_paused" class="fa-solid fa-circle-play start"  nbTooltipPlacement="right" nbTooltip="Start automation"></i>
+                        </app-confirm-popup>
+                        <app-confirm-popup [type]="'Pause'" [title]="'Automation'" [textToDisplay]="'Are you sure you want to pause this automation?'"
+                        (proceedDelete)="proceed(element, true)" [status]="'danger'">
+                        <i *ngIf="!element.is_paused" class="fa-solid fa-circle-pause pause"  nbTooltipPlacement="right" nbTooltip="Pause automation"></i>
+                        </app-confirm-popup>
+                    </span>
+                </span>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ 'expired-row': row.is_expired == 1}"
+            class="showhim"></tr>
+    </table>
+</div>
+
+
+<app-no-records [display]="regionId == 0" class="automation-animation"
+    [isScheduler]="false" [animation]="'selectStoreAutomation'" [animation2]="'arrowTop'"></app-no-records>
+
+<app-no-records class="automation-animation" [display]="emptyResults" [animation]="'automation'"
+    [textMessage]="'You have not automated any task yet.'"></app-no-records>
+<!-- <app-no-search-records [display]="!emptyResults && emptySearchResults"></app-no-search-records> -->

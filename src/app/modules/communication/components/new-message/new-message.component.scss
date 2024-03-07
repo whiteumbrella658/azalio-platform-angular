@@ -1,0 +1,57 @@
+// .footer_button {
+//   justify-content: flex-end;
+// }
+// .link {
+//   text-decoration: underline;
+//   color: blue;
+//   cursor: pointer;
+// }
+.new-message_container {
+  padding: 10px 24px;
+  height: 78vh;
+  min-height: 78vh;
+  // height: 84vh;
+  // min-height: 84vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  // background-color: #efefef;
+}
+.error-no-user {
+  display: block;
+  margin-top: 10px;
+  color: #d22828;
+  font-weight: bold;
+}
+
+@media (max-width: 450px) {
+  .new-message_container {
+    height: 78vh;
+    max-height: 80vh;
+    min-height: 78vh;
+    // background-color: #efefef;
+  }
+
+  // .chats_page_wrapper {
+  //   height: 100%;
+  // }
+
+  .nb-tag-list-with-input.status-basic:focus {
+    outline-style: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    -webkit-transition: width 0.35s ease-in-out !important;
+    transition: width 0.35s ease-in-out !important;
+  }
+  .new-message_container {
+    overflow: auto !important;
+    position: relative;
+  }
+}
+// .disabled {
+//     .send-button{
+//      pointer-events: none !important;
+//      color: #969696 !important;
+//      background-color: var(--button-filled-primary-disabled-background-color) !important;
+//     }
+// }

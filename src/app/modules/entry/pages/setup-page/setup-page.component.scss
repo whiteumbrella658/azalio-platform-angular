@@ -1,0 +1,211 @@
+
+// .logo {
+//   font-size: 18px;
+//   top: 15px;
+//   font-weight: bold;
+//   padding-left: 20px;
+//   .logo_top {
+//     height: 4px;
+//     width: 23px;
+//     background: var(--color-primary-100);
+//     display: block;
+//     position: absolute;
+//     top: -15px;
+//   }
+// }
+
+// .active {
+//   position: relative;
+//   color: var(--color-primary-100) !important;
+// }
+
+// .header_wrapper {
+//   display: flex;
+//   justify-content: space-between;
+// }
+
+.setup_wrapper {
+  padding: 80px;
+  padding-top: 65px;
+  background: #fff;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+
+  div {
+    width: 100%;
+  }
+}
+
+.footer_button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.artwork img {
+  position: absolute;
+  bottom: 0;
+}
+
+// .logo_svg {
+//   // height: 30px;
+//   position: absolute;
+//   top: -10px !important;
+//   width: 160px;
+// }
+
+@media (max-width: 931px) {
+  .setup_wrapper div {
+    width: 100%;
+    flex-direction: column;
+  }
+  .setup_wrapper {
+    padding: 30px;
+  }
+  .right_section {
+    display: none;
+  }
+  .phone-num {
+    width: 100% !important;
+    margin-left: 0px !important;
+  }
+  .country-code {
+    width: 100% !important;
+    margin-top: 5px;
+  }
+  .footer_button {
+    .launch-btn {
+      display: flex;
+      justify-content: flex-end;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+  }
+  .needed {
+    right: 0px !important;
+  }
+}
+
+.artwork img {
+  position: fixed;
+  top: 0px;
+  height: 100%;
+  right: 0px;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+}
+.logo-img {
+  width: 50px;
+  margin: 0 auto;
+}
+.logo-text {
+  width: 100px;
+  margin: 0 auto;
+}
+.input-label {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #6e689b;
+  font-weight: 600;
+}
+
+.heading-text {
+  color: #222b45b5;
+  margin-top: 55px;
+}
+
+@media (max-width: 1100px){
+ .right_section
+ {
+  display: none;
+ }
+ .left_section
+ {
+  width: 100%;
+ }
+}
+
+
+.link-expiry-wrapper {
+  height: 90vh;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 25px;
+}
+.logo-wrapper {
+  top: 15px;
+  padding-left: 20px;
+}
+
+.link-expiry-wrapper .left_section {
+  text-align: center;
+  // margin-top: 100px;
+  z-index: 11 !important;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.logo-azalio {
+  width: 200px;
+  margin: 0 auto;
+}
+.label-txt {
+  font-size: 20px;
+  color: #494949;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.email {
+  font-size: 20px;
+  margin-bottom: 35px;
+  color: black;
+  font-weight: 600;
+}
+.expiry-link {
+  font-size: 19px;
+  color: #7b68ee;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 600px) {
+  .logo-wrapper {
+    display: flex;
+    margin: 0 auto;
+  }
+  .label-txt {
+    font-size: 13px !important;
+    color: #494949;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    margin-right: 18px;
+    margin-left: 18px;
+  }
+  .expiry-link {
+    font-size: 14px !important;
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+  .company-name {
+    line-height: 1.2;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 17px;
+  }
+}
+@media (max-width: 600px) {
+  .left_section {
+    margin-top: 5px;
+  }
+}
+
+@media (max-width: 930px) and (min-width: 600px) {
+  .left_section {
+    margin-top: 15px;
+  }
+}

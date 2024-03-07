@@ -1,0 +1,225 @@
+<app-loader [loading]="loading"></app-loader>
+<nb-card [nbSpinner]="loadingSpinner" class="for_spinner" style="height: 100vh;top:-25px;">
+    <form *ngIf="advancedForm" #ngForm="ngForm" id="form" [formGroup]="advancedForm" (ngSubmit)="submit(ngForm)">
+
+        <div class="advanced-features-wrapper">
+            <div class="header">
+                <span class="title">
+                    <span style="color: #6e689b;">
+                        Open Shifts
+                    </span>
+                    <span class="sub-title">
+                        Enable this feature to allow mobile users to post their shifts to reduce manager intervention in
+                        finding substitutes.
+                        <br>Their schedule will automatically be updated once someone else picks their shift.
+                    </span>
+                </span>
+                <span class="save-btn">
+                    <button [disabled]="disableDueToEmptyGroups || (disable && noChangeGroups)" size="medium"
+                        type="submit" nbButton status="primary">Save</button>
+                </span>
+            </div>
+
+            <div class="feature-details">
+                <span class="parent-wrapper" style="display: flex;justify-content: space-between;">
+
+                    <span class="heading">
+                        <!-- <i class="fas fa-calendar-alt settings-icon" style="color: #ff9c7b;"></i>  -->
+                        <img src="assets/open-shift.png" style="width: 22px;
+                        margin-right: 8px;">
+                        Advertise Open Shifts
+                    </span>
+                    <span>
+                        <nb-toggle [formControlName]="'is_open_shift'" (change)="resetForm()" class="feature-toggle"
+                            labelPosition="end">
+                        </nb-toggle>
+                    </span>
+
+                </span>
+                <app-no-records [display]="!advancedForm?.controls?.is_open_shift.value" [animation]="'openshift'"  [animation2]="'arrowTop'"></app-no-records>
+                <div class="child-wrapper" *ngIf="advancedForm?.controls?.is_open_shift.value == 1">
+                    <div class="child-container assignment-child-toggle">
+
+                        <span class="assignment-toggle">
+                            <div class="feature-text weekly-hrs">
+                                <span class="feature-name">
+                                    Max. Weekly Hours
+                                <br />
+                                    <span class="feature-helper-text">
+                                        If weekly clocked in hours of an employee exceeds this limit, a warning will be
+                                        shown while accepting an open shift.
+                                    </span>
+                                </span>
+                            </div>
+                        </span>
+                        <span>
+                            <span class="input-notify-time">
+                                <app-text-input [controlName]="'max_weekly_hours'" [form]="advancedForm" [maxlength]="2"
+                                    [placeholder]="'e.g., 10'">
+                                </app-text-input>
+                                <span style="margin: 8px 8px 8px 8px"> Hrs. </span>
+                            </span>
+                            <app-error-message [key]="'max_weekly_hours'" [form]="advancedForm" [isSubmitted]="true"
+                                class="error-input">
+                            </app-error-message>
+
+                        </span>
+                    </div>
+
+
+                    <div class="child-container assignment-child-toggle">
+                        <span class="assignment-toggle">
+                            <div class="feature-text">
+                                <span class="feature-name">
+                                    Block Users
+                                    <br />
+                                    <span class="feature-helper-text">
+                                        Block users from accepting open shifts if picking up a particular shift will lead
+                                        them to exceed their max weekly hours.
+                                    </span>
+                                </span>
+                            </div>
+                        </span>
+                        <span class="right-items">
+                            <nb-toggle [formControlName]="'block_open_shifts'" class="feature-toggle"
+                                aria-label="assignment-toggle" role="switch" labelPosition="end">
+                            </nb-toggle>
+                        </span>
+                    </div>
+                    <div class="child-container assignment-child-toggle">
+                        <span class="assignment-toggle">
+                            <div class="feature-text">
+                                <span class="feature-name">
+                                    SMS Notification
+                                    <br />
+                                    <span class="feature-helper-text">
+                                        Allow permission to send SMS to employees related to open shift availability.
+                                    </span>
+                                </span>
+                            </div>
+                        </span>
+                        <span class="right-items">
+                            <nb-toggle [formControlName]="'is_open_shift_sms'" class="feature-toggle"
+                                aria-label="assignment-toggle" role="switch" labelPosition="end">
+                            </nb-toggle>
+                        </span>
+                    </div>
+                    <div class="child-container assignment-child-toggle">
+                        <span class="assignment-toggle">
+                            <div class="feature-text">
+                                <span class="feature-name">
+                                    <span class="container">
+                                        Manager Approval
+                                        <span class="new">New</span>
+                                    </span>
+                                    <!-- <br /> -->
+                                    <span class="feature-helper-text">
+                                        Enable this feature to allow web user with scheduler access to accept/reject open shift requests.
+                                    </span>
+                                </span>
+                            </div>
+                        </span>
+                        <span class="right-items">
+                            <nb-toggle [formControlName]="'open_is_manager_approval'" class="feature-toggle" aria-label="assignment-toggle"
+                                role="switch" labelPosition="end">
+                            </nb-toggle>
+                        </span>
+                    </div>
+                    <div class="child-container assignment-child-toggle">
+                        <span class="assignment-toggle">
+                            <div class="feature-text">
+                                <span class="feature-name">
+                                    Custom Grouping
+                                    <br />
+                                    <span class="feature-helper-text">
+                                        Create custom groups for stores. By default open shifts will be available within each store only.
+                                    </span>
+                                </span>
+                            </div>
+                        </span>
+                        <span class="right-items">
+                            <nb-toggle [formControlName]="'custom_groups'" (change)="onCustomGroup()"
+                                class="feature-toggle" aria-label="assignment-toggle" role="switch" labelPosition="end">
+                            </nb-toggle>
+                        </span>
+                    </div>
+                    <span *ngIf="advancedForm?.controls.custom_groups?.value">
+                        <span class="no-background">
+                            <span class="txt-dragdrop">
+                                Drag & drop store names in groups.
+                               
+                            </span>
+                            <span class="right-elements">
+                               
+                            <button class="add-group" nbButton type="button" [disabled]="groups?.length > 19"
+                                (click)="addGroup()"> 
+                                <i class="fa fa-plus" aria-hidden="true" style="margin-right: 4px;"></i>
+                                Add another group</button>
+                                <span class="helper-txt" *ngIf="!disable && !noChangeGroups && disableDueToEmptyGroups">
+                                    <i class="fa fa-exclamation-triangle" style="color: #fe7e21;"></i>
+                                    Please add atleast one store to a group to save custom grouping.
+                                </span>
+                                </span>
+                        </span>
+                    </span>
+                    <div class="card-row mt-10" cdkDropListGroup *ngIf="advancedForm?.controls.custom_groups?.value">
+                        <div class="card-col store-wrapper">
+                            <nb-card accent="primary" size="medium" class="store-container">
+                                <nb-card-header>Stores
+                                    <span class="store-count">{{stores?.length}} stores</span>
+                                </nb-card-header>
+                                <nb-card-body>
+                                    <div cdkDropList id="stores" [cdkDropListData]="stores" class="store-list"
+                                        (cdkDropListDropped)="drop($event)">
+                                        <div *ngFor="let store of stores" class="store-box" cdkDrag>
+                                            {{store.name}}
+                                        </div>
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                        <i class="fa-solid fa-arrow-right-arrow-left swap-arrows"></i>
+                        <div class="group-container">
+                            <!-- <div class="banner-txt" *ngIf="!disable && !noChangeGroups && disableDueToEmptyGroups">
+                                <span>
+                                    <i class="fa fa-exclamation-triangle" style="margin-right:10px;color: #fe7e21;"></i>
+                                </span>
+                                <span class="unpublish-txt">
+                                    Please add atleast one store to a group to save custom grouping.
+                                </span>
+                            </div> -->
+                            <div class="groups">
+                                <span class="groups-list-wrapper" *ngFor="let group of groups; let i = index;">
+                                    <nb-card size="tiny" class="store-container">
+                                        <nb-card-header>Group {{i + 1}}
+                                            <span class="store-count">{{group.stores?.length}} stores</span>
+                                            <i *ngIf="groups?.length > 1"
+                                                class="fa-solid fa-circle-xmark right delete-groups"
+                                                (click)="removeGroup(i)"></i>
+                                        </nb-card-header>
+                                        <nb-card-body>
+                                            <div cdkDropList id="{{group.groupId}}" [cdkDropListData]="group.stores"
+                                                class="store-list" (cdkDropListDropped)="drop($event)">
+                                                <div *ngFor="let store of group.stores" class="store-box" cdkDrag>
+                                                    <span class="store-tags">{{store.name}}</span>
+
+                                                </div>
+
+                                            </div>
+                                            <!-- [class.item__moved]="group.originalProjectName !== group.projectName" -->
+                                        </nb-card-body>
+                                        <!-- <span (click)="removeGroup(i)" class="delete-grp">Delete group <i
+                                                class="fas fa-trash right"></i></span> -->
+                                    </nb-card>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+</nb-card>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22.378" height="23.398" viewBox="0 0 22.378 23.398">
+  <g id="Group_1468" data-name="Group 1468" transform="translate(-1042.622 -239.602)">
+    <path id="Icon_material-date-range" data-name="Icon material-date-range" d="M10.312,11.717H8.374v1.937h1.937Zm3.874,0H12.249v1.937h1.937Zm3.874,0H16.123v1.937H18.06ZM20,4.937h-.969V3H17.092V4.937H9.343V3H7.406V4.937H6.437A1.928,1.928,0,0,0,4.51,6.874L4.5,20.434a1.937,1.937,0,0,0,1.937,1.937H20a1.943,1.943,0,0,0,1.937-1.937V6.874A1.943,1.943,0,0,0,20,4.937Zm0,15.5H6.437V9.78H20Z" transform="translate(1038.122 236.602)" fill="#ffc300"/>
+    <circle id="Ellipse_97" data-name="Ellipse 97" cx="6" cy="6" r="6" transform="translate(1053 251)" fill="#ffc300"/>
+    <path id="Icon_ionic-ios-information" data-name="Icon ionic-ios-information" d="M16.552,11.6a.643.643,0,1,1,.639.624A.624.624,0,0,1,16.552,11.6Zm.044,1.117h1.191v4.494H16.6Z" transform="translate(1041.806 243)" fill="#fff"/>
+  </g>
+</svg>

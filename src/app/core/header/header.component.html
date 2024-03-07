@@ -1,0 +1,281 @@
+<ng-template #headerRoutes>
+    <span *ngIf="isTimesheetEnabled" (click)="navigate('/timesheet', 1)"
+        [ngClass]="{'disable-icons': noRegions === true,'active' : index === 1}"
+        [style.backgroundImage]="getGradients(1)">
+        <i class="fas fa-clock header-icons" [style.color]="'#83C8FF'" alt="timesheets icon" nbTooltipPlacement="bottom"
+            nbTooltip="Timesheets"></i>
+        <div class="routes_label">Timesheets
+        </div>
+    </span>
+    <!-- <span class="notifications-sch"> -->
+    <span class="notifications-sch" *ngIf="isSchedulerEnabled" (click)="navigate('/scheduler', 2)"
+        (mouseenter)="showNotiData=true;" (mouseleave)="showNotiData=false;"
+        [ngClass]="{'active' : index === 2, 'disable-icons': noRegions === true}"
+        [style.backgroundImage]="getGradients(2)">
+        <!-- [nbTooltip]="isSchedulerNotification ? 'Pending time off requests in ' + stores.join(', ') : 'Scheduler'" -->
+        <i class="fas fa-calendar-alt header-icons"
+            [nbTooltipDisabled]="isSchedulerNotification || isOpenSwapNotification" nbTooltip="Schedule"
+            [style.color]="'#ffac90'" alt="assignment icon" nbTooltipPlacement="bottom"></i>
+        <i *ngIf="isSchedulerNotification || isOpenSwapNotification" class="fa-solid fa-circle bubble-header"></i>
+        <div class="routes_label">Scheduler</div>
+        <!-- </span> -->
+        <nb-card *ngIf="showNotiData && (isSchedulerNotification || isOpenSwapNotification)">
+            <nb-card-body>
+                <span class="requests" *ngIf="isSchedulerNotification">
+                    <span class="noti-heading">Stores with pending time off requests:</span>
+                    <span class="stores">{{stores.join(', ')}}</span>
+                </span>
+                <span class="requests" *ngIf="isOpenSwapNotification">
+                    <span class="noti-heading">Stores with open/swap requests:</span>
+                    <span class="stores">{{storesOpenSwap.join(', ')}} </span>
+                </span>
+            </nb-card-body>
+        </nb-card>
+    </span>
+
+
+    <span *ngIf="isTaskEnabled" (click)="navigate('/tasks', 4)"
+        [ngClass]="{'disable-icons': noRegions === true, 'active' : index === 4}"
+        [style.backgroundImage]="getGradients(4)">
+        <i class="fas fa-tasks header-icons" [style.color]="'#90E0C3'" alt="organization icon"
+            nbTooltipPlacement="bottom" nbTooltip="Tasks"></i>
+        <div class="routes_label">
+            Tasks</div>
+    </span>
+    <span class="notifications-sch" *ngIf="isRecognitionEnabled" (click)="navigate('/recognition', 7)"
+        (mouseenter)="showRewardsNotiData=true;" (mouseleave)="showRewardsNotiData=false;"
+        [ngClass]="{'disable-icons': noRegions === true,'active' : index === 7}"
+        [style.backgroundImage]="getGradients(7)">
+        <i class="fa fa-trophy header-icons" [style.color]="'#ffd276'" aria-hidden="true" nbTooltip="Recognition"
+            nbTooltipPlacement="bottom" [nbTooltipDisabled]="isRewardsNotification"></i>
+        <i *ngIf="isRewardsNotification" class="fa-solid fa-circle bubble-header"></i>
+        <div class="routes_label">Recognition</div>
+        <nb-card *ngIf="showRewardsNotiData && isRewardsNotification">
+            <nb-card-body>
+                <span class="requests" *ngIf="isRewardsNotification">
+                    <span class="noti-heading">Stores with pending gift card requests:</span>
+                    <span class="stores">{{storesRewardsNoti.join(', ')}}</span>
+                </span>
+            </nb-card-body>
+        </nb-card>
+    </span>
+
+    <span *ngIf="isCommunicationEnabled" (click)="navigate('/communication', 5)"
+        [ngClass]="{'disable-icons': noRegions === true,'active' : index === 5}"
+        [style.backgroundImage]="getGradients(5)">
+        <i class="fas fa-comment header-icons" [style.color]="'#f3b2ff'" aria-hidden="true" nbTooltip="Messaging"
+            nbTooltipPlacement="bottom"></i>
+        <ng-container *ngIf="user$ | async as user">
+            <div *ngIf="user.unreadMessageCount > 0" style="position: relative;">
+                <nb-badge text="{{user.unreadMessageCount > 9 ? '9+' : user.unreadMessageCount}}" status="warning"
+                    position="bottom right" class="message_count">
+                </nb-badge>
+            </div>
+        </ng-container>
+        <div class="routes_label">
+            Messaging</div>
+    </span>
+    <span *ngIf="isOrganizationEnabled" (click)="navigate('/organization', 3)" class="info_popup"
+        [ngClass]="{'disable-icons': noRegions === true, 'active' : index === 3}"
+        [style.backgroundImage]="getGradients(3)">
+        <div class="popover__wrapper">
+            <i class="fa fa-users header-icons" [style.color]="'#C1E950'" alt="organization icon"
+                nbTooltipPlacement="bottom" nbTooltip="Organization"></i>
+            <div *ngIf="!loading && !noRegions && userCount == 0" class="popover__content">
+                <p class="popover__message"><span class="popup-heading">Add users to your store here.</span></p>
+            </div>
+        </div>
+        <div class="routes_label">
+            Organization</div>
+    </span>
+    <span *ngIf="isInteractiveCommunicationEnabled" (click)="navigate('/survey', 9)" class="info_popup"
+        [ngClass]="{'disable-icons': noRegions === true,'active' : index === 9}"
+        [style.backgroundImage]="getGradients(9)">
+        <div class="popover__wrapper">
+            <i class="fa-solid fa-comments header-icons" [style.color]="'#a0b8f4'" alt="communication icon"
+                nbTooltipPlacement="bottom" nbTooltip="Communication"></i>
+        </div>
+        <div class="routes_label">
+            Communication</div>
+    </span>
+    <span *ngIf="isAutomationEnabled" (click)="navigate('/automation', 8)" class="info_popup"
+        [ngClass]="{'disable-icons': noRegions === true, 'active' : index === 8}"
+        [style.backgroundImage]="getGradients(8)">
+        <div class="popover__wrapper">
+            <i class="fa-solid fa-bolt-lightning header-icons" [style.color]="'#71DBDB'" alt="automation icon"
+                nbTooltipPlacement="bottom" nbTooltip="Automation"></i>
+        </div>
+        <div class="routes_label">Automation</div>
+    </span>
+    <span *ngIf="isSettingsEnabled" (click)="navigate('/settings', 6)" [ngClass]="{'active' : index === 6}"
+        [style.backgroundImage]="getGradients(6)">
+        <div class="popover__wrapper">
+            <i class="fa fa-cog header-icons" [style.color]="'#b3aced'" aria-hidden="true" nbTooltip="Settings"
+                nbTooltipPlacement="bottom"></i>
+            <div *ngIf="isAccountOwnerFirstLogin" class="popover__content">
+                <i (click)="isAccountOwnerFirstLogin = false" class="fa fa-times primary_color pointer close-popup"></i>
+                <p class="popover__message"><span class="popup-heading">Welcome to the settings!</span>
+                    <span>
+                        You can review/edit these settings now or can come back later.</span>
+                </p>
+            </div>
+        </div>
+        <div class="routes_label"> Settings</div>
+    </span>
+</ng-template>
+
+<ng-container>
+    <!-- [ngClass]="{'portrait': tabOrientation?.includes('portrait'),'landscape': tabOrientation?.includes('landscape')}" -->
+    <!-- *ngIf="isDesktopView; else templateRespMenu" -->
+    <div class="large-devices askQ-header" style="display: contents;">
+        <div class="relative flex">
+            <span>
+                <a *ngIf="!isAskQ" (click)="gs.aboutAzalio('https://www.azal.io/')">
+                    <img src="assets/logo-azalio.png" style="display: block; width: 145px;margin-top: 7px;"
+                        alt="azal logo" class="logo_svg">
+                </a>
+                <a *ngIf="isAskQ" (click)="gs.aboutAzalio('https://www.azal.io/')">
+                    <img src="assets/askQ-azalio.png" alt="azal logo" class="AQ-azalio">
+                </a>
+            </span>
+
+            <img nbTooltip="Admin home" *ngIf="storageService?.companyId" (click)="goToAdminView()"
+                src="assets/home.png" class="home-icon">
+        </div>
+        <ng-container *ngIf="!isAskQ">
+            <div class="routes " *ngIf="roleConfig">
+                <ng-container *ngTemplateOutlet="headerRoutes"></ng-container>
+            </div>
+        </ng-container>
+    </div>
+    <div class="mr_10  user_avatar_name askQ-header">
+        <span style="position:fixed; right:5%;">
+            <span class="header-dropdown" *ngIf="roleConfig && !isAskQ">
+                <app-region-dropdown [controlName]="'region_id'" [form]="form" [selectedRegionId]="selectedRegionId"
+                    [selectedRegionTitle]="selectedRegionName" [singleRegionId]="singleRegionId"
+                    [singleRegionName]="singleRegionName"
+                    [placeholder]="(roleId ===2 || isPartner==1)? getCompanyName():'All Stores '" [header]="true"
+                    [index]="index" (regionChange)="regionChange($event)" [companyName]="getCompanyName()"
+                    [isRegionsUpdated]="isRegionsUpdated" [roleId]="roleId" [isPartner]="isPartner"
+                    (oneStoreCompany)="oneStoreCompanyData($event)">
+                </app-region-dropdown>
+            </span>
+        </span>
+
+        <span class="trim_text pointer avatar" style="margin-top: 2px;cursor:auto;">
+            <span *ngIf="isAskQ" class="AQ-username">{{dataService?.getUserName()}}</span>
+            <app-user-avatar size="medium" style="cursor:pointer;" [nbPopover]="templateRef" *ngIf="profileInfo"
+                onlyPicture [name]="profileInfo?.name" [color]="profileInfo.color + opacity"
+                [initialColor]="profileInfo.color">
+            </app-user-avatar>
+        </span>
+        <ng-template #templateRef id="test">
+            <ul class="menu menu-resp" *ngIf="profileInfo">
+
+                <li>
+                    <app-user-avatar id="headerPopupAvatar" size="large" [name]="dataService?.getUserName()"
+                        [color]="profileInfo.color + opacity" [initialColor]="profileInfo.color" size="large"
+                        class="mb_10"></app-user-avatar>
+
+                    <span class="email trim-email first-item" *ngIf="profileInfo.role_title">
+                        {{dataService?.getLoggedInUserRole()}}
+                    </span>
+
+                    <span class="email trim-email second-item" *ngIf="profileInfo.email">
+                        {{dataService?.getLoggedInUserEmail()}}
+                    </span>
+                    <span class="email comapnay_title" *ngIf="profileInfo.company_title">
+                        {{getCompanyName()}}
+                    </span>
+                </li>
+                <ng-container *ngIf="!isAskQ">
+                    <li class="pointer sub-li desktop-list" (click)="open('intro')">
+                        <nb-icon icon="question-mark-circle-outline"></nb-icon>
+                        Help
+                    </li>
+
+                    <li class="pointer sub-li" (click)="open('whatNew')">
+                        <i class="fas fa-bullhorn what-new-icon" aria-hidden="true"></i>
+                        What's New
+                    </li>
+                </ng-container>
+
+                <li class="pointer sub-li" [ngClass]="{'signout': isAskQ}" (click)="logout()">
+                    <nb-icon icon="log-out-outline"></nb-icon>
+                    Log Out
+                </li>
+                <li *ngIf="isAskQEnabled">
+                    <button (click)="switchToAskQ()" class="switch-btn" status="" nbButton type="button">
+                        Switch to {{isAskQ ? 'Azalio' : 'AskQ'}}
+                    </button>
+                </li>
+            </ul>
+        </ng-template>
+    </div>
+</ng-container>
+
+<i class="fas fa-bars small-devices askQ-resp"
+    style="font-size: 25px;margin-top:6px; margin-left: 10px; color: #7b68ee;" (click)="onClick()">
+    <app-sidebar [showSideBar]="showSideBar" [header]="true" class="slider-resp">
+        <div class="relative logo">
+            <span>
+                <a *ngIf="!isAskQ" (click)="gs.aboutAzalio('https://www.azal.io/')">
+                    <img src="assets/logo-azalio.png" style="display: block; width: 160px;    margin-top: 10px;
+                    margin-bottom: 15px;" alt="azal logo for desktop view" class="logo_svg">
+                </a>
+                <a *ngIf="isAskQ" (click)="gs.aboutAzalio('https://www.azal.io/')">
+                    <img src="assets/askQ-azalio.png" alt="azal logo" class="AQ-azalio">
+                </a>
+            </span>
+            <img nbTooltip="Admin home" *ngIf="storageService?.companyId" (click)="goToAdminView()"
+                src="assets/home.png" class="home-icon">
+        </div>
+        <div class="routes resp-header" *ngIf="roleConfig && !isAskQ">
+            <ng-container *ngTemplateOutlet="headerRoutes"></ng-container>
+        </div>
+        <ul class="menu menu-resp" *ngIf="profileInfo">
+
+            <li>
+                <app-user-avatar id="headerPopupAvatar" size="large" [name]="dataService?.getUserName()"
+                    [color]="profileInfo.color + opacity" [initialColor]="profileInfo.color" size="large" class="mb_10">
+                </app-user-avatar>
+
+                <span class="email trim-email first-item" *ngIf="profileInfo.role_title">
+                    {{dataService?.getLoggedInUserRole()}}
+                </span>
+
+                <span class="email trim-email second-item" *ngIf="profileInfo.email">
+                    {{dataService?.getLoggedInUserEmail()}}
+                </span>
+                <span class="email comapnay_title" *ngIf="profileInfo.company_title">
+                    {{getCompanyName()}}
+                </span>
+
+
+            </li>
+
+            <ng-container *ngIf="!isAskQ">
+                <li class="pointer sub-li desktop-list" (click)="open('intro')">
+                    <nb-icon icon="question-mark-circle-outline"></nb-icon>
+                    Help
+                </li>
+
+                <li class="pointer sub-li" (click)="open('whatNew')">
+                    <i class="fas fa-bullhorn what-new-icon" aria-hidden="true"></i>
+                    What's New
+                </li>
+            </ng-container>
+
+            <li class="pointer sub-li" [ngClass]="{'askq-logout': isAskQ}" (click)="logout()">
+                <nb-icon icon="log-out-outline"></nb-icon>
+                Log Out
+            </li>
+
+            <li *ngIf="isAskQEnabled">
+                <button (click)="switchToAskQ()" class="switch-btn" status="" nbButton type="button">
+                    Switch to {{isAskQ ? 'Azalio' : 'AskQ'}}
+                </button>
+            </li>
+        </ul>
+    </app-sidebar>
+</i>

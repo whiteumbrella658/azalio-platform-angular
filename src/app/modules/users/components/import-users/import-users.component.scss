@@ -1,0 +1,43 @@
+.templete_wrapper {
+  background: #f9f9f9;
+  // padding: 14px;
+  border-radius: 5px;
+}
+
+.upload_file.cetner {
+  // border: 1px solid #eeeeee;
+  margin-top: 21px;
+  padding-left: 45px;
+  padding-right: 45px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  text-align: center;
+  background: #f9f7ff;
+  font-size: 13px;
+  // margin-bottom: 10px;
+  // cursor: pointer;
+}
+
+i.fas.fa-2x.fa-file-excel {
+  color: #00bd8b;
+  // font-size: 23px;
+  padding-right: 10px;
+}
+
+.underline {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.title {
+  display: contents;
+}
+
+.excel-btn
+{
+  background-color: white !important;
+  color: #7b68ee !important;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 2%), 0 1px 3px rgb(0 0 0 / 14%);
+  text-transform: capitalize;
+  font-size: 13px;
+}

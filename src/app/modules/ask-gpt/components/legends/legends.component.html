@@ -1,0 +1,18 @@
+<div class="details-textual" *ngIf="title">
+    <span class="text-label">
+        <i class="fa-solid fa-circle"></i> {{title}}
+    </span>
+    <!-- <span class="number">64</span> -->
+</div>
+<div class="details-textual" *ngFor="let legend of data">
+    <span class="text-label">
+        <i [style.color]="legend.color ? legend.color : '#0084FF'" class="fa-solid fa-circle"></i> 
+        {{legend.emp_count}} 
+        <span>{{legend.title ? legend.title : (legend.emp_count?.length > 1 ? 'Employees' : 'Employee')}}</span>
+    </span>
+
+    <span [class]="qType == 2 ? 'score': ''">
+        <ng-container *ngIf="qType == 2">Score: </ng-container>
+        <span class="number">{{legend.value}}</span>
+    </span>
+</div>

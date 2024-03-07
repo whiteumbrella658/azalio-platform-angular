@@ -1,0 +1,114 @@
+.work-shifts-wrapper {
+  // margin: auto;
+  // width: 95%;
+  // padding: 10px;
+  // margin: 0 auto;
+
+  // width: 95%;
+  // padding: 10px;
+  width: 100%;
+  padding-top:20px;
+  padding-bottom: 40px;
+  padding-right: 45px;
+  padding-left: 45px;
+  overflow: auto;
+  max-height: calc(100vh - 60px);
+  margin: 0 auto;
+  
+  .work-shifts-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 10px 0px 10px 0px;
+      display: flex;
+      flex-direction: column;
+    }
+    .sub-title {
+      color: #6e698b;
+      font-size: 13px;
+      font-weight: 500;
+      padding-top: 16px;
+      text-align: justify;
+      margin: 0px -60px 0px 0px;
+      line-height: 1.4;
+    }
+  }
+  .work-shifts-details {
+    background: white;
+    margin: auto;
+    padding: 25px;
+    border-radius: 5px;
+    border: 1px solid #efefef;
+    box-shadow: rgb(110 105 139 / 10%) 1px 0px 2px 2px;
+    .work-shift-item {
+      width: 100%;
+    }
+    .work-shift-input {
+      width: 50%;
+      .label-text {
+        font-size: 13px;
+      }
+      .sub-title {
+        color: #6e698b;
+        font-size: 11px;
+      }
+    }
+  }
+}
+.mt-20
+{
+    margin-top: 20px !important;
+}
+@media(max-width:500px)
+{
+    .work-shifts-wrapper{
+      padding-right: 20px;
+      padding-left: 20px;
+        .work-shifts-header
+        {
+        // flex-direction: column;
+        }
+        .work-shifts-details
+        {
+            .vertical_center
+            {
+                flex-direction: column;
+                
+            }
+            .work-shift-input
+            {
+                width: 100%;
+                padding-right: 0px !important;
+                margin-top: 20px !important;
+            }
+        }
+    } 
+    .mt-20{
+        margin-top: 0px !important;
+    }
+    .mb-20{
+        margin-bottom: 0px !important;
+    }
+}
+.error-input
+{
+    position: absolute;
+    width: 100%;
+}
+.info-heading-icon
+{
+  margin-left: 0px;
+  font-size: 14px;
+  color: #b9a9fd !important;
+}
+
+.heading-info-icon
+{
+  vertical-align: bottom; 
+  width: 17px;
+}

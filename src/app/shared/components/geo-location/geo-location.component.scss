@@ -1,0 +1,155 @@
+/* 
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map. 
+ */
+#map {
+  height: 240px;
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 5px;
+  border: 1px solid #80808078;
+}
+
+/* 
+ * Optional: Makes the sample page fill the window. 
+ */
+// .slider {
+//   // -webkit-appearance: none; /* Override default CSS styles */
+//   // appearance: none;
+//   width: 100%; /* Full-width */
+//   max-height: 5px !important; /* Specified height */
+//   background: #d3d3d3; /* Grey background */
+//   outline: none; /* Remove outline */
+//   //opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+//   -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+//   transition: opacity 0.2s;
+// }
+
+// .slider:hover {
+//   opacity: 1;
+// }
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #7b68ee;
+  cursor: pointer;
+  color: -internal-light-dark(rgb(16, 16, 16), rgb(255, 255, 255));
+}
+
+.disable-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #b0afb5;
+  cursor: pointer;
+}
+
+input[type='range' i] {
+  -webkit-appearance: none !important;
+  appearance: auto;
+  cursor: default;
+  background-color: white;
+  color: #7b68ee !important;
+  padding: initial;
+  border: initial;
+  margin: 2px;
+  height: 8px !important;
+  width: 100%;
+}
+
+.fence-radius {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: #1e1e1ea8;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.context-row {
+  padding-top: 10px;
+  width: 100%;
+}
+.col1 {
+  width: 7%;
+  padding-right: 5px;
+}
+.col2 {
+  width: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.col3 {
+  width: 0%;
+  padding-right: 5px;
+}
+
+.first-child {
+  display: flex;
+  justify-content: flex-start;
+  width: 50%;
+}
+
+.second-child {
+  display: flex;
+  justify-content: flex-end;
+  width: 50%;
+  align-items: center;
+}
+
+.fence-label {
+  width: 30%;
+  margin-left: 15px;
+}
+
+.fence-input {
+  width: 70%;
+  padding-left: 5px;
+  padding-right: 10px;
+}
+.radius-label {
+  width: 25%;
+  padding-right: 10px;
+  padding-left: 5px;
+}
+.radius-input {
+  width: 30%;
+  margin-right: 5px;
+  [nbInput].size-medium:not(.input-full-width)
+  {
+    height: 25px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+.info-icon
+{
+  width: 3%; 
+  padding-right: 5px;
+}
+
+@media(max-width:650px)
+{
+.col2
+{
+  padding-left: 15px;
+}
+.second-child
+{
+  justify-content: center;
+}
+
+}

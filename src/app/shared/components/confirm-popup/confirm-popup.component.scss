@@ -1,0 +1,63 @@
+.confirm_popup {
+  padding: 15px;
+  text-align: center;
+  margin-top: 2px;
+  width: 394px;
+  font-family: 'Nunito';
+  color: #000;
+}
+
+.confirm_popup_footer {
+  right: 22px;
+  bottom: 10px;
+  z-index: 1030;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+}
+
+@media (max-width: 550px) {
+  .confirm_popup {
+    width: 254px !important;
+  }
+}
+
+::ng-deep {
+  .askq-popup {
+    .popup-card {
+      nb-card-header {
+        background: #5390FF !important
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .popup-card {
+    box-shadow: none !important;
+    margin-left: -1px;
+    margin-top: -1px;
+    margin-right: -1px;
+
+    nb-card-header {
+      text-align: center !important;
+      background: #7f84ea !important;
+      border-top-left-radius: 10px !important;
+      border-top-right-radius: 10px !important;
+    }
+  }
+
+  .modal_wrapper .popup-card nb-card-body {
+    overflow-y: hidden !important;
+  }
+}
+
+.manager-comment {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.clickable-area {
+  border-radius: 100px;
+  display: block;
+}

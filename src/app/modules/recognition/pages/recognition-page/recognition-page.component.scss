@@ -1,0 +1,238 @@
+.trophy_wrapper {
+  position: fixed;
+  right: 0;
+  top: 60px;
+}
+.reward-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: stretch;
+  align-items: stretch;
+  // height: calc(100vh - 75.75px);
+  height: 85vh;
+  overflow: hidden;
+  margin-top: 35px;
+}
+
+.flex-item1:nth-child(1) {
+  // flex: 1.5 auto;
+  align-self: auto;
+  margin-right: 35px;
+  width: 73%;
+}
+
+.flex-item1:nth-child(2) {
+  align-self: auto;
+  background-color: #ffffff;
+  width: 27%;
+  border-radius: 15px;
+}
+
+.two-column {
+  display: flex;
+  flex-direction: row;
+  .flex1 {
+    flex: 1;
+    display: flex;
+    padding-left: 20px;
+    padding-top: 20px;
+    font-weight: 600 !important;
+    font-size: 18px;
+    color: #6e689b !important;
+    padding-bottom: 10px;
+  }
+  .flex2 {
+    flex: 1;
+    padding-left: 31px;
+    padding-top: 20px;
+    font-weight: 600 !important;
+    font-size: 13px;
+    color: #ffa447 !important;
+  }
+}
+
+.right-panel {
+  .right_pannel_points {
+    justify-content: center;
+    display: flex;
+    // min-height: 30px;
+    min-height: 48px;
+    align-items: flex-start;    
+    margin-left: 8px;
+    margin-right: 8px;
+
+  }
+}
+
+.right-panel nb-card {
+  height: fit-content;
+}
+
+@media only screen and (max-width: 320px) {
+  .reward-container {
+    flex-direction: column;
+  }
+  .bagde_points {
+    left: 35px !important;
+  }
+  .two-column {
+    .flex1 {
+      padding-left: 40px;
+    }
+  }
+}
+@media (max-width: 1200px) and (min-width: 931px) {
+  .reward-container {
+    margin-top: 85px;
+  }
+}
+@media (max-width: 1100px) and (min-width: 931px) {
+  .flex-item1:nth-child(1) {
+    width: 65%;
+  }
+  .flex-item1:nth-child(2) {
+    width: 35% !important;
+    height: fit-content;
+  }
+  .list {
+    height: 20vh !important;
+  }
+  .right-panel nb-card {
+    height: 77vh !important;
+  }
+}
+@media only screen and (max-width: 931px) {
+  .reward-container {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .flex-item1:nth-child(1) {
+    width: 100%;
+  }
+  .flex-item1:nth-child(2) {
+    margin-top: 15px !important;
+    width: 100%;
+  }
+  .flex-item1:nth-child(3) {
+    .point_cont {
+      width: 100%;
+    }
+  }
+  .bagde_points {
+    left: 35px !important;
+  }
+  .right-panel {
+    overflow: hidden;
+  }
+
+  .two-column {
+    .flex1 {
+      padding-left: 40px;
+    }
+  }
+  .list {
+    height: 50vh !important;
+  }
+  .list li {
+    flex: 1 0 26% !important;
+  }
+}
+.badge-name {
+  color: #303030;
+  font-weight: 500;
+  font-size: 13px;
+  text-align: center;
+}
+@media (max-width: 400px) {
+  .flex-item1:nth-child(1) {
+    margin-right: 6px;
+  }
+}
+
+@media (max-width: 930px) {
+  .total_points_column div {
+    width: auto !important;
+  }
+  .timesheets_wrapper .wrapper_header {
+    padding-bottom: 25px !important;
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+  }
+}
+
+@media (max-width: 453px) and (min-width: 375px) {
+  .rewards_action {
+    height: 90px !important;
+    .content1 {
+      width: 30%;
+    }
+  }
+}
+
+@media (max-width: 474px) and (min-width: 320px) {
+  .rewards_action {
+    height: 100px !important;
+    .content1 {
+      width: 30%;
+    }
+  }
+}
+@media (max-width: 931px) {
+  .trophy_wrapper {
+    display: none;
+  }
+}
+
+.list {
+  flex-direction: row;
+  list-style: none;
+  flex-wrap: wrap;
+  // max-height: 63vh;
+  max-height: 70vh;
+  display: flex;
+  padding: 0;
+  height: fit-content;
+}
+
+.list li {
+  flex: 1 0 30%;
+  color: #fff;
+  margin: auto;
+  flex-direction: column;
+  // padding-bottom: 10px;
+  // padding-top: 10px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+}
+.badge-image {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 5px;
+}
+.badge-image img {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+.badge-container {
+  padding-left: 5px;
+  padding-right: 3px;
+  padding-top: 0px;
+  margin-bottom: 20px;
+}
+
+.recognition {
+  background: url('../../../../../assets/confetti.png');
+  background-repeat: no-repeat;
+  overflow: hidden !important;
+}
+
+.no-store {
+  width: 100% !important;
+}
+.all-store-setting
+{
+ width: 100% !important;
+}

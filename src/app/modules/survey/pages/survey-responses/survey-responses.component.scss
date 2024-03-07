@@ -1,0 +1,344 @@
+.survey-responses {
+    // .wrapper_header {
+    //     top: 11px !important;
+    //     background: #f9faff;
+    // }
+
+    .container {
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+    }
+
+    .right-elements {
+        display: flex;
+        align-items: center;
+    }
+
+    .response-details {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .box-container {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 12px;
+        box-shadow: #dbdbdb9c 0px 3px 8px;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        margin-right: 10px;
+        min-width: 240px;
+    }
+
+    .box1 {
+        background-image: linear-gradient(to right bottom, #cdebff, #deefff, #ecf3ff, #f7f9ff, #ffffff);
+    }
+
+    .box2 {
+        background: white;
+    }
+
+    .row-wrapper1 {
+        display: flex;
+        flex-direction: column;
+        border-left: 3px solid #67ABDA;
+        padding-left: 10px;
+    }
+
+    .first-element {
+        display: flex;
+        // align-items: center;
+        justify-content: space-between;
+    }
+
+    .heading-txt {
+        color: #070707;
+        font-weight: 600;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .img-container img {
+        width: 40px;
+        height: 38px;
+    }
+
+    .second-element {
+        color: #60A7D5;
+        font-size: 28px;
+        font-weight: 600;
+        // padding-bottom: 15px;
+    }
+
+    .row-wrapper2 {
+        font-size: 17px;
+        font-weight: 600;
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+        padding-left: 15px;
+        padding-right: 10px;
+    }
+
+    .positive {
+        color: #48BB78;
+    }
+
+    .negative {
+        color: #FF6A73;
+    }
+
+    .sname-details {
+        font-size: 18px;
+        word-wrap: break-word;
+        width: 120px;
+        font-weight: 500;
+        line-height: 1.3;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        // margin-bottom: 10px;
+    }
+
+    .free-txt-questions {
+        font-size: 14px;
+        word-wrap: break-word;
+        width: 207px;
+        font-weight: 500;
+        line-height: 1.3;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+    }
+
+    .response-txt {
+        color: #464646;
+        font-size: 13px;
+        font-weight: 500;
+        margin-left: -5px;
+    }
+
+    .fs-26 {
+        font-size: 26px;
+    }
+
+    .avg-number {
+        color: #60A7D5;
+    }
+
+    .back-btn {
+        color: #7b68ee !important;
+        background-color: white !important;
+    }
+
+    .tags-container {
+        margin-left: 30px;
+        display: block;
+        // margin-top: -17px;
+        margin-top: -10px;
+        font-size: 12px;
+    }
+
+    .tags {
+        padding: 1px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 10px;
+        margin-right: 5px;
+        display: inline-block;
+        margin-bottom: 5px;
+        color: #060606;
+    }
+
+    .question-dropdown {
+        width: 50%;
+    }
+
+    .status-tag {
+        border-radius: 4px;
+        padding: 3px;
+        display: inline-block;
+        text-align: center;
+        min-width: 54px;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .sent {
+        background: #E7EFFF !important;
+        color: #3B7CFF !important;
+
+    }
+
+    .failed {
+        background: #fdcaca !important;
+        color: #E53838 !important;
+    }
+
+    .default-tag {
+        background: #ffdfaf;
+        color: #fe6700;
+    }
+
+    .failed-icon {
+        color: #E53838;
+        margin-left: 4px;
+    }
+
+}
+
+.mt-27 {
+    margin-top: 27px !important;
+}
+
+.two-column {
+    display: flex;
+    flex-direction: row;
+
+    .flex1 {
+        flex: 1;
+        display: flex;
+        padding-left: 20px;
+        padding-top: 20px;
+        font-weight: 600 !important;
+        font-size: 18px;
+        color: #6e689b !important;
+        padding-bottom: 10px;
+    }
+}
+
+.right-panel {
+    .right_pannel_points {
+        justify-content: center;
+        display: flex;
+        min-height: 48px;
+        align-items: flex-start;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+}
+
+.right-panel nb-card {
+    height: fit-content;
+}
+
+@media(min-width:930px) {
+    .survey-responses {
+        overflow: hidden !important;
+    }
+}
+
+@media(max-width:930px) {
+    .survey-responses {
+        .container {
+            flex-direction: column;
+            align-items: initial;
+        }
+
+        .question-dropdown {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .right-elements {
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .response-details {
+            overflow: auto;
+            flex-wrap: initial;
+        }
+    }
+}
+
+@media (max-width: 600px) and (min-width: 320px) {
+    .anonymous-responses {
+        flex-direction: column;
+    }
+
+    .survey-container {
+        width: 100% !important;
+        padding-bottom: 10px;
+    }
+
+    .anonymous-responses-panel {
+        width: 100% !important;
+        padding: 0px !important;
+    }
+}
+
+@media (max-width: 520px) and (min-width: 320px) {
+    .survey-responses .wrapper_header {
+        padding-bottom: 0px;
+    }
+}
+
+.anonymous-responses nb-card {
+    margin-bottom: 0px;
+    height: 49vh;
+    border: none !important;
+}
+
+.anonymous-responses nb-card-body {
+    overflow: hidden;
+}
+
+.survey-container {
+    // height: 58vh;
+    // overflow: auto;
+    max-height: 60vh;
+    overflow: auto;
+}
+
+.anonymous-responses {
+    display: flex;
+
+    .survey-container {
+        width: 70%;
+        // height: 58vh;
+        // overflow: auto;
+
+    }
+
+    .anonymous-responses-panel {
+        padding-left: 10px;
+        width: 30%;
+    }
+
+    .response-header {
+        font-size: 17px;
+        font-weight: 600;
+        color: #6e689b;
+        margin-top: 4px;
+    }
+
+    .response-list {
+        list-style: none;
+        padding-left: 5px;
+        padding-right: 5px;
+        height: 265px;
+        overflow: auto;
+    }
+
+    .responses {
+        color: #464646;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 15px;
+        border-bottom: 1px solid #80808029;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}

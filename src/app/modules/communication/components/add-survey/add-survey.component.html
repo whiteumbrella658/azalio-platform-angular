@@ -1,0 +1,56 @@
+<div class="modal_wrapper survey">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <label class="title">New Survey</label>
+        </nb-card-header>
+
+        <nb-card-body [nbSpinner]="loading" class="search-user-resp">
+            <ng-container *ngIf="AddSurveyForm">
+                <form #ngForm="ngForm" id="form" [formGroup]="AddSurveyForm" autocomplete="off"
+                    (ngSubmit)="submit(ngForm)">
+                    <span class="input-row">
+                        <i nbTooltip="Question type" class="fas fa-comment-dots icon-color"><span class="mandatory"> *</span></i>
+                        <span class="field-wrapper">
+                            <app-dropdown [Data]="surveyTypeList" [placeholder]="'Select question type'"
+                                [controlName]="'surveyType'" [form]="AddSurveyForm" [show]="true">
+                            </app-dropdown>
+                            <app-error-message [key]="'surveyType'" [form]="AddSurveyForm"
+                            [isSubmitted]="ngForm.submitted">
+                            </app-error-message>
+                        </span>
+                    </span>
+                    <span class="input-row">
+                        <i nbTooltip="Survey question" class="fa fa-question icon-color" style="margin-right: 5px;"> <span class="mandatory">
+                                *</span></i>
+                        <span class="field-wrapper">
+                            <textarea class="survey-txtarea" maxlength="255" aria-label="question input" nbInput
+                                fullWidth name="ques" formControlName="question" placeholder="Enter survey question"
+                                autocomplete="off"></textarea>
+                            <app-error-message [key]="'question'" [form]="AddSurveyForm"
+                                [isSubmitted]="ngForm.submitted">
+                            </app-error-message>
+                        </span>
+                    </span>
+                    <span class="input-row">
+                        <span class="store-user" nbTooltip="Recipient">
+                            <img src="assets/store-user1.png" style="width: 19px;"> <span class="mandatory"> *</span>
+                        </span>
+                        <span class="field-wrapper">
+                            <app-autocomplete-tag-input style="position: relative;"
+                                [placeholder]="'Add recipient by searching store or employee name'"
+                                [isSearchUsers]="true" (changeClick)="onTagSelectionChange($event)">
+                            </app-autocomplete-tag-input>
+                            <app-error-message [key]="'assignments'" [form]="AddSurveyForm"
+                                [isSubmitted]="ngForm.submitted">
+                            </app-error-message>
+                        </span>
+                    </span>
+                    <span class="flex btns-row">
+                        <app-button (onClick)="close()">Cancel</app-button>
+                        <app-submit-button [form]="AddSurveyForm" [label]="'Add'"></app-submit-button>
+                    </span>
+                </form>
+            </ng-container>
+        </nb-card-body>
+    </nb-card>
+</div>

@@ -1,0 +1,19 @@
+<form [formGroup]="form">
+    <ng-container *ngIf="!onlyTime && !onlyDate && !onlyTimePicker">
+        <input aria-label="timer input" nbInput [nbDatepicker]="dateTimePicker" [formControlName]="controlName" [placeholder]="placeholder" />
+        <nb-date-timepicker #dateTimePicker [twelveHoursFormat]="true" format="MM/dd/yyyy hh:mm a"></nb-date-timepicker>
+    </ng-container>
+    <ng-container *ngIf="onlyTime">
+        <input (click)="setClass()" aria-label="timer input" nbInput [nbDatepicker]="dateTimePicker" [formControlName]="controlName" [placeholder]="placeholder" />
+        <nb-date-timepicker #dateTimePicker style="display:none;"
+         [twelveHoursFormat]="true" format="hh:mm a"></nb-date-timepicker>
+    </ng-container>
+    <ng-container *ngIf="onlyTimePicker">
+         <input placeholder="Enter time" (click)="hideFooter()" nbInput [nbTimepicker]="timepicker" [formControlName]="controlName" [placeholder]="placeholder" twelveHoursFormat>
+        <nb-timepicker #timepicker [twelveHoursFormat]="true" timeFormat="hh:mm a" (onSelectTime)="onSelectTime($event)"></nb-timepicker>
+    </ng-container>
+    <ng-container *ngIf="onlyDate">
+        <input (input)="onValueChange($event)" aria-label="timer input" nbInput [nbDatepicker]="datePicker" [formControlName]="controlName" [placeholder]="placeholder" />
+        <nb-datepicker #datePicker [min]="minDate" format="MM/dd/yyyy" [filter]="filter"></nb-datepicker>
+    </ng-container>
+</form>

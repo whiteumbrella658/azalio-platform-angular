@@ -1,0 +1,179 @@
+<div [class]="'modal_wrapper create-survey ' + (class ? class : '')">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <label>
+                <b class="title">Finalize your message</b>
+                <span style="font-size: 13px;">Use our default examples or use AI to generate a new question or a message.</span>
+            </label>
+        </nb-card-header>
+        <span [class]="category ? 'animation-search' : 'default-survey'" *ngIf="botLoading">
+            <app-no-records [display]="true" [animation]="'bot'"
+                [textMessage]="'Formulating the message...'"></app-no-records>
+        </span>
+        <nb-card-body [nbSpinner]="loading">
+            <ng-container *ngIf="SurveyForm">
+                <form #ngForm="ngForm" id="form" [formGroup]="SurveyForm" autocomplete="off"
+                    (ngSubmit)="submit(ngForm)">
+                    <span class="label-row" *ngIf="category">
+                        <span class="category-img"><img [src]="imgUrl"></span>
+                        <span class="category-heading">{{category}}</span>
+                    </span>
+                    <span class="input-row mt-05" style="flex-direction:column">
+                        <!-- <i nbTooltip="Survey question" class="fa fa-question icon-color" style="margin-right: 5px;">
+                            <span class="mandatory">
+                                *</span></i> -->
+                        <span class="field-wrapper fields">
+                            <textarea class="survey-txtarea" maxlength="255" aria-label="question input" nbInput
+                                fullWidth name="ques" formControlName="question" placeholder="Enter survey question"
+                                autocomplete="off"></textarea>
+                            <span class="question-actions">
+                                <span *ngIf="originalQuestion" class="default-language" (click)="revertText()"
+                                  nbTooltip="Revert translation">
+                                    <i class="fa-solid fa-rotate-right"></i> Undo
+                                </span>
+                                <span>
+                                    <img src="assets/translate.jpg" nbTooltip="Translate" (click)="$event.stopPropagation(); hideShowPopup()">
+                                    
+                                </span>
+                                <span class="translate-popup" *ngIf="displayPopup">
+                                    <span class="context-menu">
+                                      <ul class="translate-lang">
+                                        <ng-container *ngFor="let lang of languages">
+                                         <li (click)="translate(lang)" *ngIf="lang.id !== selectedLang?.id"
+                                            style="cursor:pointer;" class="options">
+                                            {{lang.title}}
+                                         </li>
+                                        </ng-container>
+                                      </ul>
+                                    </span>
+                                  </span>
+
+                            </span>
+
+                        </span>
+                        <span class="question-msg">
+                            <app-error-message [key]="'question'" [form]="SurveyForm" [isSubmitted]="ngForm.submitted">
+                            </app-error-message>
+                        </span>
+                    </span>
+                    <span class="input-row">
+                        <!-- <i nbTooltip="Question type" class="fas fa-comment-dots icon-color"><span class="mandatory">
+                                *</span></i> -->
+                        <span class="field-wrapper fields">
+                            <app-dropdown [selectedInput]="selectedDropItem" [Data]="surveyTypeList" [placeholder]="'Select question type'"
+                                [controlName]="'surveyType'" [form]="SurveyForm" [show]="true">
+                            </app-dropdown>
+                            <app-error-message [key]="'surveyType'" [form]="SurveyForm"
+                                [isSubmitted]="ngForm.submitted">
+                            </app-error-message>
+                        </span>
+                    </span>
+
+                    <br *ngIf="showPreview">
+                    <div class="selection-grouping preview-msg-container" *ngIf="showPreview" style="">
+                        <br>
+                        <div class="question-wrapper">
+                            <i class="fa-solid fa-comment"></i>
+                            <span class="question-txt">
+                                You're all set. This is how the SMS would look like.
+                            </span>
+                        </div>
+                        <div class="preview-msg mb_30">
+                            {{form?.surveyType.value == 'NoResponse' ? 'Message' : 'Question'}} by [Your Name]. {{form?.question.value}}
+                            <span *ngIf="form?.surveyType.value == 'scale'">(1= really bad, 10= really great)</span>
+                            <span *ngIf="form?.surveyType.value == 'Yes/No'">(Respond with Yes/No)</span>
+                        </div>
+                    </div>
+                    <span [style.display]="showPreview ? 'none': 'block'">
+                        <div class="actions-row">
+                            <span class="assign-store-checkbox">
+                                <nb-checkbox form="form" formControlName="isAnonymous"  *ngIf="form?.surveyType.value !== 'NoResponse'">
+                                    <span class="assign-user-txt">
+                                       Allow anonymous responses
+                                    </span>
+                                </nb-checkbox>
+                            </span>
+                            <span><button nbButton  type="button" class="another-way-btn"
+                                (click)="askAnotherWay()">Ask another way</button></span>
+                        </div>
+                    </span>
+                    <!-- <div class="helper-txt" [style.visibility]="showPreview ? 'hidden': ''"> Send To:</div> -->
+                    <!-- <span class="dummy-helptxt">
+                    Please select atleast one store or atleast one user to proceed.</span> -->
+                    <div class="selection-grouping" [style.display]="showPreview ? 'none': 'block'"
+                        style="margin-top: 25px;">
+                        <span class="input-row">
+                            <span class="store-user">
+                                Send To 
+                                <i  class="fa-solid fa-circle-info" nbTooltipPlacement="top"
+                                nbTooltip="Selecting a role will filter users from selected stores."></i>
+                                <!-- <i class="fas fa-store icon-color"><span class="mandatory"> *</span></i> -->
+                            </span>
+                            <span></span>
+                            <span class="field-wrapper">
+                                <app-autocomplete-tag-input style="position: relative;"
+                                    [placeholder]="'Search store, user, role'" [disabled]="form.isAllChecked.value"
+                                    [isSearchUsers]="true" [isSearchRole]="true"
+                                    (changeClick)="onTagSelectionChange($event)">
+                                </app-autocomplete-tag-input>
+                                <span class="sub-row">
+                                    <span class="assign-store-checkbox">
+                                        <nb-checkbox form="form" formControlName="isAllChecked"
+                                            style="position: relative; top: 4px;">
+                                            <span class="assign-user-txt">
+                                                Or send to all stores
+                                            </span>
+                                        </nb-checkbox>
+                                    </span>
+                                </span>
+                            </span>
+                        </span>
+                        <span class="error-msg" *ngIf="ngForm.submitted && SurveyForm.errors?.userOrStoreRequired">
+                            <app-error-message [text]="'Please select atleast one store, user or role'"
+                                [form]="SurveyForm" [isSubmitted]="ngForm.submitted">
+                            </app-error-message>
+                        </span>
+                    </div>
+                    <div *ngIf="showScheduleInput" class="selection-grouping"
+                        [style.display]="showPreview ? 'none': 'block'" style="margin-top: 17px;margin-bottom: 17px;">
+                        <span class="input-row">
+                            <span class="store-user" style="margin-bottom: 10px;">
+                                Schedule Message
+                            </span>
+                            <span id="dates-wrapper" class="datefield-wrapper" style="margin-top: 5px;">
+                                <div class="flex vertical_center row-container-date relative"
+                                    *ngFor="let date of dates.controls; let i = index;">
+                                    <div class="date-input">
+                                        <app-timer-input [onlyDate]="true" [minDate]="getMinDate()" [controlName]="'value'" [form]="date"
+                                            [placeholder]="'Enter date'" [filter]="filter(i)"></app-timer-input>
+                                        <app-error-message [key]="'value'" [form]="date"
+                                            [isSubmitted]="ngForm.submitted">
+                                        </app-error-message>
+                                        <span class="delete_icon" *ngIf="dates.length > 1" (click)="removeRow(i)">
+                                            <i class="fa fa-times-circle" nbTooltipPlacement="top"
+                                                nbTooltip="Delete date."></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </span>
+
+
+                        </span>
+                        <span class="add-date-button pointer add-date" [ngClass]="{'disabled': dates.length > 11}">
+                            <span (click)="addDate()"> <i class="fas fa-calendar-plus"></i> Add date</span>
+                        </span>
+
+                    </div>
+                    <div class="flex btns-row">
+                        <app-button (onClick)="close(null)">{{showPreview ? 'Back' : 'Cancel'}}</app-button>
+                        <button *ngIf="!showPreview" nbButton type="submit" status="primary"
+                            class="send-survey">Preview</button>
+                        <button *ngIf="showPreview" nbButton type="button" status="primary" class="send-survey"
+                            (click)="onSend()">Send</button>
+                    </div>
+                </form>
+            </ng-container>
+        </nb-card-body>
+    </nb-card>
+
+</div>

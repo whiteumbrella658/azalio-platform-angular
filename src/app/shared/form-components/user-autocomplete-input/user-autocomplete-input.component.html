@@ -1,0 +1,24 @@
+<nb-card-body [class]="'spinner-search '+ loaderClass" [nbSpinner]="loading" nbSpinnerStatus="basic">
+</nb-card-body>
+
+<nb-tag-list (tagRemove)="onTagRemove($event)" [ngClass]="{'disabled-field': disable || disableInput ? true : false}">
+
+    <nb-tag *ngIf="tagText" [text]="tagText" removable="true"></nb-tag>
+    <input #autoInput [appAutoFocus]="autofocus"
+        type="text" class="username" [placeholder]="!tagText ?'Enter name to search' : ''" nbTagInput
+        [nbAutocomplete]="auto" (input)="onAutocompleteChange()" fullWidth [disabled]="disable || disableInput" />
+        <nb-card class="popover-card">
+            <nb-card-body>
+    <nb-autocomplete [optionsListClass]="className" [optionsPanelClass]="'options-container'" #auto (selectedChange)="onSelectionChange($event)">
+        <nb-option *ngFor="let option of filteredControlOptions$ | async" [value]="option" skip-focusser="true">
+            <span *ngIf="option === -1">No matches found.</span>
+            <ng-container *ngIf="option !== -1">
+                <app-user-avatar size="medium" [name]="option.name" [title]="option.role_title"
+                    [color]="option.color + opacity" [initialColor]="option.color">
+                </app-user-avatar>
+            </ng-container>
+        </nb-option>
+    </nb-autocomplete>
+    </nb-card-body>
+    </nb-card>
+</nb-tag-list>

@@ -1,0 +1,255 @@
+<div class="modal_wrapper add-automation">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <span class="header-container">
+                <label>
+                    <b class="title" style="position: relative;top: 4px;">Automate</b>
+                </label>
+                <span class="sub-header">
+                    Confirm if an employee will show up on time
+                </span>
+            </span>
+            <i class="fa-solid fa-xmark close-modal" (click)="close(null)"></i>
+        </nb-card-header>
+        <nb-card-body [nbSpinner]="userLoading || loading">
+            <ng-container *ngIf="AutomationForm">
+                <nb-stepper #stepper [linear]="true" [orientation]="gs?.isRespMode ? 'vertical' : 'horizontal'"
+                    class="automate">
+                    <nb-step [stepControl]="AutomationForm.controls.user" label="Select employee">
+                        <form #ngForm="ngForm" class="step-container">
+                            <div class="question-wrapper mt-20">
+                                <span class="align-element">
+                                    <i class="fa fa-user"></i>
+                                    <span class="question-txt">
+                                        Send confirmation message to ?
+                                    </span>
+                                </span>
+                            </div>
+                            <!-- <div class="custom-errors" *ngIf="usersList?.length == 1">
+                                <i class="fas fa-exclamation-triangle error-icon"></i>
+                                <span>
+                                    No users in the store.</span>
+                            </div> -->
+                            <div class="inputs-row mb_30">
+                                <!--<app-text-input [autofocus]="true" [placeholder]="'Enter name'" [controlName]="'text'"
+                                [form]="AutomationForm"> </app-text-input>
+                            <app-error-message style="position: absolute;width:100%;" [key]="'text'"
+                                [form]="AutomationForm" [isSubmitted]="ngForm.submitted">
+                            </app-error-message> -->
+
+                                <app-dropdown [Data]="usersList" [placeholder]="'Select employee'"
+                                    [controlName]="'user'" [form]="AutomationForm" [show]="true" [key]="'id'"
+                                    [display]="'name'" [display2]="'role_title'">
+                                </app-dropdown>
+                                <app-error-message *ngIf="usersList?.length > 1" [key]="'user'" [form]="AutomationForm"
+                                    [isSubmitted]="ngForm.submitted" class="error-input">
+                                </app-error-message>
+                                <div *ngIf="usersList?.length == 1" style="margin-top: 5px;">
+                                    <i class="fas fa-exclamation-triangle error-icon"></i>
+                                    <span class="red custom-txt" style="font-size: 12px;">
+                                        No users in the store.
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <div class="footer-row">
+                                <button nbButton nbStepperNext status="primary">Next</button>
+                            </div>
+                        </form>
+                    </nb-step>
+                    <nb-step [stepControl]="AutomationForm.controls.shift" label="Select shift">
+                        <form #ngForm2A="ngForm" class="step-container">
+                            <div class="question-wrapper">
+                                <span class="align-element">
+                                    <i class="fa fa-calendar-days"></i>
+                                    <span class="question-txt">
+                                        Do you want to confirm all schedules?
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="inputs-row mb_15">
+                                <app-radio [form]="AutomationForm" class="runUntil" [controlName]="'allSchedules'"
+                                    [items]="confirmSchedulesList" (click)="updateValidators()"></app-radio>
+                            </div>
+                            <div class="input-wrapper mb_30">
+                                <ng-container *ngIf="!AutomationForm.controls.allSchedules.value">
+                                    <div class="startdate">
+                                        <app-timer-input [onlyTimePicker]="true" [form]="AutomationForm.controls.shift"
+                                            [controlName]="'start'" [placeholder]="'Enter start time'">
+                                        </app-timer-input>
+                                        <app-error-message [key]="'start'" [form]="AutomationForm.controls.shift"
+                                            [isSubmitted]="ngForm2A.submitted">
+                                        </app-error-message>
+                                    </div>
+
+                                    <div class="next-icon">
+                                        <i class="fa fa-arrow-right icon-color"></i>
+                                    </div>
+
+                                    <div class="enddate">
+                                        <app-timer-input [onlyTimePicker]="true" [form]="AutomationForm.controls.shift"
+                                            [controlName]="'end'" [placeholder]="'Enter end time'">
+                                        </app-timer-input>
+                                        <app-error-message [key]="'end'" [form]="AutomationForm.controls.shift"
+                                            [isSubmitted]="ngForm2A.submitted">
+                                        </app-error-message>
+                                        <div class="custom-errors" *ngIf="isGraveyard">
+                                            <i class="fas fa-info-circle error-icon orange"></i>
+                                            <span class="orange custom-txt">This is next day.</span>
+                                        </div>
+                                        <ng-container
+                                            *ngIf="ngForm2A.submitted && AutomationForm.controls.shift.errors">
+                                            <div class="custom-errors">
+                                                <i class="fas fa-exclamation-triangle error-icon"></i>
+                                                <!-- <span *ngIf="AutomationForm.controls.shift.errors.invalidTime"
+                                                    class="red custom-txt">End time must be greater</span> -->
+                                                <span *ngIf="AutomationForm.controls.shift.errors.invalidSlot"
+                                                    class="red custom-txt">A minimum of 1 hour slot is required.</span>
+                                                <span *ngIf="AutomationForm.controls.shift.errors.invalidMaxSlot"
+                                                    class="red custom-txt">Maximum allowed slot time is 12 hours.</span>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+
+
+                                </ng-container>
+                            </div>
+
+                            <!-- <ng-container *ngIf="!AutomationForm.controls.shiftEnd.errors">
+                                    <div *ngIf="AutomationForm.errors?.invalidSlot == true" class="red"
+                                        style="font-size: 11px;position: absolute;margin-top: 3px;">
+                                        A minimum of 1 hour slot is required
+                                    </div>
+                                </ng-container> -->
+
+
+                            <div class="footer-row">
+                                <button nbButton nbStepperPrevious>Previous</button>
+                                <button nbButton nbStepperNext status="primary">Next</button>
+                            </div>
+                        </form>
+                    </nb-step>
+                    <nb-step [stepControl]="AutomationForm.controls.scheduleMessage" label="Schedule message">
+                        <form #ngForm2="ngForm" class="step-container">
+                            <div class="question-wrapper mt-20 res-container">
+                                <span class="align-element">
+                                    <i class="fa-solid fa-circle-question"></i>
+                                    <span class="question-txt">
+                                        Send the message to the employee
+                                    </span>
+                                </span>
+
+                                <span class="drpdown-input">
+                                    <app-dropdown [Data]="scheduleMessageList" [placeholder]="'Select hours'"
+                                        [controlName]="'scheduleMessage'" [form]="AutomationForm" [show]="true"
+                                        [key]="'value'" [display]="'display'" (valueChange)="setDropdownValidation()">
+                                    </app-dropdown>
+                                    <app-error-message [key]="'scheduleMessage'" [form]="AutomationForm"
+                                        [isSubmitted]="ngForm2.submitted" class="error-input">
+                                    </app-error-message>
+                                </span>
+
+                                <span class="question-txt container">
+                                    before the schedule.
+                                </span>
+                            </div>
+                            <!-- <div class="inputs-row mb_30">
+                            </div> -->
+
+                            <div class="footer-row">
+                                <button nbButton nbStepperPrevious>Previous</button>
+                                <button nbButton nbStepperNext status="primary">Next</button>
+                            </div>
+                        </form>
+                    </nb-step>
+                    <nb-step [stepControl]="AutomationForm.controls.receiveUpdate" label="Receive update">
+                        <form #ngForm2B="ngForm" class="step-container">
+                            <div class="question-wrapper mt-20 res-container">
+                                <span class="align-element">
+                                    <i class="fa-solid fa-circle-question"></i>
+                                    <span class="question-txt">
+                                        You will be updated
+                                    </span>
+                                </span>
+                                <span class="drpdown-input">
+                                    <app-dropdown [Data]="receiveUpdateList" [placeholder]="'Select time'"
+                                        [controlName]="'receiveUpdate'" [form]="AutomationForm" [show]="true"
+                                        [key]="'value'" [display]="'display'">
+                                    </app-dropdown>
+                                    <app-error-message [key]="'receiveUpdate'" [form]="AutomationForm"
+                                        [isSubmitted]="ngForm2B.submitted" class="error-input">
+                                    </app-error-message>
+                                </span>
+
+                                <span class="question-txt container">
+                                    before the schedule.
+                                </span>
+                            </div>
+
+                            <div class="footer-row">
+                                <button nbButton nbStepperPrevious>Previous</button>
+                                <button nbButton nbStepperNext status="primary">Next</button>
+                            </div>
+                        </form>
+                    </nb-step>
+                    <nb-step [stepControl]="AutomationForm.controls.runUntil" label="Run until">
+                        <form #ngForm3="ngForm" class="step-container">
+                            <div class="question-wrapper mt-20">
+                                <span class="align-element">
+                                    <i class="fa fa-clock"></i>
+                                    <span class="question-txt">
+                                        Employee(s) will receive message to confirm their schedules till <span
+                                            style="color:#7b68ee">{{runUntilDate | date : 'MMM dd, YYYY'}}</span>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="inputs-row mb_30 runUntil-container">
+                                <app-radio [form]="AutomationForm" class="runUntil" [controlName]="'runUntil'"
+                                    [items]="runUntilList" (click)="calculateDate()"></app-radio>
+                                <!-- <div class="date-disclaimer">**Runs until {{runUntilDate | date : 'MMM dd, YYYY'}}</div> -->
+                            </div>
+
+                            <div class="footer-row">
+                                <button nbButton nbStepperPrevious>Previous</button>
+                                <button nbButton nbStepperNext status="primary">Next</button>
+                            </div>
+                        </form>
+                    </nb-step>
+
+                    <nb-step [hidden]="false" label="Show preview">
+                        <div class="step-container">
+
+                            <div class="question-wrapper">
+                                <i class="fa-solid fa-comment"></i>
+                                <span class="question-txt">
+                                    You're all set. This is how the text message would look like.
+                                </span>
+                            </div>
+                            <div class="preview-msg mb_30">
+                                <span>
+                                    [Username]
+                                </span>
+                                <span>
+                                    You have a shift coming up today from [X] time to [Y] time. Please confirm that you will show up.
+                                </span>
+                                <span>
+                                    Send 1 for Yes, i'll come & 2 for No, i cannot come today.
+                                </span>
+                                <span>
+                                    Azalio App
+                                </span>
+                            </div>
+                            <div class="footer-row">
+                                <button nbButton nbStepperPrevious>Previous</button>
+                                <app-submit-button [form]="AutomationForm" [label]="'Launch'"
+                                    (click)="submit()"></app-submit-button>
+                            </div>
+                        </div>
+                    </nb-step>
+                </nb-stepper>
+            </ng-container>
+        </nb-card-body>
+    </nb-card>
+
+</div>

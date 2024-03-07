@@ -1,0 +1,40 @@
+<div class="modal_wrapper view-automation">
+    <nb-card>
+        <nb-card-header class="card_header">
+            <span class="header-container">
+                <label>
+                    <b class="title" style="position: relative;top: 4px;">View Details</b>
+                  </label>
+            </span>
+        </nb-card-header>
+        <nb-card-body class="txt-size" *ngIf="data">
+            <div class="colored-txt mb-10">
+                <span class="txt-bold">{{data.user ? data.user.name : 'All Employees of Store'}}</span>
+            </div>
+            <div class="mb-10" *ngIf="data.schedule_start_time">
+                All schedules where start time falls between
+                {{ data.schedule_start_time ? (changeTimezone(data.schedule_start_time) | date: 'hh:mm a') : '' }} to
+                {{ data.schedule_end_time ? (changeTimezone(data.schedule_end_time) | date: 'hh:mm a') : ''}}
+                <span class="small-text" *ngIf="data.is_graveyard == 1">
+                    (Next day)
+                </span>
+            </div>
+            <div class="mb-10">
+                Message will be sent <span class="colored-txt txt-bold">{{data.request_confirmation_before_minutes/60}} hour(s)</span> before the schedule.
+            </div>
+            <div class="mb-10">
+                This will run from <span class="colored-txt txt-bold">{{data.creation_date | date: 'MMM dd, yyyy'}}</span> to 
+                <span class="colored-txt txt-bold">{{data.run_until | date: 'MMM dd, yyyy'}}</span>
+            </div>
+            <div class="mb-10">
+          <span class="colored-txt mb-10 txt-bold">{{data.created_by?.name}} ({{data.created_by?.role}})</span>
+                will be informed <span class="colored-txt txt-bold">
+                    {{data.send_response_by_minutes < 60 ? data.send_response_by_minutes + ' mins' :  data.send_response_by_minutes/60 + ' hour(s)'}}</span> 
+                    before the schedule in case of no response.
+            </div> 
+            <div class="footer-row">
+                <button class="ml_40 okay-btn" nbButton status="primary" type="button" (click)="close(null)">Okay</button>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</div>

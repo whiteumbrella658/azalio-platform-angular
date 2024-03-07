@@ -1,0 +1,611 @@
+<span class="scheduling_page">
+  <app-loader [loading]="loading || pageLoading"></app-loader>
+  <app-sidebar class="comment-sidebar" [showSideBar]="showSideBar" (closeDetails)="closeDetails()">
+    <app-leaves-request [regionId]="sharedRegion" [show]="showSideBar"
+      (refreshData)="getSchedules()"></app-leaves-request>
+  </app-sidebar>
+  <app-sidebar class="comment-sidebar" [showSideBar]="showSideBarHistory" (closeDetails)="closeDetails()">
+    <app-open-swap-request [regionId]="sharedRegion" [show]="showSideBarHistory"
+      (refreshData)="getSchedules()"></app-open-swap-request>
+  </app-sidebar>
+  <div class="modes-wrapper"
+    [class]="pageLoading || loading || emptyResults || emptySearchResults || sharedRegion == 0 || sharedRegion == null ? 'notVisible' : ''">
+    <span class="mode">
+      <span class="mode-details" [ngClass]="{'edit-banner': !showOnlyPublishedSchs}">
+        <span>
+          <span *ngIf="showOnlyPublishedSchs">
+            This is how the mobile app users in your store will see the schedule. To make changes, please <a
+              (click)="toggleView()" style="font-size:  15px;">click here.</a>
+          </span>
+          <span *ngIf="!showOnlyPublishedSchs">
+            You are in edit mode. <a (click)="toggleView()" style="font-size:  15px;">Click here</a> to see how the
+            mobile app users will see the schedule. Note: Your changes will not be lost.
+          </span>
+        </span>
+      </span>
+    </span>
+  </div>
+  <div class="flex sche_bod" *ngIf="!pageLoading">
+    <nb-layout-column class="colored-column-warning calendar_flex print-scheduler" *ngIf="sharedRegion !== null"
+      style="height: 75vh; padding-top: 0px">
+
+      <!-- || sharedRegion == 0 || sharedRegion == null -->
+      <div class="md-switching-timeline-view-cont" id="calendar-timeline" [ngClass]="{
+        'view-mode':  (emptySearchResults || showOnlyPublishedSchs) && !loading,
+        'empty-data': emptySearchResults || emptyResults || sharedRegion == 0 || sharedRegion == null
+      }">
+        <!-- Mobi Scroll header is displayed none is styles -->
+        <div class="main-wrapper">
+          <span>
+            <div class="sche_header" [class]="loading ? 'notVisible' : ''">
+              <span [class]="sharedRegion == 0 ?'empty-scheduler':''" class=" flex responsiveness-scheduler"
+                style="align-items: center">
+
+                <div class="ml_10 mr_10">
+                  <app-search-input [placeholder]="'Search by name or role'" [showHelperButton]="showHelperButton"
+                    (searchEvent)="onSearch($event)" (searchAll)="onSearchAll($event)"></app-search-input>
+
+                </div>
+
+
+
+
+                <span class="sort" style="position: relative;">
+                  <!-- <span *ngIf="showOnlyPublishedSchs && !hidePrint" class="copy_span mr_10"
+                    (click)="$event.stopPropagation(); hideShowPopupCopy()" nbTooltip="Copy schedules" nbTooltipPlacement="top"
+                    [nbTooltipDisabled]="displayPopup ? true : false"><i class="fa fa-copy" aria-hidden="true"></i>
+                  </span> -->
+
+                  <!-- <button   *ngIf="showOnlyPublishedSchs && !hidePrint"   (click)="$event.stopPropagation(); hideShowPopupCopy()"  class="copy-sch-btn mr_10" nbButton status="primary">Copy schedules</button> -->
+
+                  <span class="sort-popup copy-popup" *ngIf="displayPopupCopy">
+                    <span class="context-menu">
+                      <ul class="copy-sch">
+                        <li class="label-heading"> Copy current week published schedules to:</li>
+                        <li class="options">
+                          <span class="input_datepicker">
+
+
+                            <input class="datepicker-input" #dateInput nbInput placeholder="Pick Date Range"
+                              [nbDatepicker]="formpicker" />
+                            <nb-rangepicker class="rangepicker" #formpicker [min]="gs?.getNextDate(calendarStartDate,7)"
+                              (rangeChange)="setDateWeekly($event)" [range]="selectedDateWeekly">
+                            </nb-rangepicker>
+
+                            <span id="copyLabel" (click)="dateInput.click()" class="datepicker_span weekday_toggle">
+                              {{ selectedDateWeekly.start | date}} - {{ selectedDateWeekly.end | date }}
+                              <i class="fa-solid fa-calendar-days arrow-down" aria-hidden="true"></i>
+                            </span>
+                            <div class="labeltxt">
+                              Existing schedules if any in the selected week will not be affected.
+                            </div>
+                          </span>
+                        </li>
+                        <li>
+                          <span class="flex btns-row">
+                            <app-button nbTooltip="Any changes done will be discarded."
+                              (click)="displayPopupCopy=false">Cancel</app-button>
+                            <app-confirm-popup [type]="'Confirm'" [title]="'Copying Schedules'"
+                              [textToDisplay]="copyText" (proceedDelete)="proceedCopy()" [status]="'primary'">
+                              <button (click)="setCopyText()" nbButton type="button" class="copy-btn"
+                                status="primary">Copy</button>
+                            </app-confirm-popup>
+                          </span>
+                        </li>
+                      </ul>
+                    </span>
+                  </span>
+                </span>
+
+                <!-- <span class="right-actions" style="margin-right: 5px;">
+                  <i class="fa-solid fa-bell bell notifications" aria-hidden="true"></i>
+                </span> -->
+
+                <span class="right-actions">
+                  <span class="sort" style="position: relative;">
+                    <span *ngIf="showOnlyPublishedSchs && !hidePrint" class="print_span mr_10"
+                      (click)="$event.stopPropagation(); hideShowPopup()" nbTooltip="Print" nbTooltipPlacement="top"
+                      [nbTooltipDisabled]="displayPopup ? true : false"><i class="fa fa-print" aria-hidden="true"></i>
+                    </span>
+                    <span class="sort-popup" *ngIf="displayPopup">
+                      <span class="context-menu">
+                        <ul class="sorting">
+                          <li style="cursor:pointer;" class="options"
+                            (click)="printCal('onlyScheduled'); onlyScheduled = true">
+                            Print scheduled users only
+                          </li>
+                          <li style="cursor:pointer;" class="options" (click)="printCal('all'); onlyScheduled = false">
+                            Print all users
+                          </li>
+                        </ul>
+                      </span>
+                    </span>
+                  </span>
+                  <button *ngIf="!showOnlyPublishedSchs" class="mr_10"
+                    [ngClass]="enablePublish ? 'enable-publish' : 'disable-publish'" nbButton
+                    [disabled]="!enablePublish" status="primary" type="submit"
+                    (click)="onPublishClick()">Publish</button>
+
+
+                  <span *ngIf="isTimeOff" class="notification-btn mr_10"
+                    (click)="showSideBar=true; gs?.logEvents('viewed_timeOffs')">
+                    <span class="btn-container">
+                      <i class="fa-solid fa-bell bell" [ngClass]="isTimeOffNoti ? 'Noti' : ' '"></i>
+                      <i class="fa-solid fa-circle bubble-notification" *ngIf="isTimeOffNoti"></i>
+                    </span> Time offs
+                  </span>
+
+                  <span *ngIf="isHistory" class="notification-btn"
+                    (click)="showSideBarHistory=true; gs?.logEvents('viewed_openSwapHistory')">
+                    <span class="btn-container">
+                      <i class="fa-solid fa-bell bell" [ngClass]="isOpenSwapNoti ? 'Noti' : ' '"></i>
+                      <i class="fa-solid fa-circle bubble-notification" *ngIf="isOpenSwapNoti"></i>
+                    </span> Requests
+                  </span>
+
+
+                  <!-- <button *ngIf="isTimeOff" nbButton type="button" class="timeoff-btn" status="primary"
+                      (click)="showSideBar=true">
+          
+                      Time offs</button> -->
+                  <span class="hours"><span style="font-weight: 600;">{{ totalHoursInWeek.toFixed(2)}} Scheduled
+                      hours</span></span>
+                </span>
+
+
+                <div [@slideIn] class="float-container" *ngIf="copiedObject && !showOnlyPublishedSchs && animate">
+                  <span class="copy-floating">
+                    Click on any cell(s) to paste copied schedule ({{copiedObject.start | date:'shortTime'}} -
+                    {{copiedObject.end | date:'shortTime'}}).
+                    <button size="medium" type="submit" nbButton status="primary" (click)="clearClipboard()"
+                      class="clear-btn">Clear</button>
+                  </span>
+                </div>
+              </span>
+            </div>
+
+            <div *ngIf="!pageLoading"
+              [ngClass]="!showOnlyPublishedSchs && !emptySearchResults ? 'unpublish-data' : 'hidden-scheduler'"
+              [class]="loading ? 'notVisible' : ''">
+              <span>
+                <i class="fa fa-exclamation-triangle" style="margin-right:10px;color: #fe7e21;"></i>
+              </span>
+              <span class="unpublish-txt">
+                Changes made to this schedule are not available to the mobile user until published.
+              </span>
+
+            </div>
+          </span>
+
+          <span class="header-sch-page">
+            <mbsc-eventcalendar #eventCalendar [modules]="calendarModules" newEventText="New Schedule"
+              [dayTemplate]="dayTemp" (onPageLoading)="onPageLoading($event)" (onInit)="onInit($event)"
+              [clickToCreate]="emptySearchResults || showOnlyPublishedSchs || loading || popEventLoading || gettingSchs ? false : singleOrDouble"
+              [dragToMove]="showOnlyPublishedSchs || loading || popEventLoading || copiedObject || gettingSchs ? false : true"
+              (onEventClick)="onEventClick($event)" [data]="myEvents" [view]="calView" [options]="calendarOptions"
+              [resources]="myResources" [invalid]="myInvalids" [exclusiveEndDates]="false"
+              [extendDefaultEvent]="copiedObject ? helpingText : defaultTime" [headerTemplate]="myHeaderTemplate"
+              [resourceTemplate]="myResourceTemplate"
+              [scheduleEventTemplate]="view === 'week' || view === 'timelineMonth' || view === 'timelineDay' ? eventTemplate : null"
+              [resourceHeaderTemplate]="resourceHeaderTemplate" [(selectedDate)]="calendarSelectedDate"
+              dataTimezone="utc" displayTimezone="local" [timezonePlugin]="momentPlugin">
+              <ng-template #myHeaderTemplate>
+                <div *ngIf="!printView" class="md-work-week-picker" style="margin-right: 10px;">
+                  <mbsc-segmented-group name="view" [(ngModel)]="view" (change)="changeView(); toggleAnalytics()">
+                    <mbsc-segmented value="timelineDay">Day </mbsc-segmented>
+                    <mbsc-segmented value="week">Week</mbsc-segmented>
+                    <!-- <mbsc-segmented value="weekSummary">Week</mbsc-segmented> -->
+                    <!-- <mbsc-segmented value="calMonth">Month</mbsc-segmented> -->
+                    <mbsc-segmented value="timelineMonth">Month</mbsc-segmented>
+                  </mbsc-segmented-group>
+                </div>
+
+                <div class="date-controls">
+                  <mbsc-calendar-today class="md-work-week-today today-txt" *ngIf="!printView"
+                    (click)="gs?.logEvents('scheduler_today_button')"
+                    style="margin-left: 10px; font-size: 14px; text-decoration: underline; color:#7b68ee">
+                  </mbsc-calendar-today>
+                  <mbsc-calendar-prev class="md-work-week-prev"></mbsc-calendar-prev>
+                  <mbsc-calendar-next class="md-work-week-next"></mbsc-calendar-next>
+                  <span class="mbsc-calendar-title hideInPrint">{{rangeText}}</span>
+                </div>
+                  
+                <div class="print-header">
+                  <span class="mbsc-calendar-title print-hours">
+                    {{rangeText}} - Scheduled hrs: {{totalHoursInWeek.toFixed(2)}}</span>
+                  <!-- <span class="description onlyPrint">
+                    <i class="fa-solid fa-moon"></i> Graveyard Schedule
+                  </span> -->
+                </div>
+             
+              </ng-template>
+            </mbsc-eventcalendar>
+
+          </span>
+
+        </div>
+
+        <ng-template #dayTemp let-day>
+          <div class="md-date-header" [ngClass]="{'mbsc-timeline-header-active': isCurrentDay(day) }"
+            [nbTooltipDisabled]="view == 'timelineDay' ? true : false"
+            (click)="view !== 'timelineDay' ? goToDayView(day) : ''" nbTooltip="Click to view in detail"
+            nbTooltipPlacement="top">
+            <div class="md-date-header-day-nr">
+              {{day.date | date: 'dd'}}
+              <i *ngIf="view !== 'timelineDay'" class="fa-solid fa-magnifying-glass-plus fa-xs day-view"
+                aria-hidden="true"></i>
+            </div>
+            <div class="md-date-header-day-name">
+              {{day.date | date: 'EEE'}}
+            </div>
+          </div>
+        </ng-template>
+
+
+        <ng-template #eventTemplate let-data>
+          <!-- <ng-container *ngIf="printView ? data.original.isPublished : !data.original.isPublished">
+            <div class="md-timeline-template-event " [ngClass]="printView ? 'onlyPrint' : 'unpublished-schs'"
+              [ngStyle]="{borderColor: data.color, background: printView ? '' : (data.color + scheduleOpacity)}"
+              [nbTooltip]="tooltipTime">
+              <div class="md-timeline-template-event-cont">
+                <span nbTooltipPlacement="left" class="md-timeline-template-time">
+                  {{data.start}} - {{data.end}}
+                </span>
+              </div>
+            </div>
+          </ng-container> -->
+          <!-- <ng-container *ngIf="data.original.isPublished && !printView">
+            <div class="md-timeline-template-event published-schs" [ngStyle]="{background: data.color}"
+              [nbTooltipDisabled]="gs.touchEnabledDevices && !showOnlyPublishedSchs ? true : false"
+              [nbTooltip]="tooltipTime">
+              <div class="md-timeline-template-event-cont">
+                <span nbTooltipPlacement="left" class="md-timeline-template-time">
+                  {{data.start}} - {{data.end}}
+                </span>
+              </div>
+            </div>
+          </ng-container> -->
+
+          <div *ngIf="!data.original.isPublished" class="md-timeline-template-event unpublished-schs"
+            [ngStyle]="{borderColor: data.color, background: (data.color + scheduleOpacity)}"
+            [nbTooltipDisabled]="gs.touchEnabledDevices && !showOnlyPublishedSchs ? true : false"
+            [nbTooltip]="tooltipTime">
+            <div class="md-timeline-template-event-cont">
+              <i *ngIf="!showOnlyPublishedSchs && data.title !== 'Pasting...' && data?.id !== copiedObject?.id"
+                class="fa fa-copy" aria-hidden="true" (click)="$event.stopPropagation(); copyShortcut(data)"
+                nbTooltip="Click to copy" nbTooltipPlacement="bottom"></i>
+              <span nbTooltipPlacement="left" class="md-timeline-template-time">
+                {{data.title ? data.title : data.start + ' - ' + data.end}}
+              </span>
+            </div>
+          </div>
+          <div *ngIf="data.original.isPublished" class="md-timeline-template-event normalView"
+            [nbTooltipDisabled]="gs.touchEnabledDevices && !showOnlyPublishedSchs ? true : false"
+            [ngStyle]="{background: data.color}" [nbTooltip]="tooltipTime">
+            <div class="md-timeline-template-event-cont">
+              <i *ngIf="!showOnlyPublishedSchs && data.title !== 'Pasting...' && data?.id !== copiedObject?.id"
+                class="fa fa-copy" aria-hidden="true" (click)="$event.stopPropagation(); copyShortcut(data)"
+                nbTooltip="Click to copy" nbTooltipPlacement="bottom"></i>
+              <span nbTooltipPlacement="left" class="md-timeline-template-time">
+                {{data.start}} - {{data.end}}
+              </span>
+
+            </div>
+          </div>
+          <div *ngIf="data.original.isPublished" class="md-timeline-template-event onlyPrint"
+            [ngStyle]="isCornerGraveyard(data) ? {} : {'border-color': data.color}">
+            <div class="md-timeline-template-event-cont">
+              <span class="md-timeline-template-time relative">
+               
+                  <div class="flex">
+                    <span style="position: relative;">
+                      {{data.start}}
+                      <div class="gray-text" *ngIf="isCornerGraveyard(data, 'start')">
+                        {{data.startDate | date: 'MM/dd'}}
+                       <img src="../../../../assets/graveyard.png" style="width:12px;" aria-hidden="true">
+                      </div>
+                    </span>
+                    &nbsp; - &nbsp;
+                    <span>
+                      {{data.end}}
+                      <div class="gray-text" *ngIf="isCornerGraveyard(data, 'end')">
+                        {{data.endDate | date: 'MM/dd'}}
+                        <i class="fa-solid fa-moon" aria-hidden="true"></i> 
+                      </div>
+                    </span>
+                  </div>
+              </span>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template #myResourceTemplate let-resource>
+          <div class="md-work-week-cont" style="margin-top: 4px;"
+            [ngClass]="{'noSchedules': !resource.isSchedules && !resource.isLeaves }">
+            <app-user-avatar [showBadge]="resource.is_external == 1 ? true : false"
+              [picture]="resource.is_external == 1 ? 'assets/external-user.svg' : ''"
+              [showInitials]="resource.is_external == 1 ? false : true" shape="semi-round" size="medium"
+              [name]="resource?.name" [color]="resource.user_color + opacity" [initialColor]="resource.user_color"
+              [title]="resource.role_title" [scheduledHours]="resource?.name ? (resource.minutes/60).toFixed(2) : ''"
+              class="scheduler_user" nbTooltipPlacement="top"
+              [nbTooltip]="resource?.name + (resource?.is_external == 1 ? ' (External user)' : '')"></app-user-avatar>
+            <!-- <span *ngIf="!loading && !printView && resource?.name" class="individual-hrs">{{(resource.minutes/60).toFixed(2) }} hrs</span> -->
+
+            <span class="printResourceInfo">
+              <span *ngIf="onlyScheduled ? resource.isSchedules || resource.isLeaves : true">
+                <span>{{resource?.name?.length > 15 ? resource?.name.substring(0, 15) + '...' :
+                  resource?.name.substring(0, 15) }}</span><br>
+                <span *ngIf="resource?.name" class="individual-hrs-print">{{(resource.minutes/60).toFixed(2) }}
+                  hrs</span><br>
+                <span *ngIf="resource?.tags?.length > 0">
+                  <!-- (<ng-container *ngFor="let item of resource.tags; let last = last">
+                    {{item.tag}}<span *ngIf="!last">,</span>
+                  </ng-container>) -->
+                  <span class="tags" *ngFor="let item of resource.tags | slice:0:1">{{item.tag}}</span>
+                <span class="tags" *ngIf="resource.tags?.length > 1">, +{{resource.tags.length - 1}}</span>
+                </span>
+              </span>
+            </span>
+            <span class="tags-container" *ngIf="resource?.is_external == 1">
+              <span class="tags">{{resource?.phone_number| phoneNumber}}</span>
+            </span>
+            <span class="tags-container hideInPrint" *ngIf="resource?.tags?.length > 0">
+              <span class="tags" *ngFor="let item of resource.tags | slice:0:1"
+                [style.background-color]="item.color">{{item.tag}}</span>
+              <span class="tags" [nbTooltipDisabled]="resource.tags?.length < 2 ? true : false"
+                [nbTooltip]="getTagsToolTip(resource.tags)" *ngIf="resource.tags?.length > 1"
+                [style.background-color]="'#edeef4'">+{{resource.tags.length - 1}}</span>
+            </span>
+          </div>
+        </ng-template>
+
+        <ng-template #resourceHeaderTemplate>
+          <div class="filter-wrapper"> User <span class="user-count">{{emptySearchResults ? '0' :
+              myResources?.length}}</span>
+            <span style="margin-left: 4px;">
+              <app-sort class="sort hideInPrint" [order]="sortFilters['name']"
+                [isSelected]="sortFilters['name'] !== 0 ? true : false" [iconType]="'alpha'"
+                (onSort)="onSort($event, 'name')"></app-sort>
+            </span>
+            <span style="margin-left: 4px;">
+              <app-filter-popup class="hideInPrint" [label]="'roles'" [hideRespLabel]="true"
+                [isFiltered]="isFiltered?.role" (onClose)="closeFilter('role')" (onApply)="applyFilterMulti('role')"
+                (onClear)="removeFilter('role')" (onOpen)="defaultOpen=!defaultOpen" [nbTooltip]="'Role'">
+                <app-dropdown-multi [label]="'roles'" [defaultOpen]="defaultOpen" [selected]="filters?.role"
+                  [key]="'role_title'" [optionId]="'role_id'" [Data]="roles" [placeholder]="'Select one or more roles'"
+                  [controlName]="'role'" [form]="form" [show]="false">
+                </app-dropdown-multi>
+              </app-filter-popup>
+            </span>
+            <span style="margin-left: 4px;" *ngIf="tags?.length > 0">
+              <app-filter-popup class="hideInPrint" [icon]="'fa fa-user-tag'" [label]="'labels'" [hideRespLabel]="true"
+                [isFiltered]="isFiltered?.tag" (onClose)="closeFilter('tag')" (onApply)="applyFilterMulti('tag')"
+                (onClear)="removeFilter('tag')" (onOpen)="defaultOpen2=!defaultOpen2" [nbTooltip]="'Label'">
+                <app-dropdown-multi [label]="'tags'" [defaultOpen]="defaultOpen2" [selected]="filters?.tag"
+                  [optionClass]="'dot-tag'" [key]="'tag'" [key2]="'color'" [type]="'tag'" [optionId]="'id'"
+                  [Data]="tags" [placeholder]="'Select one or more labels'" [controlName]="'tag'" [form]="form"
+                  [show]="false">
+                </app-dropdown-multi>
+              </app-filter-popup>
+            </span>
+          </div>
+          <div>Hours<app-sort class="hideInPrint sort" [order]="sortFilters['minutes']"
+              [isSelected]="sortFilters['minutes'] !== 0 ? true : false" [iconType]="'number'"
+              (onSort)="onSortNum($event, 'minutes')"></app-sort></div>
+        </ng-template>
+      </div>
+      <app-no-records class="no-store" [display]="sharedRegion == 0" [isScheduler]="true" [animation]="'selectStore'"
+        [animation2]="'arrowTop'"></app-no-records>
+      <app-no-records class="no-user" [display]="emptyResults" [isScheduler]="false"
+        [animation]="'scheduler'"></app-no-records>
+      <app-no-search-records class="no-records"
+        [display]="!emptyResults && emptySearchResults && isFilterClosedOnSmallDevices()"></app-no-search-records>
+    </nb-layout-column>
+  </div>
+
+  <mbsc-popup [options]="popupOptions" [anchor]="popupAnchor" [buttons]="popupButtons" [headerText]="popupHeaderText"
+    #popup>
+    <i (click)="closePopup()" class="fas fa-times hidden"
+      style="position: absolute; top:10px; right: 10px; cursor: pointer;"></i>
+    <app-loader [loading]="popEventLoading"></app-loader>
+
+    <div class="toggle-options" *ngIf="!isEdit">
+      <mbsc-segmented-group name="scheduleType" [(ngModel)]="scheduleType" (change)="changeModalView()">
+        <mbsc-segmented value="schedule">Schedule</mbsc-segmented>
+        <mbsc-segmented value="leave">Leave</mbsc-segmented>
+      </mbsc-segmented-group>
+    </div>
+
+    <form #templateForm="ngForm" (ngSubmit)="registerTempl()" class="new-schedule" *ngIf="scheduleType === 'schedule'">
+      <div class="scheduler-prompt" *ngIf="isEdit && scheduleType === 'schedule' && isOriginalEventRecurring()">
+        <i class="red fa fa-exclamation-triangle" style="margin-right:10px;"></i>{{ getInfoText() + ' updated' }}
+      </div>
+      <div class="mbsc-form-group" style="overflow: auto;" id="scrollContent">
+
+        <span>
+          <ng-container *ngFor="let color of colors">
+            <span style="padding:0px;">
+              <i class="fa fa-circle color-label"
+                [ngClass]="{'color-selected': isEdit ? selectedColorWhileEditing==color.value : selectedColorWhileAdding==color.value}"
+                aria-hidden="true" [style.color]="color.value" (click)="setColor(color.value)"></i>
+            </span>
+          </ng-container>
+        </span>
+
+        <span class="scheduler-fields recEdit" style="width: 100%; padding-top: 15px;">
+          <ng-container *ngIf="isEdit && scheduleType === 'schedule' && isOriginalEventRecurring()">
+            <i class="fa fa-calendar-days icon-color" nbTooltip="Update" nbTooltipPlacement="top">
+              <span class="mandatory">*</span></i>
+            <mbsc-select style="width: 94%;" class="recEdit" name="recEditMode" [(ngModel)]="recurringEditMode"
+              (ngModelChange)="onRecEditModeChange()" [data]="recurringEditModes" [responsive]="selectResponsive">
+            </mbsc-select>
+          </ng-container>
+        </span>
+
+        <div class="mbsc-form-group" style="width: 100%">
+          <span class="scheduler-fields">
+            <i class="fa fa-clock icon-color" nbTooltip="Start time & End time" nbTooltipPlacement="top"><span
+                class="mandatory">
+                *</span></i>
+            <mbsc-datepicker style="width:94%;" #startTimeGrid name="startTime" [options]="options"
+              [(ngModel)]="startDateOfSch" (ngModelChange)="resetUntilDate(); resetEndDate($event)"
+              [error]="templateSubmitted" [errorMessage]="getCustomErrorDate(templateForm, 'startTime')"
+              [min]="minStartTime" [max]="maxStartTime" required>
+            </mbsc-datepicker>
+            <i class="fa fa-arrow-right icon-color"></i>
+            <!-- <span class="mandatory"> *</span> -->
+            <mbsc-datepicker style="width: 94%;" #endTimeGrid name="endTime" [options]="options"
+              [(ngModel)]="endDateOfSch" (ngModelChange)="resetUntilDate(); resetEndDate($event)"
+              [error]="templateSubmitted" [errorMessage]="getCustomErrorDate(templateForm, 'endTime')"
+              [min]="minEndTime" [max]="maxEndTime" required>
+            </mbsc-datepicker>
+          </span>
+          <span *ngIf="!isEdit && selectedRepeat === 'norepeat' && !isTimelineView" class="scheduler-fields week-days">
+            <ng-container *ngFor="let day of weekDaysCheckBoxes; let i = index">
+              <nb-checkbox [disabled]="day.invalid" name="nonRec" status="primary" class="mr23" [checked]="day.checked"
+                [ngClass]="{'disabled-checkbox': day.disabled}" (checkedChange)="setCheckedDays($event, i)">{{ day.name
+                }}</nb-checkbox>
+            </ng-container>
+          </span>
+
+        </div>
+
+        <span class="scheduler-fields mt-08">
+          <i class="fa fa-undo icon-color" nbTooltip="Repeats" nbTooltipPlacement="top"><span class="mandatory">
+              *</span></i>
+          <mbsc-select style="width: 96%;" name="b" [(ngModel)]="selectedOption" (click)="repeatsAnalytics()"
+            [disabled]=" isEdit && isOriginalEventRecurring() && recurringEditMode === 'current'"
+            (ngModelChange)="setCondition($event)" [data]="repeatData" [responsive]="selectResponsive">
+          </mbsc-select>
+        </span>
+
+        <div *ngIf="selectedRepeat === 'custom' || selectedRepeat === 'custom-value'"
+          style="padding-left: 20px;padding-right: 20px;padding-bottom: 10px;">
+          <div class="custom-repeat-settings txt-scheduler label-txt" style="">
+            Repeats every
+            <span class="modal-roundness">
+              <mbsc-input type="number" pattern="^[1-9]+[0-9]*" maxlength="3" name="repeat" min="0"
+                [error]="repeat.invalid && templateSubmitted" [errorMessage]="getErrorMessage(templateForm, 'repeat')"
+                class="custom-repeat-input repeat-input" #repeat="ngModel" [(ngModel)]="repeatNr" inputStyle="outline"
+                required></mbsc-input>
+              <span *ngIf="repeatType === 'daily'" style="width: 30%;">day(s)</span>
+              <span *ngIf="repeatType === 'weekly'" style="width: 30%;">week(s)</span>
+              <span *ngIf="repeatType === 'monthly'" class="custom-repeat-text custom-repeat-monthly"
+                style="width: 30%;">
+                month(s) on
+                <mbsc-select name="monthlyDay" class="custom-repeat-input custom-repeat-select-nr"
+                  [(ngModel)]="monthlyDay" [data]="monthlyDays" inputStyle="outline"></mbsc-select>
+                day
+              </span>
+              <span *ngIf="repeatType === 'yearly'" class="custom-repeat-text custom-repeat-monthly">
+                year(s) on
+                <mbsc-select name="selectedMonth" class="custom-repeat-input custom-repeat-select-month"
+                  [(ngModel)]="selectedMonth" [data]="months" inputStyle="outline" (onChange)="monthChange($event)">
+                </mbsc-select>
+                <mbsc-select name="yearlyDay" class="custom-repeat-input custom-repeat-select-nr"
+                  [(ngModel)]="yearlyDay" [data]="yearlyDays" inputStyle="outline"></mbsc-select>
+              </span>
+              <span style="width: 100%;margin-left: 5px;">
+                <span class="schedule-run-until">until </span>
+                <div class="custom-condition-cont"
+                  [ngClass]="{'weekUntilPicker': repeatType === 'weekly','monthUntilPicker' : repeatType === 'monthly'}">
+                  <!-- Run until a specific date -->
+                  <mbsc-datepicker #untilPicker [showOnClick]="false" [showOnFocus]="false" [min]="minUntilDate"
+                    [max]="maxDate" [error]="dateUntil.invalid && templateSubmitted"
+                    [errorMessage]="getErrorMessage(templateForm, 'dateUntil')" #dateUntil="ngModel" name="dateUntil"
+                    [controls]="['date']" display="anchored" [touchUi]="false" dateFormat="MM/DD/YYYY"
+                    [(ngModel)]="untilDate" (click)="condition = 'until'"
+                    class="custom-repeat-input custom-specific-date" inputStyle="outline" required></mbsc-datepicker>
+                  <span class="scheduler-calender" style="right: 20px;
+                  top: 15px;
+                  left: auto;
+                  position: absolute;">
+                    <i class="fa fa-calendar" aria-hidden="true" (click)="openUntilPicker()"></i>
+                  </span>
+                </div>
+              </span>
+            </span>
+
+
+            <div *ngIf="repeatType === 'weekly'" class="week-rec-checkboxes">
+
+              <ng-container *ngFor="let day of weekDays; let i = index">
+                <nb-checkbox name="h" status="primary" class="mr_08" [checked]="day.checked"
+                  (checkedChange)="setCheckedItems($event, i)">{{
+                  day.name
+                  }}</nb-checkbox>
+              </ng-container>
+              <mbsc-input class="custom-repeat-checkbox-cont hide_input" pattern="^[1-7]" name="selectedWeeks"
+                #selectedWeeks="ngModel" [(ngModel)]="weeksArray.length"
+                [error]="selectedWeeks.invalid && templateSubmitted"
+                [errorMessage]="getErrorMessage(templateForm, 'selectedWeeks')" required></mbsc-input>
+            </div>
+
+            <span>
+
+
+
+            </span>
+          </div>
+        </div>
+
+
+        <span style="display: none;">
+          <img src="../../../../../assets/info-icon.svg" class="label-info-icon" alt="reason icon" /> All schedules in
+          the series will be updated.
+        </span>
+
+      </div>
+
+      <!-- <div *ngIf="isEdit" class="mbsc-button-group" style="position: absolute; bottom:10px;left: 8px;">
+        <app-confirm-popup [title]="scheduleType | titlecase" [textToDisplay]="deleteText" (proceedDelete)="onDeleteClick()">
+          <span class="pointer red-color" style="position: relative;">
+            <i class="fas fa-trash pointer mr_10"></i><span>Delete {{scheduleType | titlecase}}</span>
+          </span>
+        </app-confirm-popup>
+      </div> -->
+    </form>
+
+    <form #leaveForm="ngForm" (ngSubmit)="registerTemplLeave()" class="new-schedule" *ngIf="scheduleType === 'leave'">
+      <div *ngIf="scheduleType === 'leave'" class="mbsc-form-group" style="overflow: auto;" id="scrollContent">
+        <span class="scheduler-fields disabled-sdate">
+          <i class="fa fa-clock icon-color" nbTooltip="Start date & End date" nbTooltipPlacement="top">
+            <span class="mandatory">*</span></i>
+          <mbsc-datepicker style="width:94%;" #startLeaveDate name="leaveStart" [options]="optionsLeave" required
+            [disabled]="isEdit ? false : true" [(ngModel)]="leaveStartDate" [error]="leaveTemplateSubmitted" required
+            [errorMessage]="getCustomErrorDate(leaveForm, 'leaveStart')">
+          </mbsc-datepicker>
+          <i class="fa fa-arrow-right icon-color"></i>
+          <mbsc-datepicker style="width: 94%;" #endLeaveDate name="leaveEnd" [options]="optionsLeave"
+            [(ngModel)]="leaveEndDate" [error]="leaveTemplateSubmitted" [min]="leaveStartDate" required
+            [errorMessage]="getCustomErrorDate(leaveForm, 'leaveEnd')">
+          </mbsc-datepicker>
+        </span>
+        <span class="scheduler-fields">
+          <i class="fas fa-calendar-times icon-color" nbTooltip="Leave type" nbTooltipPlacement="top">
+            <span class="mandatory">*</span>
+          </i>
+          <mbsc-select placeholder="Select leave type" style="width: 96%;" [(ngModel)]="selectedLeaveOption"
+            [data]="repeatDataLeaves" [responsive]="selectResponsive" name="leaveType" [error]="leaveTemplateSubmitted"
+            [errorMessage]="getErrorMessage(leaveForm, 'leaveType')" required>
+          </mbsc-select>
+        </span>
+        <span class="scheduler-fields">
+          <span class="note-txt">
+            * By adding this leave, any existing schedule(s) will be removed on the chosen date(s).
+          </span>
+        </span>
+      </div>
+    </form>
+
+    <div *ngIf="isEdit" class="mbsc-button-group" style="position: absolute; bottom:20px;left: 8px;"
+      [ngClass]="{'disabled-delete': loading || pageLoading || popEventLoading}">
+      <app-confirm-popup [title]="scheduleType | titlecase" [textToDisplay]="deleteText"
+        (proceedDelete)="onDeleteClick()">
+        <span class="pointer red-color" style="position: relative;">
+          <i class="fas fa-trash pointer mr_10"></i><span>Delete {{scheduleType | titlecase}}</span>
+        </span>
+      </app-confirm-popup>
+    </div>
+  </mbsc-popup>
+</span>

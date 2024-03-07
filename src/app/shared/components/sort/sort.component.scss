@@ -1,0 +1,40 @@
+.sort-icon {
+  position: relative;
+  cursor: pointer;
+  font-weight: 600;
+  color: #bbbbbb;
+
+  i {
+    font-size: 15px;
+    color: #bbbbbb;
+  }
+}
+
+.sort-icon i:hover {
+  color: #6e689b !important;
+}
+
+.sort-selected {
+  color: #6e689b !important;
+
+  i {
+    color: #6e689b !important;
+  }
+}
+
+@media(max-width:380px) {
+  .sort-selected {
+    display: flex;
+  }
+}
+
+.status-secondary {
+  // box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+  color: #344054;
+  border: 1px solid #D0D5DD !important;
+  font-weight: 700 !important;
+  font-family: "Inter" !important;
+  border-radius: 6px !important;
+  height: 35px !important;
+  margin-right: 10px;
+}
